@@ -12,6 +12,8 @@ export const AtmosphericHero: React.FC = () => {
         <div className={styles.luminousRibbon1} />
         <div className={styles.luminousRibbon2} />
         <div className={styles.luminousRibbon3} />
+        <div className={styles.luminousRibbon4} />
+        <div className={styles.luminousRibbon5} />
         <div className={styles.centerDarkPocket} />
         <div className={styles.noiseFilter} />
         <div className={styles.bottomVignette} />

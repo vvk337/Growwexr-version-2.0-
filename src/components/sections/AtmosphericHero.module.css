@@ -36,7 +36,7 @@
   filter: blur(85px);
   transform: rotate(-20deg);
   will-change: transform;
-  animation: heroDrift1 24s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  animation: heroDrift1 20s cubic-bezier(0.42, 0, 0.58, 1) infinite;
 }
 
 .luminousRibbon2 {
@@ -49,7 +49,7 @@
   filter: blur(95px);
   transform: rotate(25deg);
   will-change: transform;
-  animation: heroDrift2 29s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  animation: heroDrift2 25s cubic-bezier(0.42, 0, 0.58, 1) infinite;
 }
 
 .luminousRibbon3 {
@@ -61,7 +61,31 @@
   background: radial-gradient(ellipse at center, rgba(7, 90, 247, 0.35) 0%, transparent 65%);
   filter: blur(80px);
   will-change: transform;
-  animation: heroDrift3 34s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+  animation: heroDrift3 29s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+.luminousRibbon4 {
+  position: absolute;
+  top: 8%;
+  right: 12%;
+  width: 720px;
+  height: 520px;
+  background: radial-gradient(ellipse at center, rgba(25, 203, 208, 0.46) 0%, rgba(7, 90, 247, 0.24) 45%, transparent 72%);
+  filter: blur(85px);
+  will-change: transform;
+  animation: heroDrift4 22s cubic-bezier(0.42, 0, 0.58, 1) infinite;
+}
+
+.luminousRibbon5 {
+  position: absolute;
+  bottom: 10%;
+  left: 22%;
+  width: 680px;
+  height: 480px;
+  background: radial-gradient(ellipse at center, rgba(7, 90, 247, 0.42) 0%, rgba(25, 203, 208, 0.22) 42%, transparent 70%);
+  filter: blur(80px);
+  will-change: transform;
+  animation: heroDrift5 26s cubic-bezier(0.42, 0, 0.58, 1) infinite;
 }
 
 .centerDarkPocket {
@@ -140,10 +164,54 @@
   }
 }
 
+@keyframes heroDrift4 {
+  0% {
+    transform: translate3d(0, 0, 0) rotate(10deg) scale(1);
+  }
+  22% {
+    transform: translate3d(-75px, 50px, 0) rotate(16deg) scale(1.14);
+  }
+  45% {
+    transform: translate3d(-110px, -30px, 0) rotate(8deg) scale(1.06);
+  }
+  68% {
+    transform: translate3d(-40px, -65px, 0) rotate(2deg) scale(1.12);
+  }
+  85% {
+    transform: translate3d(35px, -20px, 0) rotate(7deg) scale(0.95);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) rotate(10deg) scale(1);
+  }
+}
+
+@keyframes heroDrift5 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  18% {
+    transform: translate3d(65px, 45px, 0) scale(1.15);
+  }
+  40% {
+    transform: translate3d(120px, -20px, 0) scale(1.08);
+  }
+  65% {
+    transform: translate3d(50px, -55px, 0) scale(1.12);
+  }
+  82% {
+    transform: translate3d(-30px, -15px, 0) scale(0.94);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .luminousRibbon1,
   .luminousRibbon2,
-  .luminousRibbon3 {
+  .luminousRibbon3,
+  .luminousRibbon4,
+  .luminousRibbon5 {
     animation: none;
   }
 }
