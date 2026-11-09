@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { servicesData } from '../../content/services';
+import { AnimateIn } from '../ui/AnimateIn';
 import styles from './ServicesRail.module.css';
 
 // Include the 2 confirmed services + 2 dedicated capability topics under those services
@@ -57,38 +58,40 @@ export const ServicesRail: React.FC = () => {
     <section className={`section section-white ${styles.servicesSection}`} aria-labelledby="services-heading">
       <div className="container">
         {/* Header with Title & Controls */}
-        <div className={styles.sectionHeader}>
-          <div>
-            <span className="section-overline">Core Capabilities</span>
-            <h2 id="services-heading" className="section-title">
-              What We Advise On
-            </h2>
-          </div>
-          <div className={styles.headerActions}>
-            <Link to="/services" className={styles.viewAllLink}>
-              <span>View all services</span>
-              <ArrowUpRight size={16} />
-            </Link>
-            <div className={styles.navControls} aria-label="Services carousel controls">
-              <button
-                type="button"
-                className={styles.controlBtn}
-                onClick={() => scroll('left')}
-                aria-label="Previous service"
-              >
-                <ChevronLeft size={20} />
-              </button>
-              <button
-                type="button"
-                className={styles.controlBtn}
-                onClick={() => scroll('right')}
-                aria-label="Next service"
-              >
-                <ChevronRight size={20} />
-              </button>
+        <AnimateIn animation="default">
+          <div className={styles.sectionHeader}>
+            <div>
+              <span className="section-overline">Core Capabilities</span>
+              <h2 id="services-heading" className="section-title">
+                What We Advise On
+              </h2>
+            </div>
+            <div className={styles.headerActions}>
+              <Link to="/services" className={`${styles.viewAllLink} arrow-link`}>
+                <span>View all services</span>
+                <ArrowUpRight size={16} />
+              </Link>
+              <div className={styles.navControls} aria-label="Services carousel controls">
+                <button
+                  type="button"
+                  className={styles.controlBtn}
+                  onClick={() => scroll('left')}
+                  aria-label="Previous service"
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  type="button"
+                  className={styles.controlBtn}
+                  onClick={() => scroll('right')}
+                  aria-label="Next service"
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </div>
             </div>
           </div>
-        </div>
+        </AnimateIn>
       </div>
 
       {/* Horizontal Rail Container */}

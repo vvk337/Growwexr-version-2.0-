@@ -1,6 +1,7 @@
 import React from 'react';
 import { Compass, Eye, Shield, BookOpen } from 'lucide-react';
 import { valuesData, valuesCenterImage } from '../../content/values';
+import { AnimateIn } from '../ui/AnimateIn';
 import styles from './ValuesSection.module.css';
 
 const iconMap = {
@@ -19,20 +20,22 @@ export const ValuesSection: React.FC = () => {
     <section className={`section section-navy ${styles.valuesSection}`} aria-labelledby="values-heading">
       <div className="container">
         {/* Section Heading */}
-        <div className={styles.sectionHeader}>
-          <span className="section-overline">Guiding Principles</span>
-          <h2 id="values-heading" className="section-title">
-            Our Advisory Standards
-          </h2>
-          <p className={styles.subtitle}>
-            Disciplined execution anchored in transparent dialogue, institutional rigor, and objective capital allocation.
-          </p>
-        </div>
+        <AnimateIn animation="default">
+          <div className={styles.sectionHeader}>
+            <span className="section-overline">Guiding Principles</span>
+            <h2 id="values-heading" className="section-title">
+              Our Advisory Standards
+            </h2>
+            <p className={styles.subtitle}>
+              Disciplined execution anchored in transparent dialogue, institutional rigor, and objective capital allocation.
+            </p>
+          </div>
+        </AnimateIn>
 
         {/* 5-Part Layout: Left 2 panels, Center Image, Right 2 panels */}
         <div className={styles.fivePartGrid}>
           {/* Left Column */}
-          <div className={styles.sideColumn}>
+          <AnimateIn animation="slide-left" delay={100} className={styles.sideColumn}>
             {leftValues.map((val) => {
               const IconComponent = iconMap[val.iconName];
               return (
@@ -45,10 +48,10 @@ export const ValuesSection: React.FC = () => {
                 </div>
               );
             })}
-          </div>
+          </AnimateIn>
 
           {/* Center Editorial Portrait Image */}
-          <div className={styles.centerMediaWrapper}>
+          <AnimateIn animation="scale-up" delay={200} className={styles.centerMediaWrapper}>
             <div className={styles.portraitCard}>
               <img
                 src={valuesCenterImage}
@@ -64,10 +67,10 @@ export const ValuesSection: React.FC = () => {
                 <span className={styles.portraitCaption}>Independent Forex Advisory</span>
               </div>
             </div>
-          </div>
+          </AnimateIn>
 
           {/* Right Column */}
-          <div className={styles.sideColumn}>
+          <AnimateIn animation="slide-right" delay={300} className={styles.sideColumn}>
             {rightValues.map((val) => {
               const IconComponent = iconMap[val.iconName];
               return (
@@ -80,7 +83,7 @@ export const ValuesSection: React.FC = () => {
                 </div>
               );
             })}
-          </div>
+          </AnimateIn>
         </div>
       </div>
     </section>

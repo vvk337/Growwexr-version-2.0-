@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Plus, Minus } from 'lucide-react';
 import { generalFAQs } from '../../content/faq';
 import { Button } from '../ui/Button';
+import { AnimateIn } from '../ui/AnimateIn';
 import styles from './FAQSection.module.css';
 
 export const FAQSection: React.FC = () => {
@@ -17,7 +18,7 @@ export const FAQSection: React.FC = () => {
       <div className="container">
         <div className={styles.faqGrid}>
           {/* Left Title & Support Block */}
-          <div className={styles.supportCol}>
+          <AnimateIn animation="slide-left" className={styles.supportCol}>
             <span className="section-overline">Frequently Asked</span>
             <h2 id="faq-heading" className="section-title">
               Common Questions About Our Advisory
@@ -31,10 +32,10 @@ export const FAQSection: React.FC = () => {
                 Speak With an Advisor
               </Button>
             </div>
-          </div>
+          </AnimateIn>
 
           {/* Right Accordion List */}
-          <div className={styles.accordionList} role="region" aria-label="Frequently Asked Questions Accordion">
+          <AnimateIn animation="slide-right" delay={150} className={styles.accordionList} as="div">
             {generalFAQs.map((faq) => {
               const isOpen = faq.id === openId;
               return (
@@ -66,7 +67,7 @@ export const FAQSection: React.FC = () => {
                 </div>
               );
             })}
-          </div>
+          </AnimateIn>
         </div>
       </div>
     </section>

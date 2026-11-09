@@ -13,6 +13,16 @@
   text-align: center;
   box-shadow: 0 24px 60px rgba(8, 20, 48, 0.25);
   border: 1px solid rgba(255, 255, 255, 0.15);
+  transition:
+    transform 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.5s ease;
+}
+
+.ctaCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 32px 72px rgba(7, 90, 247, 0.25);
+  border-color: rgba(25, 203, 208, 0.35);
 }
 
 .bgImage {
@@ -22,6 +32,11 @@
   height: 100%;
   object-fit: cover;
   opacity: 0.28;
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ctaCard:hover .bgImage {
+  transform: scale(1.06);
 }
 
 .cardOverlay {
@@ -66,5 +81,28 @@
 .buttonWrap {
   display: flex;
   justify-content: center;
+  position: relative;
+}
+
+.buttonWrap::after {
+  content: '';
+  position: absolute;
+  inset: -6px -12px;
+  background: radial-gradient(circle, rgba(25, 203, 208, 0.3) 0%, transparent 70%);
+  border-radius: 9999px;
+  opacity: 0.6;
+  pointer-events: none;
+  animation: ctaPulse 4s ease-in-out infinite;
+}
+
+@keyframes ctaPulse {
+  0%, 100% {
+    transform: scale(0.96);
+    opacity: 0.35;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: 0.75;
+  }
 }
 

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { approachSteps } from '../../content/approach';
 import { Button } from '../ui/Button';
+import { AnimateIn } from '../ui/AnimateIn';
 import styles from './ApproachSection.module.css';
 
 export const ApproachSection: React.FC = () => {
@@ -12,15 +13,17 @@ export const ApproachSection: React.FC = () => {
     <section className={`section section-ice ${styles.approachSection}`} aria-labelledby="approach-heading">
       <div className="container">
         {/* Section Heading */}
-        <div className={styles.sectionHeader}>
-          <span className="section-overline">Consultation Framework</span>
-          <h2 id="approach-heading" className="section-title">
-            Our 3-Step Engagement Approach
-          </h2>
-          <p className={styles.subtitle}>
-            A structured, objective pathway from initial risk assessment to bespoke foreign exchange allocation strategy.
-          </p>
-        </div>
+        <AnimateIn animation="default">
+          <div className={styles.sectionHeader}>
+            <span className="section-overline">Consultation Framework</span>
+            <h2 id="approach-heading" className="section-title">
+              Our 3-Step Engagement Approach
+            </h2>
+            <p className={styles.subtitle}>
+              A structured, objective pathway from initial risk assessment to bespoke foreign exchange allocation strategy.
+            </p>
+          </div>
+        </AnimateIn>
 
         {/* Desktop Interactive Layout (Left steps list, Right active step panel) */}
         <div className={styles.desktopLayout}>
@@ -67,7 +70,7 @@ export const ApproachSection: React.FC = () => {
                 <span>Step {activeStep.number} of 03</span>
               </div>
             </div>
-            <div className={styles.panelBody}>
+            <div className={styles.panelBody} key={activeStep.number}>
               <h3 className={styles.panelHeading}>{activeStep.title}</h3>
               <p className={styles.panelSummaryText}>{activeStep.summary}</p>
               <ul className={styles.detailsList}>

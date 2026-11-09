@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { AnimateIn } from '../ui/AnimateIn';
 import styles from './ClientFocusSelector.module.css';
 
 interface ClientAudience {
@@ -54,20 +55,22 @@ export const ClientFocusSelector: React.FC = () => {
     <section className={`section section-dark ${styles.selectorSection}`} aria-labelledby="focus-heading">
       <div className="container">
         {/* Header */}
-        <div className={styles.sectionHeader}>
-          <span className="section-overline">Target Specialization</span>
-          <h2 id="focus-heading" className="section-title">
-            Who We Advise
-          </h2>
-          <p className={styles.subtitle}>
-            Tailored advisory frameworks addressing the distinct cross-border challenges of Middle East participants.
-          </p>
-        </div>
+        <AnimateIn animation="default">
+          <div className={styles.sectionHeader}>
+            <span className="section-overline">Target Specialization</span>
+            <h2 id="focus-heading" className="section-title">
+              Who We Advise
+            </h2>
+            <p className={styles.subtitle}>
+              Tailored advisory frameworks addressing the distinct cross-border challenges of Middle East participants.
+            </p>
+          </div>
+        </AnimateIn>
 
         {/* 2-Column Focus Layout */}
         <div className={styles.focusGrid}>
           {/* Left: Dynamic Image Showcase */}
-          <div className={styles.imageColumn}>
+          <AnimateIn animation="scale-up" delay={150} className={styles.imageColumn}>
             <div className={styles.imageCard}>
               <img
                 key={activeAudience.id}
@@ -81,10 +84,10 @@ export const ClientFocusSelector: React.FC = () => {
                 <h3 className={styles.imageHeadline}>{activeAudience.tagline}</h3>
               </div>
             </div>
-          </div>
+          </AnimateIn>
 
           {/* Right: Selectable Labels & Content */}
-          <div className={styles.selectorColumn}>
+          <AnimateIn animation="slide-right" delay={250} className={styles.selectorColumn}>
             {/* Label Tabs */}
             <div className={styles.tabList} role="tablist" aria-label="Audience selector">
               {audiences.map((audience) => {
@@ -134,7 +137,7 @@ export const ClientFocusSelector: React.FC = () => {
                 </Button>
               </div>
             </div>
-          </div>
+          </AnimateIn>
         </div>
       </div>
     </section>
