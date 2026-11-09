@@ -1,0 +1,270 @@
+/* FlowButton Component Styles with Hardware-Accelerated Bezier Transitions */
+
+.flowButton {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  overflow: hidden;
+  border-radius: 100px;
+  background-color: transparent;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  white-space: nowrap;
+  outline: none;
+  user-select: none;
+  transition:
+    border-radius 600ms cubic-bezier(0.23, 1, 0.32, 1),
+    border-color 600ms cubic-bezier(0.23, 1, 0.32, 1),
+    color 600ms cubic-bezier(0.23, 1, 0.32, 1),
+    transform 200ms ease;
+}
+
+.flowButton:active {
+  transform: scale(0.95);
+}
+
+.flowButton:focus-visible {
+  outline: 2px solid var(--accent-gold);
+  outline-offset: 3px;
+}
+
+/* Sizes */
+.sm {
+  padding: 0.5rem 1.75rem;
+  font-size: var(--text-xs);
+  letter-spacing: var(--tracking-wide);
+}
+
+.md {
+  padding: 0.75rem 2.25rem;
+  font-size: var(--text-sm);
+  letter-spacing: var(--tracking-wide);
+}
+
+.lg {
+  padding: 0.95rem 2.75rem;
+  font-size: var(--text-base);
+  letter-spacing: var(--tracking-wide);
+}
+
+/* Left Arrow (Hidden offscreen left by default, slides in on hover) */
+.leftArrow {
+  position: absolute;
+  left: -25%;
+  z-index: 9;
+  fill: none;
+  pointer-events: none;
+  transition:
+    left 800ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    stroke 600ms ease;
+}
+
+.flowButton:hover .leftArrow {
+  left: 1.15rem;
+}
+
+.sm:hover .leftArrow {
+  left: 0.85rem;
+}
+
+.lg:hover .leftArrow {
+  left: 1.35rem;
+}
+
+/* Right Arrow (Visible right by default, slides offscreen right on hover) */
+.rightArrow {
+  position: absolute;
+  right: 1.15rem;
+  z-index: 9;
+  fill: none;
+  pointer-events: none;
+  transition:
+    right 800ms cubic-bezier(0.34, 1.56, 0.64, 1),
+    stroke 600ms ease;
+}
+
+.sm .rightArrow {
+  right: 0.85rem;
+}
+
+.lg .rightArrow {
+  right: 1.35rem;
+}
+
+.flowButton:hover .rightArrow {
+  right: -25%;
+}
+
+/* Text Element (-translate-x-3 shifts right on hover) */
+.textSpan {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  transform: translateX(-0.75rem);
+  transition:
+    transform 800ms ease-out,
+    color 600ms ease;
+}
+
+.flowButton:hover .textSpan {
+  transform: translateX(0.75rem);
+}
+
+/* ========================================================
+   Circle Ripple Layer
+   ======================================================== */
+
+/* INVERTED MODE (Default): Starts full with background color, shrinks to 0 on hover */
+.circleInverted {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+  pointer-events: none;
+  transition:
+    transform 800ms cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 800ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.flowButton:hover .circleInverted {
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+}
+
+/* NON-INVERTED MODE: Starts empty (0), expands to fill on hover */
+.circleNonInverted {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    transform 800ms cubic-bezier(0.19, 1, 0.22, 1),
+    opacity 800ms cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.flowButton:hover .circleNonInverted {
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 1;
+}
+
+/* ========================================================
+   Variants: Primary (Dark Theme), Gold, White, Light
+   ======================================================== */
+
+/* Primary Variant (Tailored for Growwezy Dark Luxury Palette) */
+.variantPrimary {
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.variantPrimary .leftArrow,
+.variantPrimary .rightArrow {
+  stroke: #ffffff;
+}
+
+.variantPrimary .circleInverted,
+.variantPrimary .circleNonInverted {
+  background: linear-gradient(135deg, #0e3b7e 0%, #195bb0 100%);
+  box-shadow: 0 0 25px rgba(23, 84, 165, 0.6);
+}
+
+.variantPrimary:hover {
+  border-color: rgba(255, 255, 255, 0.45);
+  border-radius: 12px;
+  color: #ffffff;
+}
+
+.variantPrimary:hover .leftArrow {
+  stroke: #ffffff;
+}
+
+/* Gold Variant */
+.variantGold {
+  border: 1.5px solid rgba(229, 169, 60, 0.8);
+  color: #020713;
+}
+
+.variantGold .leftArrow,
+.variantGold .rightArrow {
+  stroke: #020713;
+}
+
+.variantGold .circleInverted,
+.variantGold .circleNonInverted {
+  background: linear-gradient(135deg, #c78d2b 0%, #e5a93c 100%);
+}
+
+.variantGold:hover {
+  border-color: #e5a93c;
+  border-radius: 12px;
+  color: #f6c466;
+}
+
+.variantGold:hover .leftArrow {
+  stroke: #f6c466;
+}
+
+/* White Variant (e.g. inside Final CTA card or pre-footer) */
+.variantWhite {
+  border: 1.5px solid #ffffff;
+  color: #020713;
+}
+
+.variantWhite .leftArrow,
+.variantWhite .rightArrow {
+  stroke: #020713;
+}
+
+.variantWhite .circleInverted,
+.variantWhite .circleNonInverted {
+  background-color: #ffffff;
+}
+
+.variantWhite:hover {
+  border-color: #ffffff;
+  border-radius: 12px;
+  color: #ffffff;
+}
+
+.variantWhite:hover .leftArrow {
+  stroke: #ffffff;
+}
+
+/* Light Variant (Original Component Specification for Light Backgrounds) */
+.variantLight {
+  border: 1.5px solid #111111;
+  color: #ffffff;
+}
+
+.variantLight .leftArrow,
+.variantLight .rightArrow {
+  stroke: #ffffff;
+}
+
+.variantLight .circleInverted,
+.variantLight .circleNonInverted {
+  background-color: #111111;
+}
+
+.variantLight:hover {
+  border-color: rgba(51, 51, 51, 0.4);
+  border-radius: 12px;
+  color: #111111;
+}
+
+.variantLight:hover .leftArrow {
+  stroke: #111111;
+}

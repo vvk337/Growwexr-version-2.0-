@@ -1,0 +1,224 @@
+.detailSection {
+  background-color: var(--color-white);
+}
+
+.backNav {
+  margin-bottom: 36px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--color-electric-blue);
+  transform: translateX(-3px);
+}
+
+.contentLayout {
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+
+@media (min-width: 1024px) {
+  .contentLayout {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 64px;
+    align-items: flex-start;
+  }
+}
+
+.mainCol {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+
+.leadHeading {
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-weight: 500;
+  color: var(--color-navy);
+  margin-bottom: 16px;
+}
+
+.leadText {
+  font-size: 16.5px;
+  line-height: 1.65;
+  color: var(--text-main);
+}
+
+.subHeading {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-navy);
+  margin-bottom: 16px;
+}
+
+.infoCard {
+  background-color: var(--color-pale-ice);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 28px;
+}
+
+.cardBody {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+.topicsGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 14px;
+}
+
+@media (min-width: 640px) {
+  .topicsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.topicCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-pale-ice);
+  border: 1px solid var(--border-light);
+  font-size: 14.5px;
+  color: var(--text-main);
+  line-height: 1.45;
+}
+
+.topicIcon {
+  color: var(--color-electric-blue);
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.deliverablesList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.deliverableItem {
+  position: relative;
+  padding-left: 20px;
+  font-size: 15px;
+  color: var(--text-main);
+  line-height: 1.5;
+}
+
+.deliverableItem::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--color-teal);
+  font-weight: bold;
+}
+
+/* Service FAQ */
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.faqItem {
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 20px 24px;
+  background-color: var(--color-white);
+}
+
+.faqQuestion {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.faqQuestion h4 {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+.faqIcon {
+  color: var(--color-electric-blue);
+  flex-shrink: 0;
+}
+
+.faqAnswer {
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-muted);
+  padding-left: 28px;
+}
+
+/* Sidebar Sticky */
+.sidebarCol {
+  width: 100%;
+}
+
+.stickyCard {
+  position: sticky;
+  top: 100px;
+  background-color: var(--color-pale-ice);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+
+.sidebarImg {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.sidebarBody {
+  padding: 28px;
+}
+
+.sidebarOverline {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-electric-blue);
+  display: block;
+  margin-bottom: 6px;
+}
+
+.sidebarTitle {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-navy);
+  margin-bottom: 10px;
+}
+
+.sidebarText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.fullWidthBtn {
+  width: 100%;
+  justify-content: center;
+}
+

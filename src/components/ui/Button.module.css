@@ -1,0 +1,132 @@
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-family: var(--font-family);
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--radius-button);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  min-height: 46px;
+  padding: 6px 6px 6px 18px;
+  border: 1px solid transparent;
+  user-select: none;
+  white-space: nowrap;
+}
+
+.label {
+  font-size: 14px;
+  letter-spacing: -0.01em;
+}
+
+/* Arrow Tile */
+.arrowBox {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast);
+  flex-shrink: 0;
+}
+
+.arrowIcon {
+  transition: transform var(--transition-fast);
+}
+
+.button:hover .arrowIcon,
+.button:focus-visible .arrowIcon {
+  transform: translate(2px, -2px);
+}
+
+/* Variants */
+.primary {
+  background-color: var(--color-electric-blue);
+  color: var(--color-white);
+}
+
+.primary:hover {
+  background-color: var(--color-electric-blue-hover);
+}
+
+.primary .arrowBox {
+  background-color: var(--color-white);
+  color: var(--color-electric-blue);
+}
+
+.white {
+  background-color: var(--color-white);
+  color: var(--color-navy);
+}
+
+.white:hover {
+  background-color: #f7faff;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+.white .arrowBox {
+  background-color: var(--color-navy);
+  color: var(--color-white);
+}
+
+.outline {
+  background-color: transparent;
+  color: var(--color-white);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.outline:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.35);
+}
+
+.outline .arrowBox {
+  background-color: rgba(255, 255, 255, 0.15);
+  color: var(--color-white);
+}
+
+.ghost {
+  background: transparent;
+  color: var(--color-electric-blue);
+  padding: 6px 10px;
+}
+
+.ghost .arrowBox {
+  background: rgba(7, 90, 247, 0.1);
+  color: var(--color-electric-blue);
+}
+
+/* Sizes */
+.sm {
+  min-height: 38px;
+  padding: 4px 4px 4px 14px;
+}
+.sm .label {
+  font-size: 13px;
+}
+.sm .arrowBox {
+  width: 28px;
+  height: 28px;
+}
+
+.lg {
+  min-height: 52px;
+  padding: 8px 8px 8px 24px;
+}
+.lg .label {
+  font-size: 16px;
+}
+.lg .arrowBox {
+  width: 36px;
+  height: 36px;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+

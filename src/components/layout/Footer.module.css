@@ -1,0 +1,198 @@
+.footer {
+  background-color: var(--color-navy);
+  color: var(--text-light);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Pre-Footer */
+.preFooter {
+  background: linear-gradient(180deg, rgba(7, 90, 247, 0.12) 0%, rgba(2, 7, 19, 0.25) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 60px 0;
+}
+
+.preFooterInner {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (min-width: 900px) {
+  .preFooterInner {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.preFooterText {
+  max-width: 650px;
+}
+
+.preFooterOverline {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-teal);
+  margin-bottom: 8px;
+}
+
+.preFooterHeading {
+  font-size: clamp(1.75rem, 3.2vw, 2.5rem);
+  font-weight: 400;
+  color: var(--color-white);
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+
+.preFooterDesc {
+  font-size: 15px;
+  color: var(--text-light-muted);
+  line-height: 1.5;
+}
+
+.preFooterAction {
+  flex-shrink: 0;
+}
+
+/* Main Footer */
+.mainFooter {
+  padding-top: 70px;
+  padding-bottom: 40px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+@media (min-width: 640px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: 1.8fr 1fr 1fr 1fr;
+    gap: 48px;
+  }
+}
+
+.brandCol {
+  max-width: 380px;
+}
+
+.footerLogoLink {
+  display: inline-block;
+  margin-bottom: 16px;
+}
+
+.footerLogo {
+  height: 38px;
+  width: auto;
+}
+
+.brandBio {
+  font-size: 14px;
+  color: var(--text-light-muted);
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.contactBrief {
+  font-size: 13.5px;
+  color: var(--text-light-subtle);
+  line-height: 1.7;
+}
+
+.contactBrief a {
+  color: var(--color-teal);
+}
+
+.contactBrief a:hover {
+  text-decoration: underline;
+}
+
+.colTitle {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-white);
+  margin-bottom: 20px;
+}
+
+.linkList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linkList a {
+  font-size: 14px;
+  color: var(--text-light-muted);
+  transition: color var(--transition-fast), transform var(--transition-fast);
+  display: inline-block;
+}
+
+.linkList a:hover {
+  color: var(--color-white);
+  transform: translateX(2px);
+}
+
+.mutedFocus {
+  font-size: 14px;
+  color: var(--text-light-subtle);
+}
+
+/* Risk notice */
+.riskNotice {
+  padding: 24px;
+  background-color: rgba(2, 7, 19, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-light-subtle);
+  margin-bottom: 32px;
+}
+
+.riskNotice strong {
+  color: var(--text-light-muted);
+}
+
+/* Bottom Bar */
+.bottomBar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 13px;
+  color: var(--text-light-subtle);
+}
+
+@media (min-width: 768px) {
+  .bottomBar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.legalLinks {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dot {
+  opacity: 0.4;
+}
+
