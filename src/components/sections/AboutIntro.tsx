@@ -7,7 +7,10 @@ import styles from './AboutIntro.module.css';
 export const AboutIntro: React.FC = () => {
   return (
     <section className={`section section-ice ${styles.aboutSection}`} aria-labelledby="about-intro-title">
-      <div className="container">
+      {/* Sunrise Style Color Bleeding Horizon (fading from dark hero into pale ice) */}
+      <div className={styles.sunriseBleed} aria-hidden="true" />
+
+      <div className={`container ${styles.contentContainer}`}>
         {/* Asymmetrical Top Layout */}
         <AnimateIn animation="default">
           <div className={styles.introHeader}>

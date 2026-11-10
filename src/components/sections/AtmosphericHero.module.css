@@ -8,7 +8,7 @@
   color: var(--color-white);
   overflow: hidden;
   padding-top: clamp(100px, 14vh, 140px);
-  padding-bottom: 24px;
+  padding-bottom: 0;
 }
 
 @media (min-width: 1024px) {

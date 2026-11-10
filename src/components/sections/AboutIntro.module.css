@@ -2,6 +2,43 @@
   background-color: var(--color-pale-ice);
   overflow: hidden;
   position: relative;
+  padding-top: clamp(84px, 10vw, 130px);
+}
+
+/* Sunrise Style Color Bleeding Horizon */
+.sunriseBleed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: clamp(280px, 34vw, 420px);
+  pointer-events: none;
+  z-index: 0;
+  background:
+    /* Solar Crest: Luminous Golden Amber Core */
+    radial-gradient(ellipse 65% 48% at 50% 0%, rgba(255, 210, 135, 0.85) 0%, rgba(255, 128, 80, 0.6) 28%, rgba(185, 45, 85, 0.35) 55%, transparent 80%),
+    /* Broad Atmospheric Rose & Coral Horizon Bloom */
+    radial-gradient(ellipse 95% 65% at 50% 0%, rgba(245, 130, 80, 0.45) 0%, rgba(195, 55, 90, 0.3) 35%, rgba(45, 20, 60, 0.15) 65%, transparent 90%),
+    /* Base Sunrise Linear Fade: from #020713 (hero) down to #f0f7fc (pale ice) */
+    linear-gradient(
+      180deg,
+      #020713 0%,
+      #07122c 5%,
+      #151940 12%,
+      #2f1b46 22%,
+      #62244b 34%,
+      #9e394b 46%,
+      #d4634f 58%,
+      #ee9365 70%,
+      #f8c58b 80%,
+      #fdf0dc 90%,
+      #f0f7fc 100%
+    );
+}
+
+.contentContainer {
+  position: relative;
+  z-index: 1;
 }
 
 .introHeader {
