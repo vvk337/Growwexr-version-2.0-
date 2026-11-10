@@ -1,10 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './StaticAsciiHorizon.module.css';
 
-interface StaticAsciiHorizonProps {
+export interface StaticAsciiHorizonProps {
   className?: string;
   cellSize?: number;
   density?: number;
+  currencies?: string[];
 }
 
 // Pseudo-random 2D hash to create deterministic organic variation (identical to shader noise)
@@ -13,10 +14,17 @@ function hash2D(x: number, y: number): number {
   return n - Math.floor(n);
 }
 
+// Global world currencies mapping across luminance tiers
+const DEFAULT_DENSE = ['$', '€', '£', '₹', '¥', '₩', '₿'];
+const DEFAULT_MID = ['$', '€', '£', '¥', '₹', '₩'];
+const DEFAULT_LIGHT = ['¥', '£', '¢', '₣', '$', '€'];
+const DEFAULT_SPARSE = ['¢', '·', '¤', '¥'];
+
 export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
   className = '',
   cellSize = 18,
-  density = 0.8
+  density = 0.8,
+  currencies
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -51,10 +59,11 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
       const cols = Math.ceil(width / cellW);
       const rows = Math.ceil(height / cellH);
 
-      const chars = [' ', ' ', '=', '+', 'x', 'X', '0', 'S', '8', '#', '@'];
-      const maxCharIdx = chars.length - 1;
+      const densePool = currencies && currencies.length ? currencies : DEFAULT_DENSE;
+      const midPool = currencies && currencies.length ? currencies : DEFAULT_MID;
+      const lightPool = currencies && currencies.length ? currencies : DEFAULT_LIGHT;
+      const sparsePool = currencies && currencies.length ? currencies : DEFAULT_SPARSE;
 
-      ctx.font = `600 ${Math.round(cellSize * 0.82)}px "Geist Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
 
@@ -98,11 +107,31 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
           const presence = noiseVal < density * (0.35 + lum * 0.95);
           if (!presence || lum < 0.05) continue;
 
-          // Select character
+          // Select currency symbol based on tone & deterministic hash
           const wobble = (hash2D(c * 2.31, r * 1.73) - 0.5) * 0.15;
           const tone = Math.min(Math.max(Math.pow(lum, 0.8) + wobble, 0), 1);
-          const charIndex = Math.min(Math.max(Math.floor(tone * maxCharIdx + 0.5), 1), maxCharIdx);
-          const char = chars[charIndex];
+
+          const symbolPick = hash2D(c * 5.17 + 13.7, r * 7.43 + 29.1);
+          let char: string;
+
+          if (tone > 0.65) {
+            // Peak horizon glow: dense world currencies (replaces #, @, 8)
+            char = densePool[Math.floor(symbolPick * densePool.length)];
+          } else if (tone > 0.38) {
+            // Mid-high glow: core currencies (replaces X, 0, S)
+            char = midPool[Math.floor(symbolPick * midPool.length)];
+          } else if (tone > 0.18) {
+            // Low-mid field: light currency glyphs (replaces x, +)
+            char = lightPool[Math.floor(symbolPick * lightPool.length)];
+          } else {
+            // Dissolves & upper periphery (replaces =, .)
+            char = sparsePool[Math.floor(symbolPick * sparsePool.length)];
+          }
+
+          // Dynamic font sizing & weight matching the original ASCII density
+          const fontSize = Math.round(cellSize * (tone > 0.65 ? 0.88 : 0.80));
+          const fontWeight = tone > 0.65 ? '700' : '600';
+          ctx.font = `${fontWeight} ${fontSize}px "Geist Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Segoe UI Symbol", monospace`;
 
           // Color palette based on intensity
           // High intensity (near bottom seam): white/ice
@@ -153,7 +182,7 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', handleResize);
     };
-  }, [cellSize, density]);
+  }, [cellSize, density, currencies]);
 
   return (
     <div ref={containerRef} className={`${styles.staticAsciiContainer} ${className}`} aria-hidden="true">
@@ -164,3 +193,4 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
 };
 
 export default StaticAsciiHorizon;
+
