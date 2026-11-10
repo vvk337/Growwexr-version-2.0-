@@ -1,0 +1,82 @@
+.wireframeContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.wireframeSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Subtle, organic floating drift animations */
+.driftPrimary {
+  animation: driftPrimary 26s ease-in-out infinite alternate;
+  transform-origin: 860px 430px;
+}
+
+.driftSecondary {
+  animation: driftSecondary 30s ease-in-out infinite alternate;
+  transform-origin: 1090px 400px;
+}
+
+.driftTertiary {
+  animation: driftTertiary 28s ease-in-out infinite alternate;
+  transform-origin: 1390px 270px;
+}
+
+.driftSlow {
+  animation: driftSlow 34s ease-in-out infinite alternate;
+  transform-origin: 520px 500px;
+}
+
+@keyframes driftPrimary {
+  0% {
+    transform: translate(860px, 430px) rotate(16deg) skewY(12deg);
+  }
+  100% {
+    transform: translate(848px, 442px) rotate(17.2deg) skewY(12.5deg);
+  }
+}
+
+@keyframes driftSecondary {
+  0% {
+    transform: translate(1090px, 400px) rotate(-32deg) skewX(-14deg);
+  }
+  100% {
+    transform: translate(1104px, 390px) rotate(-31deg) skewX(-13.5deg);
+  }
+}
+
+@keyframes driftTertiary {
+  0% {
+    transform: translate(1390px, 270px) rotate(-36deg) skewX(-10deg);
+  }
+  100% {
+    transform: translate(1378px, 280px) rotate(-35deg) skewX(-9.5deg);
+  }
+}
+
+@keyframes driftSlow {
+  0% {
+    transform: translate(520px, 500px) rotate(14deg) skewY(10deg);
+  }
+  100% {
+    transform: translate(530px, 492px) rotate(14.8deg) skewY(10.5deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .driftPrimary,
+  .driftSecondary,
+  .driftTertiary,
+  .driftSlow {
+    animation: none !important;
+  }
+}

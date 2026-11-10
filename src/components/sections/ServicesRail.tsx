@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { servicesData } from '../../content/services';
 import { AnimateIn } from '../ui/AnimateIn';
+import { GeometricWireframeBackground } from '../ui/GeometricWireframeBackground';
 import styles from './ServicesRail.module.css';
 
 // Include the 2 confirmed services + 2 dedicated capability topics under those services
@@ -55,8 +56,11 @@ export const ServicesRail: React.FC = () => {
   };
 
   return (
-    <section className={`section section-white ${styles.servicesSection}`} aria-labelledby="services-heading">
-      <div className="container">
+    <section className={`section ${styles.servicesSection}`} aria-labelledby="services-heading">
+      {/* Dynamic Geometric Wireframe Ribbon Background (inspired by user design) */}
+      <GeometricWireframeBackground />
+
+      <div className={`container ${styles.contentContainer}`}>
         {/* Header with Title & Controls */}
         <AnimateIn animation="default">
           <div className={styles.sectionHeader}>
