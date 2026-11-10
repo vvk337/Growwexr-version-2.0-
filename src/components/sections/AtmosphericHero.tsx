@@ -61,10 +61,11 @@ export const AtmosphericHero: React.FC = () => {
             </div>
           </div>
         </div>
+      </div>
 
-        {/* Bottom Category Ticker */}
-        <div className={styles.categoryTicker} aria-hidden="true">
-          <div className={styles.tickerTrack}>
+      {/* Bottom Category Ticker */}
+      <div className={styles.categoryTicker} aria-hidden="true">
+        <div className={styles.tickerTrack}>
             <span>Forex Trading Advisory</span>
             <span className={styles.tickerDot}>•</span>
             <span>Global Macro Research</span>
@@ -88,7 +89,6 @@ export const AtmosphericHero: React.FC = () => {
             <span className={styles.tickerDot}>•</span>
           </div>
         </div>
-      </div>
     </section>
   );
 };
