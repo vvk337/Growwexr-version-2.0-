@@ -1,45 +1,21 @@
 .aboutSection {
-  background-color: var(--color-pale-ice);
+  background: linear-gradient(
+    180deg,
+    #010713 0%,
+    #041026 8%,
+    #0a1d40 18%,
+    #133162 30%,
+    #224b86 42%,
+    #406fa9 55%,
+    #6d97c7 68%,
+    #9ec0e2 80%,
+    #cadff0 90%,
+    #e9f2f9 96%,
+    #F0F7FC 100%
+  );
   overflow: hidden;
   position: relative;
-  padding-top: clamp(84px, 10vw, 130px);
-}
-
-/* Sunrise Style Color Bleeding Horizon (Cyan/Teal/Electric Blue matching Hero) */
-.sunriseBleed {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: clamp(280px, 34vw, 420px);
-  pointer-events: none;
-  z-index: 0;
-  background:
-    /* Luminous Teal & Cyan Ambient Core */
-    radial-gradient(ellipse 65% 50% at 50% 0%, rgba(25, 203, 208, 0.6) 0%, rgba(7, 90, 247, 0.4) 30%, rgba(11, 24, 60, 0.18) 60%, transparent 80%),
-    /* Broad Atmospheric Electric Blue Halo */
-    radial-gradient(ellipse 92% 65% at 50% 0%, rgba(7, 90, 247, 0.35) 0%, rgba(25, 203, 208, 0.22) 40%, transparent 75%),
-    /* Base Horizon Linear Fade: #020713 (hero) -> Electric Blue -> Teal -> Glacier Ice -> #f0f7fc */
-    linear-gradient(
-      180deg,
-      #020713 0%,
-      #05122a 8%,
-      #091d45 18%,
-      #0e2f69 30%,
-      #074ec4 42%,
-      #075af7 54%,
-      #1487b8 65%,
-      #19cbd0 76%,
-      #6fe0e4 85%,
-      #bdeef0 92%,
-      #e2f7f9 96%,
-      #f0f7fc 100%
-    );
-}
-
-.contentContainer {
-  position: relative;
-  z-index: 1;
+  padding-top: clamp(80px, 10vw, 120px);
 }
 
 .introHeader {
@@ -62,6 +38,12 @@
   width: 220px;
 }
 
+.labelCol :global(.section-overline) {
+  color: var(--color-teal);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+}
+
 .statementCol {
   max-width: 780px;
 }
@@ -69,8 +51,8 @@
 .statementHeading {
   font-size: clamp(1.85rem, 3.6vw, 3rem);
   font-weight: 400;
-  line-height: 1.15;
-  color: var(--color-navy);
+  line-height: 1.18;
+  color: var(--color-white);
   letter-spacing: -0.025em;
   margin-bottom: 20px;
 }
@@ -85,12 +67,12 @@
   gap: 8px;
   font-size: 14.5px;
   font-weight: 500;
-  color: var(--color-electric-blue);
+  color: var(--color-teal);
   transition: gap var(--transition-fast), color var(--transition-fast);
 }
 
 .aboutLink:hover {
-  color: var(--color-electric-blue-hover);
+  color: var(--color-white);
   gap: 12px;
 }
 
