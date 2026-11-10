@@ -128,34 +128,30 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
             char = sparsePool[Math.floor(symbolPick * sparsePool.length)];
           }
 
-          // Dynamic font sizing & weight matching the original ASCII density
-          const fontSize = Math.round(cellSize * (tone > 0.65 ? 0.88 : 0.80));
+          // Dynamic font sizing & weight — reduced by 15% across the board
+          const fontSize = Math.round(cellSize * (tone > 0.65 ? 0.75 : 0.68));
           const fontWeight = tone > 0.65 ? '700' : '600';
           ctx.font = `${fontWeight} ${fontSize}px "Geist Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Segoe UI Symbol", monospace`;
 
-          // Color palette based on intensity
-          // High intensity (near bottom seam): white/ice
-          // Medium-high: bright cyan / sky blue
-          // Medium: rich royal blue
-          // Low: subtle deep navy blue
+          // Color palette based on intensity — alphas reduced to feel more recessed/atmospheric
           let fill: string;
           let alpha: number;
 
           if (tone > 0.82) {
             fill = '#f6f8ff';
-            alpha = 0.92;
+            alpha = 0.52;
           } else if (tone > 0.62) {
             fill = '#a5d8ff';
-            alpha = 0.85;
+            alpha = 0.42;
           } else if (tone > 0.40) {
             fill = '#38bdf8';
-            alpha = 0.78;
+            alpha = 0.34;
           } else if (tone > 0.22) {
             fill = '#1e3fd8';
-            alpha = 0.65;
+            alpha = 0.26;
           } else {
             fill = '#1c3b7a';
-            alpha = 0.45;
+            alpha = 0.18;
           }
 
           ctx.fillStyle = fill;
