@@ -5,6 +5,19 @@
   color: var(--color-white);
 }
 
+/* Bottom feather — dissolves ServicesRail texture into plain navy before ValuesSection begins */
+.servicesSection::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 120px;
+  background: linear-gradient(to bottom, transparent 0%, var(--color-navy) 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 .contentContainer {
   position: relative;
   z-index: 1;

@@ -5,6 +5,19 @@
   overflow: hidden;
 }
 
+/* Top feather — dissolves ValuesSection background in from plain navy, matching ServicesRail exit */
+.valuesSection::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 140px;
+  background: linear-gradient(to bottom, var(--color-navy) 0%, transparent 100%);
+  z-index: 2;
+  pointer-events: none;
+}
+
 /* Gradient ASCII Interactive Canvas Background */
 .asciiBackground {
   position: absolute;
