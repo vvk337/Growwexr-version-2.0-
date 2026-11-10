@@ -9,6 +9,95 @@
   z-index: 1;
 }
 
+/* Interactive Background Variant Switcher */
+.variantBar {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 5;
+}
+
+.variantBarPill {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  background: rgba(8, 20, 48, 0.8);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--radius-pill);
+  padding: 8px 16px;
+  box-shadow: 0 12px 32px rgba(2, 7, 19, 0.25), 0 0 20px rgba(7, 90, 247, 0.12);
+}
+
+@media (min-width: 840px) {
+  .variantBarPill {
+    flex-direction: row;
+    padding: 6px 14px;
+  }
+}
+
+.variantBarHeader {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding-left: 6px;
+  padding-right: 6px;
+}
+
+.variantSparkle {
+  color: var(--color-teal);
+}
+
+.variantBarLabel {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-teal);
+  white-space: nowrap;
+}
+
+.variantOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+}
+
+.variantBtn {
+  font-size: 12px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.variantBtn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: var(--color-white);
+  border-color: rgba(25, 203, 208, 0.4);
+}
+
+.variantBtnActive {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--color-white);
+  background: var(--color-electric-blue);
+  border: 1px solid rgba(25, 203, 208, 0.5);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  box-shadow: 0 4px 14px rgba(7, 90, 247, 0.45);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .sectionHeader {
   display: flex;
   flex-direction: column;

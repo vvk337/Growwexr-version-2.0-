@@ -1,9 +1,14 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowUpRight, Sparkles } from 'lucide-react';
 import { servicesData } from '../../content/services';
 import { AnimateIn } from '../ui/AnimateIn';
-import { GeometricWireframeBackground } from '../ui/GeometricWireframeBackground';
+import {
+  BlueprintBackground,
+  TopoContourBackground,
+  WatermarkLedgerBackground,
+  GlassGrainBackground
+} from '../ui/CapabilitiesBackgrounds';
 import styles from './ServicesRail.module.css';
 
 // Include the 2 confirmed services + 2 dedicated capability topics under those services
@@ -44,6 +49,7 @@ const serviceCards = [
 
 export const ServicesRail: React.FC = () => {
   const railRef = useRef<HTMLDivElement>(null);
+  const [bgVariant, setBgVariant] = useState<'blueprint' | 'topo' | 'ledger' | 'glass'>('blueprint');
 
   const scroll = (direction: 'left' | 'right') => {
     if (railRef.current) {
@@ -57,10 +63,53 @@ export const ServicesRail: React.FC = () => {
 
   return (
     <section className={`section ${styles.servicesSection}`} aria-labelledby="services-heading">
-      {/* Dynamic Geometric Wireframe Ribbon Background (inspired by user design) */}
-      <GeometricWireframeBackground />
+      {/* Background Variant Selection */}
+      {bgVariant === 'blueprint' && <BlueprintBackground />}
+      {bgVariant === 'topo' && <TopoContourBackground />}
+      {bgVariant === 'ledger' && <WatermarkLedgerBackground />}
+      {bgVariant === 'glass' && <GlassGrainBackground />}
 
       <div className={`container ${styles.contentContainer}`}>
+        {/* Interactive Background Style Switcher */}
+        <div className={styles.variantBar} aria-label="Background design selector">
+          <div className={styles.variantBarPill}>
+            <div className={styles.variantBarHeader}>
+              <Sparkles size={14} className={styles.variantSparkle} />
+              <span className={styles.variantBarLabel}>Select Background Style:</span>
+            </div>
+            <div className={styles.variantOptions}>
+              <button
+                type="button"
+                className={bgVariant === 'blueprint' ? styles.variantBtnActive : styles.variantBtn}
+                onClick={() => setBgVariant('blueprint')}
+              >
+                1. Blueprint & Crosshairs
+              </button>
+              <button
+                type="button"
+                className={bgVariant === 'topo' ? styles.variantBtnActive : styles.variantBtn}
+                onClick={() => setBgVariant('topo')}
+              >
+                2. Topo Contours
+              </button>
+              <button
+                type="button"
+                className={bgVariant === 'ledger' ? styles.variantBtnActive : styles.variantBtn}
+                onClick={() => setBgVariant('ledger')}
+              >
+                3. Watermark Ledger
+              </button>
+              <button
+                type="button"
+                className={bgVariant === 'glass' ? styles.variantBtnActive : styles.variantBtn}
+                onClick={() => setBgVariant('glass')}
+              >
+                4. Glass & Grain
+              </button>
+            </div>
+          </div>
+        </div>
+
         {/* Header with Title & Controls */}
         <AnimateIn animation="default">
           <div className={styles.sectionHeader}>
