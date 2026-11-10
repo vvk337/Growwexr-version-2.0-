@@ -1,0 +1,35 @@
+.staticAsciiContainer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  background-color: var(--color-navy);
+}
+
+.staticCanvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Atmospheric glow layer matching the optical bloom of the animated horizon */
+.ambientGlow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 90% 60% at 50% 100%,
+    rgba(56, 189, 248, 0.22) 0%,
+    rgba(30, 63, 216, 0.25) 35%,
+    rgba(11, 24, 54, 0.6) 70%,
+    transparent 100%
+  );
+  mix-blend-mode: screen;
+  opacity: 0.85;
+}

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { servicesData } from '../../content/services';
 import { AnimateIn } from '../ui/AnimateIn';
-import { GradientASCII } from '../ui/GradientASCII';
+import { StaticAsciiHorizon } from '../ui/StaticAsciiHorizon';
 import styles from './ServicesRail.module.css';
 
 // Include the 2 confirmed services + 2 dedicated capability topics under those services
@@ -57,16 +57,8 @@ export const ServicesRail: React.FC = () => {
 
   return (
     <section className={`section section-navy ${styles.servicesSection}`} aria-labelledby="services-heading">
-      {/* Dynamic Gradient ASCII Background (Upside down to bookmark-match ValuesSection below) */}
-      <div className={styles.invertedAsciiBackground} aria-hidden="true">
-        <GradientASCII
-          colors={['#1e3fd8', '#f6f8ff', '#a5d8ff', '#38bdf8']}
-          shape="horizon"
-          characters=" =+xX0S8#@"
-          cellSize={18}
-          density={0.8}
-        />
-      </div>
+      {/* Static ASCII Horizon Background (Zero GPU/CPU continuous load, bookmark-matched with Values section) */}
+      <StaticAsciiHorizon cellSize={18} density={0.8} />
 
       <div className={`container ${styles.contentContainer}`}>
         {/* Header with Title & Controls */}
