@@ -5,6 +5,23 @@
   overflow: hidden;
 }
 
+/* Gradient ASCII Interactive Canvas Background */
+.asciiBackground {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.75;
+}
+
+.contentContainer {
+  position: relative;
+  z-index: 1;
+}
+
 .sectionHeader {
   text-align: center;
   max-width: 680px;

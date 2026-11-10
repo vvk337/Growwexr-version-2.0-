@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Compass, Eye, Shield, BookOpen } from 'lucide-react';
 import { valuesData, valuesCenterImage } from '../../content/values';
 import { AnimateIn } from '../ui/AnimateIn';
+import { GradientASCII } from '../ui/GradientASCII';
 import styles from './ValuesSection.module.css';
 
 const iconMap = {
@@ -97,7 +98,18 @@ export const ValuesSection: React.FC = () => {
 
   return (
     <section className={`section section-navy ${styles.valuesSection}`} aria-labelledby="values-heading">
-      <div className="container">
+      {/* Dynamic Gradient ASCII Background Canvas */}
+      <div className={styles.asciiBackground} aria-hidden="true">
+        <GradientASCII
+          colors={['#1e3fd8', '#f6f8ff', '#a5d8ff', '#38bdf8']}
+          shape="horizon"
+          characters=" =+xX0S8#@"
+          cellSize={18}
+          density={0.8}
+        />
+      </div>
+
+      <div className={`container ${styles.contentContainer}`}>
         {/* Section Heading */}
         <AnimateIn animation="default">
           <div className={styles.sectionHeader}>
