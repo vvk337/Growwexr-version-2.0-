@@ -17,6 +17,7 @@
   overflow: hidden;
   position: relative;
   padding-top: clamp(80px, 10vw, 120px);
+  padding-bottom: 12px;
 }
 
 .introHeader {
@@ -222,11 +223,16 @@
 
 /* Word Marquee */
 .wordMarquee {
-  margin-top: 70px;
+  margin-top: 56px;
+  margin-left: 12px;
+  margin-right: 12px;
+  width: calc(100% - 24px);
   overflow: hidden;
   white-space: nowrap;
   opacity: 0.18;
   user-select: none;
+  mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, black 16px, black calc(100% - 16px), transparent);
 }
 
 .marqueeTrack {
@@ -239,6 +245,7 @@
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-navy);
+  line-height: 1;
 }
 
 @keyframes wordSlide {
