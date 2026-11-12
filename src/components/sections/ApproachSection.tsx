@@ -7,19 +7,9 @@ import styles from './ApproachSection.module.css';
 export const ApproachSection: React.FC = () => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
   const [indicatorStyle, setIndicatorStyle] = useState<{ top: number; height: number }>({ top: 0, height: 0 });
-  const sectionRef = useRef<HTMLElement>(null);
   const stepButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
-  const activeStepRef = useRef(0);
-  activeStepRef.current = activeStepIndex;
 
-  const completedRef = useRef(false);
-  const isGestureLockedRef = useRef(false);
-  const gestureTimerRef = useRef<number | null>(null);
-  const lastStepTimeRef = useRef(0);
-  const hasPositionedRef = useRef(false);
-  const readyToUnlockOnNextGestureRef = useRef(false);
-
-  // Synchronize the sliding blue background indicator position and height
+  // Synchronize the sliding blue background indicator position and height with the active step
   const updateIndicator = () => {
     const el = stepButtonRefs.current[activeStepIndex];
     if (el) {
@@ -45,178 +35,10 @@ export const ApproachSection: React.FC = () => {
     };
   }, [activeStepIndex]);
 
-  useEffect(() => {
-    // Check if user has already scrolled past this section on mount
-    const section = sectionRef.current;
-    if (section) {
-      const rect = section.getBoundingClientRect();
-      if (rect.top < -100) {
-        completedRef.current = true;
-        setActiveStepIndex(approachSteps.length - 1);
-        activeStepRef.current = approachSteps.length - 1;
-      }
-    }
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      completedRef.current = true;
-      return;
-    }
-
-    const handleWheel = (e: WheelEvent) => {
-      // Only apply on desktop view (where 3-step switcher layout is active)
-      if (window.innerWidth < 1024) return;
-
-      // If all steps have been presented and unlocked, normal scrolling proceeds freely
-      if (completedRef.current) return;
-
-      const targetTop = 52; // 1/4 inch below 76px navbar
-
-      // NEVER intercept reverse (upward) scrolling - user is completely free to scroll back up
-      if (e.deltaY <= 0) {
-        const sec = sectionRef.current;
-        if (sec) {
-          const r = sec.getBoundingClientRect();
-          if (r.top > targetTop + 35) {
-            hasPositionedRef.current = false;
-            isGestureLockedRef.current = false;
-          }
-        }
-        return;
-      }
-
-      const sec = sectionRef.current;
-      if (!sec) return;
-
-      const rect = sec.getBoundingClientRect();
-      const vh = window.innerHeight;
-
-      // If user has already scrolled past the section via scrollbar or anchor, unlock
-      if (rect.top < -140) {
-        completedRef.current = true;
-        return;
-      }
-
-      // Check if section has reached the lock zone
-      if (rect.top <= targetTop + 8 && rect.bottom >= vh * 0.55) {
-        // Intercept downward scroll
-        e.preventDefault();
-
-        // 1. Smoothly snap the page ONCE when entering the lock zone to eliminate vibration
-        if (!hasPositionedRef.current) {
-          hasPositionedRef.current = true;
-          isGestureLockedRef.current = true;
-          lastStepTimeRef.current = performance.now();
-
-          // Calculate exact document scroll position where section top lands at targetTop
-          const secTopInDoc = window.scrollY + rect.top;
-          const targetScrollY = Math.round(secTopInDoc - targetTop);
-
-          window.scrollTo({
-            top: targetScrollY,
-            behavior: 'smooth'
-          });
-          return;
-        }
-
-        // 2. Debounce gesture timer: 220ms of silence indicates the swipe/wheel gesture has ended
-        if (gestureTimerRef.current !== null) {
-          clearTimeout(gestureTimerRef.current);
-        }
-        gestureTimerRef.current = window.setTimeout(() => {
-          isGestureLockedRef.current = false;
-          // If we are on the last step (Step 3) and the gesture has ended,
-          // arm the next gesture to unlock and scroll down the website!
-          if (activeStepRef.current >= approachSteps.length - 1) {
-            readyToUnlockOnNextGestureRef.current = true;
-          }
-        }, 220);
-
-        const now = performance.now();
-
-        // If this gesture already advanced a step or we are in cooldown (450ms),
-        // safely swallow momentum so no extra steps or jumps occur
-        if (isGestureLockedRef.current || now - lastStepTimeRef.current < 450) {
-          return;
-        }
-
-        // If we are already on Step 3 and the previous gesture has ended, unlock!
-        if (readyToUnlockOnNextGestureRef.current && activeStepRef.current >= approachSteps.length - 1) {
-          completedRef.current = true;
-          return;
-        }
-
-        // Advance exactly ONE step smoothly
-        if (activeStepRef.current < approachSteps.length - 1) {
-          isGestureLockedRef.current = true;
-          lastStepTimeRef.current = now;
-
-          const nextIndex = activeStepRef.current + 1;
-          setActiveStepIndex(nextIndex);
-          activeStepRef.current = nextIndex;
-        }
-      }
-    };
-
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (window.innerWidth < 1024) return;
-      if (completedRef.current) return;
-      if (e.key !== 'ArrowDown' && e.key !== 'PageDown') return;
-
-      const sec = sectionRef.current;
-      if (!sec) return;
-
-      const rect = sec.getBoundingClientRect();
-      const vh = window.innerHeight;
-      const targetTop = 52;
-
-      if (rect.top <= targetTop + 8 && rect.bottom >= vh * 0.55) {
-        const now = performance.now();
-        if (now - lastStepTimeRef.current < 450) {
-          e.preventDefault();
-          return;
-        }
-
-        if (activeStepRef.current < approachSteps.length - 1) {
-          e.preventDefault();
-          lastStepTimeRef.current = now;
-          const nextIndex = activeStepRef.current + 1;
-          setActiveStepIndex(nextIndex);
-          activeStepRef.current = nextIndex;
-        } else {
-          completedRef.current = true;
-        }
-      }
-    };
-
-    const handleScroll = () => {
-      if (completedRef.current) return;
-      const sec = sectionRef.current;
-      if (!sec) return;
-      const rect = sec.getBoundingClientRect();
-      if (rect.top < -150) {
-        completedRef.current = true;
-      }
-    };
-
-    window.addEventListener('wheel', handleWheel, { passive: false });
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      if (gestureTimerRef.current !== null) {
-        clearTimeout(gestureTimerRef.current);
-      }
-      window.removeEventListener('wheel', handleWheel);
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
-
   const activeStep = approachSteps[activeStepIndex];
 
   return (
-    <section ref={sectionRef} className={`section section-ice ${styles.approachSection}`} aria-labelledby="approach-heading">
+    <section className={`section section-ice ${styles.approachSection}`} aria-labelledby="approach-heading">
       <div className="container">
         {/* Section Heading */}
         <AnimateIn animation="default">
@@ -253,7 +75,7 @@ export const ApproachSection: React.FC = () => {
               aria-hidden="true"
             />
 
-            {/* 3. Interactive Step Buttons */}
+            {/* 3. Interactive Step Buttons (Click to view each step) */}
             {approachSteps.map((step, idx) => {
               const isActive = idx === activeStepIndex;
               return (
@@ -265,14 +87,7 @@ export const ApproachSection: React.FC = () => {
                   aria-controls={`approach-panel-${step.number}`}
                   id={`approach-tab-${step.number}`}
                   className={`${styles.stepButton} ${isActive ? styles.stepButtonActive : ''}`}
-                  onClick={() => {
-                    setActiveStepIndex(idx);
-                    activeStepRef.current = idx;
-                    if (idx >= approachSteps.length - 1) {
-                      completedRef.current = true;
-                      readyToUnlockOnNextGestureRef.current = true;
-                    }
-                  }}
+                  onClick={() => setActiveStepIndex(idx)}
                 >
                   <span className={styles.stepNumber}>{step.number}</span>
                   <div className={styles.stepBtnText}>
