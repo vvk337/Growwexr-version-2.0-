@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, Eye, MessageSquare, ArrowUpRight } from 'lucide-react';
+import { Compass, Eye, MessageSquare, ArrowRight } from 'lucide-react';
 import { AnimateIn } from '../ui/AnimateIn';
 import styles from './AboutIntro.module.css';
 
@@ -11,9 +11,16 @@ export const AboutIntro: React.FC = () => {
         {/* Asymmetrical Top Layout */}
         <AnimateIn animation="default">
           <div className={styles.introHeader}>
-            <div className={styles.labelCol}>
-              <span className="section-overline">About Growwezy</span>
+            <div className={styles.badgeCol}>
+              <div className={styles.aboutRow}>
+                <span className={styles.aboutLabel}>ABOUT</span>
+                <span className={styles.aboutDash} aria-hidden="true" />
+              </div>
+              <div className={styles.usHeading}>US</div>
             </div>
+
+            <div className={styles.headerDivider} aria-hidden="true" />
+
             <div className={styles.statementCol}>
               <h2 id="about-intro-title" className={styles.statementHeading}>
                 A considered approach to global markets, built around your objectives.
@@ -21,7 +28,7 @@ export const AboutIntro: React.FC = () => {
               <div className={styles.aboutLinkWrap}>
                 <Link to="/about" className={`${styles.aboutLink} arrow-link`}>
                   <span>Learn more about our advisory philosophy</span>
-                  <ArrowUpRight size={16} />
+                  <ArrowRight size={16} />
                 </Link>
               </div>
             </div>
