@@ -1,10 +1,98 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { Compass, Eye, MessageSquare, ArrowRight } from 'lucide-react';
 import { AnimateIn } from '../ui/AnimateIn';
 import styles from './AboutIntro.module.css';
 
 export const AboutIntro: React.FC = () => {
+  const gridRef = useRef<HTMLDivElement | null>(null);
+  const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  useEffect(() => {
+    const grid = gridRef.current;
+    if (!grid) return;
+
+    const cards = cardRefs.current.filter((el): el is HTMLDivElement => el !== null);
+    if (cards.length === 0) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      cards.forEach((card) => {
+        card.style.transform = 'none';
+        card.style.opacity = '1';
+      });
+      return;
+    }
+
+    let rafId: number | null = null;
+
+    const smoothstep = (t: number) => t * t * (3 - 2 * t);
+
+    const updateScrollProgress = () => {
+      const vh = window.innerHeight;
+      const isDesktop = window.innerWidth >= 768;
+      const gridRect = grid.getBoundingClientRect();
+
+      // Base staggered starting translateY offsets for cards rising up as user scrolls down
+      const baseOffsets = isDesktop ? [80, 120, 160] : [60, 60, 60];
+      const delays = isDesktop ? [0, 0.08, 0.16] : [0, 0, 0];
+
+      cards.forEach((card, i) => {
+        // Untransformed card top relative to viewport using gridRect and card offsetTop
+        const untransformedTop = gridRect.top + card.offsetTop;
+
+        // Start when card top reaches 95% of viewport height (entering view)
+        // Reach resting alignment when card top reaches 35% of viewport height
+        const startY = vh * 0.95;
+        const endY = vh * 0.35;
+
+        const rawProgress = Math.min(Math.max((startY - untransformedTop) / (startY - endY), 0), 1);
+        const delay = delays[i] || 0;
+        const t = Math.min(Math.max((rawProgress - delay) / (1 - delay), 0), 1);
+        const eased = smoothstep(t);
+
+        // Cards rise upwards from baseOffset towards 0
+        let translateY = (1 - eased) * baseOffsets[i];
+
+        // Gentle subtle parallax upward float as the user scrolls further down through the section
+        if (rawProgress >= 1) {
+          const extraScroll = endY - untransformedTop;
+          if (extraScroll > 0) {
+            translateY = -Math.min(extraScroll * 0.05, 30);
+          }
+        }
+
+        // Smooth opacity ramp from 0.25 to 1
+        const opacity = 0.25 + 0.75 * eased;
+
+        card.style.transform = `translate3d(0, ${translateY.toFixed(2)}px, 0)`;
+        card.style.opacity = opacity.toFixed(3);
+      });
+    };
+
+    const handleScroll = () => {
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        updateScrollProgress();
+        rafId = null;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    // Initial positioning
+    updateScrollProgress();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+      if (rafId !== null) {
+        cancelAnimationFrame(rafId);
+      }
+    };
+  }, []);
+
   return (
     <section className={`section ${styles.aboutSection}`} aria-labelledby="about-intro-title">
       <div className="container">
@@ -36,10 +124,15 @@ export const AboutIntro: React.FC = () => {
           </div>
         </AnimateIn>
 
-        {/* Three Card Row: 2 text cards + 1 image card */}
-        <div className={styles.cardsGrid}>
+        {/* Three Card Row: 2 text cards + 1 image card with scroll-tied upward motion */}
+        <div className={styles.cardsGrid} ref={gridRef}>
           {/* Card 1: Clear Perspective */}
-          <AnimateIn delay={100} animation="default">
+          <div
+            ref={(el) => {
+              cardRefs.current[0] = el;
+            }}
+            className={styles.scrollCardWrapper}
+          >
             <div className={styles.textCard}>
               <div className={styles.cardIconBox}>
                 <Compass size={22} className={styles.cardIcon} />
@@ -51,10 +144,15 @@ export const AboutIntro: React.FC = () => {
                 </p>
               </div>
             </div>
-          </AnimateIn>
+          </div>
 
           {/* Card 2: Research-Led Thinking */}
-          <AnimateIn delay={200} animation="default">
+          <div
+            ref={(el) => {
+              cardRefs.current[1] = el;
+            }}
+            className={styles.scrollCardWrapper}
+          >
             <div className={styles.textCard}>
               <div className={styles.cardIconBox}>
                 <Eye size={22} className={styles.cardIcon} />
@@ -66,10 +164,15 @@ export const AboutIntro: React.FC = () => {
                 </p>
               </div>
             </div>
-          </AnimateIn>
+          </div>
 
           {/* Card 3: Editorial Image Card */}
-          <AnimateIn delay={300} animation="default">
+          <div
+            ref={(el) => {
+              cardRefs.current[2] = el;
+            }}
+            className={styles.scrollCardWrapper}
+          >
             <div className={styles.imageCard}>
               <img
                 src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=75"
@@ -90,7 +193,7 @@ export const AboutIntro: React.FC = () => {
                 </p>
               </div>
             </div>
-          </AnimateIn>
+          </div>
         </div>
       </div>
 

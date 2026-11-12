@@ -153,6 +153,14 @@
   }
 }
 
+.scrollCardWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  will-change: transform, opacity;
+  transform: translate3d(0, 0, 0);
+}
+
 .textCard {
   background-color: var(--color-white);
   border-radius: var(--radius-card);
@@ -161,6 +169,7 @@
   flex-direction: column;
   justify-content: space-between;
   min-height: 280px;
+  flex: 1;
   border: 1px solid var(--border-light);
   box-shadow: var(--shadow-subtle);
   transition:
@@ -221,6 +230,7 @@
   border-radius: var(--radius-card);
   overflow: hidden;
   min-height: 280px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
