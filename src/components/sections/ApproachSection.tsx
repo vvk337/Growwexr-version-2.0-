@@ -11,8 +11,11 @@ export const ApproachSection: React.FC = () => {
   activeStepRef.current = activeStepIndex;
 
   const completedRef = useRef(false);
-  const isAnimatingRef = useRef(false);
-  const deltaAccumulatorRef = useRef(0);
+  const isGestureLockedRef = useRef(false);
+  const gestureTimerRef = useRef<number | null>(null);
+  const lastStepTimeRef = useRef(0);
+  const hasPositionedRef = useRef(false);
+  const readyToUnlockOnNextGestureRef = useRef(false);
 
   useEffect(() => {
     // Check if user has already scrolled past this section on mount
@@ -36,12 +39,13 @@ export const ApproachSection: React.FC = () => {
       // Only apply on desktop view (where 3-step switcher layout is active)
       if (window.innerWidth < 1024) return;
 
-      // If all steps have been presented, let normal scrolling proceed in both directions
+      // If all steps have been presented and unlocked, normal scrolling proceeds freely
       if (completedRef.current) return;
 
       // NEVER intercept reverse (upward) scrolling - user is completely free to scroll back up
       if (e.deltaY <= 0) {
-        deltaAccumulatorRef.current = 0;
+        isGestureLockedRef.current = false;
+        hasPositionedRef.current = false;
         return;
       }
 
@@ -52,54 +56,68 @@ export const ApproachSection: React.FC = () => {
       const vh = window.innerHeight;
 
       // If user has already scrolled past the section via scrollbar or anchor, unlock
-      if (rect.top < -120) {
+      if (rect.top < -140) {
         completedRef.current = true;
         return;
       }
 
+      // Target position: 1/4 inch (~24px) further down than the navbar (76px - 24px = 52px)
+      const targetTop = 52;
+
       // Check if section is in the middle / view zone of the screen
-      // Top near navbar (<= 100px) and bottom still well within view
-      if (rect.top <= 100 && rect.bottom >= vh * 0.6) {
-        // Intercept downward scroll to step through 01 -> 02 -> 03
+      if (rect.top <= targetTop + 14 && rect.bottom >= vh * 0.55) {
+        // Intercept downward scroll
         e.preventDefault();
 
-        // Lock section into comfortable centered position below header
-        const targetTop = Math.max(20, Math.min(76, Math.round((vh - 680) / 2)));
-        const diff = rect.top - targetTop;
-        if (Math.abs(diff) > 4) {
+        // Lock section into comfortable centered position below header ONCE to eliminate shaking
+        if (!hasPositionedRef.current || Math.abs(rect.top - targetTop) > 6) {
           window.scrollTo({
-            top: Math.round(window.scrollY + diff),
+            top: Math.round(window.scrollY + rect.top - targetTop),
             behavior: 'auto'
           });
+          hasPositionedRef.current = true;
         }
 
-        // If currently in a step animation cooldown, swallow momentum
-        if (isAnimatingRef.current) return;
+        // Debounce timer: reset on every wheel event
+        // When wheel events stop for 180ms, the user has completed their swipe / flick gesture
+        if (gestureTimerRef.current !== null) {
+          clearTimeout(gestureTimerRef.current);
+        }
+        gestureTimerRef.current = window.setTimeout(() => {
+          isGestureLockedRef.current = false;
+          // If we are on the last step (Step 3) and the gesture has ended,
+          // arm the next gesture to unlock and scroll down the website!
+          if (activeStepRef.current >= approachSteps.length - 1) {
+            readyToUnlockOnNextGestureRef.current = true;
+          }
+        }, 180);
 
-        deltaAccumulatorRef.current += e.deltaY;
+        const now = performance.now();
 
-        // Require deliberate downward scroll notch / swipe before advancing step
-        if (deltaAccumulatorRef.current >= 40) {
-          deltaAccumulatorRef.current = 0;
-          isAnimatingRef.current = true;
+        // If this gesture already advanced a step or we are in cooldown (500ms),
+        // safely swallow momentum so no extra steps or jumps occur
+        if (isGestureLockedRef.current || now - lastStepTimeRef.current < 500) {
+          return;
+        }
+
+        // If we are already on Step 3 and the previous gesture has ended,
+        // unlock and let the user scroll down the website!
+        if (readyToUnlockOnNextGestureRef.current && activeStepRef.current >= approachSteps.length - 1) {
+          completedRef.current = true;
+          return;
+        }
+
+        // Advance exactly ONE step smoothly
+        if (activeStepRef.current < approachSteps.length - 1) {
+          isGestureLockedRef.current = true;
+          lastStepTimeRef.current = now;
 
           const nextIndex = activeStepRef.current + 1;
           setActiveStepIndex(nextIndex);
           activeStepRef.current = nextIndex;
-
-          if (nextIndex >= approachSteps.length - 1) {
-            // Reached Step 3 (last step) - allow brief viewing time, then unlock normal downward scroll
-            setTimeout(() => {
-              completedRef.current = true;
-              isAnimatingRef.current = false;
-            }, 600);
-          } else {
-            // Cooldown between step 1 -> step 2 to allow smooth transition animation
-            setTimeout(() => {
-              isAnimatingRef.current = false;
-            }, 450);
-          }
         }
+      } else {
+        hasPositionedRef.current = false;
       }
     };
 
@@ -113,27 +131,23 @@ export const ApproachSection: React.FC = () => {
 
       const rect = sec.getBoundingClientRect();
       const vh = window.innerHeight;
+      const targetTop = 52;
 
-      if (rect.top <= 100 && rect.bottom >= vh * 0.6) {
+      if (rect.top <= targetTop + 14 && rect.bottom >= vh * 0.55) {
+        const now = performance.now();
+        if (now - lastStepTimeRef.current < 500) {
+          e.preventDefault();
+          return;
+        }
+
         if (activeStepRef.current < approachSteps.length - 1) {
           e.preventDefault();
-          if (isAnimatingRef.current) return;
-
-          isAnimatingRef.current = true;
+          lastStepTimeRef.current = now;
           const nextIndex = activeStepRef.current + 1;
           setActiveStepIndex(nextIndex);
           activeStepRef.current = nextIndex;
-
-          if (nextIndex >= approachSteps.length - 1) {
-            setTimeout(() => {
-              completedRef.current = true;
-              isAnimatingRef.current = false;
-            }, 600);
-          } else {
-            setTimeout(() => {
-              isAnimatingRef.current = false;
-            }, 450);
-          }
+        } else {
+          completedRef.current = true;
         }
       }
     };
@@ -143,7 +157,6 @@ export const ApproachSection: React.FC = () => {
       const sec = sectionRef.current;
       if (!sec) return;
       const rect = sec.getBoundingClientRect();
-      // If user drags scrollbar far past section, permanently unlock
       if (rect.top < -150) {
         completedRef.current = true;
       }
@@ -154,6 +167,9 @@ export const ApproachSection: React.FC = () => {
     window.addEventListener('scroll', handleScroll, { passive: true });
 
     return () => {
+      if (gestureTimerRef.current !== null) {
+        clearTimeout(gestureTimerRef.current);
+      }
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('scroll', handleScroll);
@@ -197,6 +213,7 @@ export const ApproachSection: React.FC = () => {
                     activeStepRef.current = idx;
                     if (idx >= approachSteps.length - 1) {
                       completedRef.current = true;
+                      readyToUnlockOnNextGestureRef.current = true;
                     }
                   }}
                 >
