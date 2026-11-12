@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, Shield, FileText, AlertCircle } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 import { siteConfig } from '../../config/site';
 import { FlowButton } from '../ui/flow-button';
 import styles from './Header.module.css';
@@ -139,8 +139,7 @@ export const Header: React.FC = () => {
                   role="menuitem"
                   onClick={() => setLegalDropdownOpen(false)}
                 >
-                  <Shield size={16} className={styles.dropdownItemIcon} />
-                  <span>Privacy Policy</span>
+                  Privacy Policy
                 </Link>
                 <Link
                   to="/disclaimer"
@@ -150,8 +149,7 @@ export const Header: React.FC = () => {
                   role="menuitem"
                   onClick={() => setLegalDropdownOpen(false)}
                 >
-                  <AlertCircle size={16} className={styles.dropdownItemIcon} />
-                  <span>Disclaimer</span>
+                  Disclaimer
                 </Link>
                 <Link
                   to="/terms"
@@ -163,8 +161,7 @@ export const Header: React.FC = () => {
                   role="menuitem"
                   onClick={() => setLegalDropdownOpen(false)}
                 >
-                  <FileText size={16} className={styles.dropdownItemIcon} />
-                  <span>Terms of Services</span>
+                  Terms of Services
                 </Link>
               </div>
             </li>
