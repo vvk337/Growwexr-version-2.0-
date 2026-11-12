@@ -7,6 +7,7 @@ import styles from './AboutIntro.module.css';
 export const AboutIntro: React.FC = () => {
   const gridRef = useRef<HTMLDivElement | null>(null);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const maxProgressRef = useRef<number>(0);
 
   useEffect(() => {
     const grid = gridRef.current;
@@ -25,52 +26,55 @@ export const AboutIntro: React.FC = () => {
     }
 
     let rafId: number | null = null;
+    let isLocked = false;
 
     const smoothstep = (t: number) => t * t * (3 - 2 * t);
 
     const updateScrollProgress = () => {
+      if (isLocked) return;
+
       const vh = window.innerHeight;
-      const isDesktop = window.innerWidth >= 768;
       const gridRect = grid.getBoundingClientRect();
 
-      // Base staggered starting translateY offsets for cards rising up as user scrolls down
-      const baseOffsets = isDesktop ? [80, 120, 160] : [60, 60, 60];
-      const delays = isDesktop ? [0, 0.08, 0.16] : [0, 0, 0];
+      // Start rising when top of cards grid enters viewport (95% vh)
+      // Fully complete rising when top reaches 40% vh
+      const startY = vh * 0.95;
+      const endY = vh * 0.40;
 
-      cards.forEach((card, i) => {
-        // Untransformed card top relative to viewport using gridRect and card offsetTop
-        const untransformedTop = gridRect.top + card.offsetTop;
+      const currentProgress = Math.min(Math.max((startY - gridRect.top) / (startY - endY), 0), 1);
 
-        // Start when card top reaches 95% of viewport height (entering view)
-        // Reach resting alignment when card top reaches 35% of viewport height
-        const startY = vh * 0.95;
-        const endY = vh * 0.35;
+      // Only advance forward on first scroll down — never go back on reverse scroll
+      if (currentProgress > maxProgressRef.current) {
+        maxProgressRef.current = currentProgress;
+      }
 
-        const rawProgress = Math.min(Math.max((startY - untransformedTop) / (startY - endY), 0), 1);
-        const delay = delays[i] || 0;
-        const t = Math.min(Math.max((rawProgress - delay) / (1 - delay), 0), 1);
-        const eased = smoothstep(t);
+      const progress = maxProgressRef.current;
+      const eased = smoothstep(progress);
 
-        // Cards rise upwards from baseOffset towards 0
-        let translateY = (1 - eased) * baseOffsets[i];
+      // All 3 cards share the EXACT same translateY and opacity — zero step effect, 100% aligned
+      const baseOffset = 70;
+      const translateY = (1 - eased) * baseOffset;
+      const opacity = 0.2 + 0.8 * eased;
 
-        // Gentle subtle parallax upward float as the user scrolls further down through the section
-        if (rawProgress >= 1) {
-          const extraScroll = endY - untransformedTop;
-          if (extraScroll > 0) {
-            translateY = -Math.min(extraScroll * 0.05, 30);
-          }
-        }
-
-        // Smooth opacity ramp from 0.25 to 1
-        const opacity = 0.25 + 0.75 * eased;
-
+      cards.forEach((card) => {
         card.style.transform = `translate3d(0, ${translateY.toFixed(2)}px, 0)`;
         card.style.opacity = opacity.toFixed(3);
       });
+
+      // Once fully risen, lock into place permanently and remove listeners
+      if (progress >= 1) {
+        isLocked = true;
+        cards.forEach((card) => {
+          card.style.transform = 'none';
+          card.style.opacity = '1';
+        });
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleScroll);
+      }
     };
 
     const handleScroll = () => {
+      if (isLocked) return;
       if (rafId !== null) return;
       rafId = requestAnimationFrame(() => {
         updateScrollProgress();
