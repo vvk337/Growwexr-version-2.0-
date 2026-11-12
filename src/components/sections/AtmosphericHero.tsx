@@ -20,43 +20,43 @@ export const AtmosphericHero: React.FC = () => {
       </div>
 
       <div className={`container ${styles.heroContainer}`}>
-        <div className={styles.heroSplitGrid}>
-          {/* Left Side: Expressive Headline */}
-          <div className={styles.headlineBlock}>
-            <h1 className={styles.mainTitle}>
-              Clear Perspective,<br />
-              Informed Forex Decisions.
-            </h1>
-          </div>
+        <div className={styles.heroLayout}>
+          {/* Left Column: Headline + Description + CTAs */}
+          <div className={styles.primaryColumn}>
+            <div className={styles.headlineBlock}>
+              <h1 className={styles.mainTitle}>
+                Clear Perspective,<br />
+                Informed Forex Decisions.
+              </h1>
+            </div>
 
-          {/* Right Side: Description + CTA Group + Media Tile */}
-          <div className={styles.actionColumn}>
             <p className={styles.subheadline}>
               {siteConfig.description}
             </p>
+
             <div className={styles.ctaGroup}>
               <FlowButton to="/contact" text="Book Consultation" variant="primary" size="lg" />
               <Button to="/services" variant="outline" size="lg">
                 Explore Services
               </Button>
             </div>
+          </div>
 
-            {/* Desktop Rounded Media Tile */}
-            <div className={styles.desktopMediaTile}>
-              <div className={styles.mediaCard}>
-                <img
-                  src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=560&q=75"
-                  alt="Growwezy Advisory Session"
-                  className={styles.mediaImage}
-                  width="280"
-                  height="180"
-                  loading="eager"
-                  decoding="async"
-                />
-                <div className={styles.mediaOverlay}>
-                  <span className={styles.mediaTag}>Advisory Brief</span>
-                  <span className={styles.mediaTitle}>Middle East NRI Portfolio Strategy</span>
-                </div>
+          {/* Right Column: Media Tile */}
+          <div className={styles.desktopMediaTile}>
+            <div className={styles.mediaCard}>
+              <img
+                src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=560&q=75"
+                alt="Growwezy Advisory Session"
+                className={styles.mediaImage}
+                width="280"
+                height="190"
+                loading="eager"
+                decoding="async"
+              />
+              <div className={styles.mediaOverlay}>
+                <span className={styles.mediaTag}>Advisory Brief</span>
+                <span className={styles.mediaTitle}>Middle East NRI Portfolio Strategy</span>
               </div>
             </div>
           </div>
