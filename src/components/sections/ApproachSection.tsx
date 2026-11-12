@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { approachSteps } from '../../content/approach';
-import { Button } from '../ui/Button';
+import { FlowButton } from '../ui/flow-button';
 import { AnimateIn } from '../ui/AnimateIn';
 import styles from './ApproachSection.module.css';
 
@@ -160,9 +160,7 @@ export const ApproachSection: React.FC = () => {
 
         {/* Consultation Call to Action - Centered directly below both boxes */}
         <div className={styles.bottomCta}>
-          <Button to="/contact" variant="primary" size="lg">
-            Schedule Your Step 01 Review
-          </Button>
+          <FlowButton to="/contact" text="Book Consultation" variant="primary" size="lg" />
         </div>
       </div>
     </section>
