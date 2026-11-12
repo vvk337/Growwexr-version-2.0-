@@ -12,6 +12,9 @@ const AboutPage = lazy(() => import('./pages/AboutPage').then(m => ({ default: m
 const InsightsIndex = lazy(() => import('./pages/InsightsIndex').then(m => ({ default: m.InsightsIndex })));
 const InsightDetail = lazy(() => import('./pages/InsightDetail').then(m => ({ default: m.InsightDetail })));
 const ContactPage = lazy(() => import('./pages/ContactPage').then(m => ({ default: m.ContactPage })));
+const TermsPage = lazy(() => import('./pages/TermsPage').then(m => ({ default: m.TermsPage })));
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })));
+const DisclaimerPage = lazy(() => import('./pages/DisclaimerPage').then(m => ({ default: m.DisclaimerPage })));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })));
 
 // Scroll to top upon route change
@@ -61,6 +64,11 @@ export const App: React.FC = () => {
           <Route path="/insights" element={<InsightsIndex />} />
           <Route path="/insights/:slug" element={<InsightDetail />} />
           <Route path="/contact" element={<ContactPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/terms-of-service" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+          <Route path="/privacy-policy" element={<PrivacyPage />} />
+          <Route path="/disclaimer" element={<DisclaimerPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>

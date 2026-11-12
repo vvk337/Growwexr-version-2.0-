@@ -113,11 +113,11 @@ export const Footer: React.FC = () => {
             © {new Date().getFullYear()} {siteConfig.legalName}. All rights reserved.
           </p>
           <div className={styles.legalLinks}>
-            <span>Privacy Policy</span>
+            <Link to="/privacy">Privacy Policy</Link>
             <span className={styles.dot}>•</span>
-            <span>Terms of Engagement</span>
+            <Link to="/disclaimer">Disclaimer</Link>
             <span className={styles.dot}>•</span>
-            <span>Risk Statement</span>
+            <Link to="/terms">Terms of Services</Link>
           </div>
         </div>
       </div>

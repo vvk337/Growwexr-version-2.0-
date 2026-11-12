@@ -189,7 +189,18 @@
 .legalLinks {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 10px;
+}
+
+.legalLinks a {
+  color: var(--text-light-subtle);
+  transition: color var(--transition-fast);
+}
+
+.legalLinks a:hover {
+  color: var(--color-white);
+  text-decoration: underline;
 }
 
 .dot {
