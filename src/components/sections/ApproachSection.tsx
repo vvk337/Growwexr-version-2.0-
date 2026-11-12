@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
 import { approachSteps } from '../../content/approach';
 import { Button } from '../ui/Button';
 import { AnimateIn } from '../ui/AnimateIn';
@@ -6,7 +6,9 @@ import styles from './ApproachSection.module.css';
 
 export const ApproachSection: React.FC = () => {
   const [activeStepIndex, setActiveStepIndex] = useState(0);
+  const [indicatorStyle, setIndicatorStyle] = useState<{ top: number; height: number }>({ top: 0, height: 0 });
   const sectionRef = useRef<HTMLElement>(null);
+  const stepButtonRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const activeStepRef = useRef(0);
   activeStepRef.current = activeStepIndex;
 
@@ -16,6 +18,32 @@ export const ApproachSection: React.FC = () => {
   const lastStepTimeRef = useRef(0);
   const hasPositionedRef = useRef(false);
   const readyToUnlockOnNextGestureRef = useRef(false);
+
+  // Synchronize the sliding blue background indicator position and height
+  const updateIndicator = () => {
+    const el = stepButtonRefs.current[activeStepIndex];
+    if (el) {
+      setIndicatorStyle({
+        top: el.offsetTop,
+        height: el.offsetHeight,
+      });
+    }
+  };
+
+  useLayoutEffect(() => {
+    updateIndicator();
+  }, [activeStepIndex]);
+
+  useEffect(() => {
+    updateIndicator();
+    const handleResize = () => updateIndicator();
+    window.addEventListener('resize', handleResize);
+    const timer = setTimeout(updateIndicator, 60);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(timer);
+    };
+  }, [activeStepIndex]);
 
   useEffect(() => {
     // Check if user has already scrolled past this section on mount
@@ -42,10 +70,18 @@ export const ApproachSection: React.FC = () => {
       // If all steps have been presented and unlocked, normal scrolling proceeds freely
       if (completedRef.current) return;
 
+      const targetTop = 52; // 1/4 inch below 76px navbar
+
       // NEVER intercept reverse (upward) scrolling - user is completely free to scroll back up
       if (e.deltaY <= 0) {
-        isGestureLockedRef.current = false;
-        hasPositionedRef.current = false;
+        const sec = sectionRef.current;
+        if (sec) {
+          const r = sec.getBoundingClientRect();
+          if (r.top > targetTop + 35) {
+            hasPositionedRef.current = false;
+            isGestureLockedRef.current = false;
+          }
+        }
         return;
       }
 
@@ -61,25 +97,29 @@ export const ApproachSection: React.FC = () => {
         return;
       }
 
-      // Target position: 1/4 inch (~24px) further down than the navbar (76px - 24px = 52px)
-      const targetTop = 52;
-
-      // Check if section is in the middle / view zone of the screen
-      if (rect.top <= targetTop + 14 && rect.bottom >= vh * 0.55) {
+      // Check if section has reached the lock zone
+      if (rect.top <= targetTop + 8 && rect.bottom >= vh * 0.55) {
         // Intercept downward scroll
         e.preventDefault();
 
-        // Lock section into comfortable centered position below header ONCE to eliminate shaking
-        if (!hasPositionedRef.current || Math.abs(rect.top - targetTop) > 6) {
-          window.scrollTo({
-            top: Math.round(window.scrollY + rect.top - targetTop),
-            behavior: 'auto'
-          });
+        // 1. Smoothly snap the page ONCE when entering the lock zone to eliminate vibration
+        if (!hasPositionedRef.current) {
           hasPositionedRef.current = true;
+          isGestureLockedRef.current = true;
+          lastStepTimeRef.current = performance.now();
+
+          // Calculate exact document scroll position where section top lands at targetTop
+          const secTopInDoc = window.scrollY + rect.top;
+          const targetScrollY = Math.round(secTopInDoc - targetTop);
+
+          window.scrollTo({
+            top: targetScrollY,
+            behavior: 'smooth'
+          });
+          return;
         }
 
-        // Debounce timer: reset on every wheel event
-        // When wheel events stop for 180ms, the user has completed their swipe / flick gesture
+        // 2. Debounce gesture timer: 220ms of silence indicates the swipe/wheel gesture has ended
         if (gestureTimerRef.current !== null) {
           clearTimeout(gestureTimerRef.current);
         }
@@ -90,18 +130,17 @@ export const ApproachSection: React.FC = () => {
           if (activeStepRef.current >= approachSteps.length - 1) {
             readyToUnlockOnNextGestureRef.current = true;
           }
-        }, 180);
+        }, 220);
 
         const now = performance.now();
 
-        // If this gesture already advanced a step or we are in cooldown (500ms),
+        // If this gesture already advanced a step or we are in cooldown (450ms),
         // safely swallow momentum so no extra steps or jumps occur
-        if (isGestureLockedRef.current || now - lastStepTimeRef.current < 500) {
+        if (isGestureLockedRef.current || now - lastStepTimeRef.current < 450) {
           return;
         }
 
-        // If we are already on Step 3 and the previous gesture has ended,
-        // unlock and let the user scroll down the website!
+        // If we are already on Step 3 and the previous gesture has ended, unlock!
         if (readyToUnlockOnNextGestureRef.current && activeStepRef.current >= approachSteps.length - 1) {
           completedRef.current = true;
           return;
@@ -116,8 +155,6 @@ export const ApproachSection: React.FC = () => {
           setActiveStepIndex(nextIndex);
           activeStepRef.current = nextIndex;
         }
-      } else {
-        hasPositionedRef.current = false;
       }
     };
 
@@ -133,9 +170,9 @@ export const ApproachSection: React.FC = () => {
       const vh = window.innerHeight;
       const targetTop = 52;
 
-      if (rect.top <= targetTop + 14 && rect.bottom >= vh * 0.55) {
+      if (rect.top <= targetTop + 8 && rect.bottom >= vh * 0.55) {
         const now = performance.now();
-        if (now - lastStepTimeRef.current < 500) {
+        if (now - lastStepTimeRef.current < 450) {
           e.preventDefault();
           return;
         }
@@ -198,11 +235,31 @@ export const ApproachSection: React.FC = () => {
         <div className={styles.desktopLayout}>
           {/* Step Selector List */}
           <div className={styles.stepList} role="tablist" aria-label="Approach Steps">
+            {/* 1. Static White Card Backdrops */}
+            <div className={styles.cardBackdropLayer} aria-hidden="true">
+              {approachSteps.map((step) => (
+                <div key={step.number} className={styles.cardBackdrop} />
+              ))}
+            </div>
+
+            {/* 2. Sliding Blue Background Indicator with Smooth Transition */}
+            <div
+              className={styles.slidingIndicator}
+              style={{
+                transform: `translateY(${indicatorStyle.top}px)`,
+                height: indicatorStyle.height > 0 ? `${indicatorStyle.height}px` : undefined,
+                opacity: indicatorStyle.height > 0 ? 1 : 0,
+              }}
+              aria-hidden="true"
+            />
+
+            {/* 3. Interactive Step Buttons */}
             {approachSteps.map((step, idx) => {
               const isActive = idx === activeStepIndex;
               return (
                 <button
                   key={step.number}
+                  ref={(el) => (stepButtonRefs.current[idx] = el)}
                   role="tab"
                   aria-selected={isActive}
                   aria-controls={`approach-panel-${step.number}`}
@@ -227,7 +284,7 @@ export const ApproachSection: React.FC = () => {
             })}
           </div>
 
-          {/* Active Step Showcase Panel */}
+          {/* Active Step Showcase Panel (Equal Height with 3 Step Boxes Combined) */}
           <div
             id={`approach-panel-${activeStep.number}`}
             role="tabpanel"
@@ -286,7 +343,7 @@ export const ApproachSection: React.FC = () => {
           ))}
         </div>
 
-        {/* Consultation Call to Action */}
+        {/* Consultation Call to Action - Centered directly below both boxes */}
         <div className={styles.bottomCta}>
           <Button to="/contact" variant="primary" size="lg">
             Schedule Your Step 01 Review
