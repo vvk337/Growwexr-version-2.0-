@@ -96,19 +96,29 @@
 
 .statementCol {
   flex: 1;
-  max-width: 780px;
+  max-width: 920px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
 .statementHeading {
-  font-size: clamp(1.85rem, 3.4vw, 2.85rem);
+  font-size: clamp(1.75rem, 2.5vw, 2.65rem);
   font-weight: 600;
-  line-height: 1.2;
+  line-height: 1.22;
   color: var(--color-white);
   letter-spacing: -0.025em;
   margin-bottom: 16px;
+}
+
+.headingLine {
+  display: inline;
+}
+
+@media (min-width: 860px) {
+  .headingLine {
+    display: block;
+  }
 }
 
 .aboutLinkWrap {

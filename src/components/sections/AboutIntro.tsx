@@ -23,7 +23,8 @@ export const AboutIntro: React.FC = () => {
 
             <div className={styles.statementCol}>
               <h2 id="about-intro-title" className={styles.statementHeading}>
-                A considered approach to global markets, built around your objectives.
+                <span className={styles.headingLine}>A considered approach to global markets,</span>{' '}
+                <span className={styles.headingLine}>built around your&nbsp;objectives.</span>
               </h2>
               <div className={styles.aboutLinkWrap}>
                 <Link to="/about" className={`${styles.aboutLink} arrow-link`}>
