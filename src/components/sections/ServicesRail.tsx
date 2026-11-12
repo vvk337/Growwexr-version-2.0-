@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
 import { servicesData } from '../../content/services';
@@ -44,6 +44,90 @@ const serviceCards = [
 
 export const ServicesRail: React.FC = () => {
   const railRef = useRef<HTMLDivElement>(null);
+  const imageRefs = useRef<(HTMLImageElement | null)[]>([]);
+  const maxProgressRef = useRef<number>(0);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return;
+
+    const images = imageRefs.current.filter((el): el is HTMLImageElement => el !== null);
+    if (images.length === 0) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      images.forEach((img) => {
+        img.style.filter = 'none';
+      });
+      return;
+    }
+
+    let rafId: number | null = null;
+    let isLocked = false;
+
+    const smoothstep = (t: number) => t * t * (3 - 2 * t);
+
+    const updateScrollProgress = () => {
+      if (isLocked) return;
+
+      const vh = window.innerHeight;
+      const railRect = rail.getBoundingClientRect();
+
+      // Start unblurring when top of cards enters viewport (96% vh)
+      // Fully complete unblurring when cards are centered in full view (38% vh)
+      const startY = vh * 0.96;
+      const endY = vh * 0.38;
+
+      const currentProgress = Math.min(Math.max((startY - railRect.top) / (startY - endY), 0), 1);
+
+      // Only advance forward on first scroll down — never re-blur on reverse scroll
+      if (currentProgress > maxProgressRef.current) {
+        maxProgressRef.current = currentProgress;
+      }
+
+      const progress = maxProgressRef.current;
+      const eased = smoothstep(progress);
+
+      // Maximum blur is 16px when section first appears, smoothly resolving to 0px
+      const maxBlur = 16;
+      const blurAmount = (1 - eased) * maxBlur;
+
+      images.forEach((img) => {
+        img.style.filter = `blur(${blurAmount.toFixed(2)}px)`;
+      });
+
+      // Once fully unblurred, lock into place permanently and remove listeners
+      if (progress >= 1) {
+        isLocked = true;
+        images.forEach((img) => {
+          img.style.filter = 'none';
+        });
+        window.removeEventListener('scroll', handleScroll);
+        window.removeEventListener('resize', handleScroll);
+      }
+    };
+
+    const handleScroll = () => {
+      if (isLocked) return;
+      if (rafId !== null) return;
+      rafId = requestAnimationFrame(() => {
+        updateScrollProgress();
+        rafId = null;
+      });
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener('resize', handleScroll, { passive: true });
+
+    // Initial calculation on mount
+    updateScrollProgress();
+
+    return () => {
+      if (rafId !== null) cancelAnimationFrame(rafId);
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, []);
 
   const scroll = (direction: 'left' | 'right') => {
     if (railRef.current) {
@@ -104,6 +188,9 @@ export const ServicesRail: React.FC = () => {
           {serviceCards.map((service, idx) => (
             <Link key={idx} to={service.link} className={styles.serviceCard}>
               <img
+                ref={(el) => {
+                  imageRefs.current[idx] = el;
+                }}
                 src={service.image}
                 alt={service.title}
                 className={styles.cardBgImage}
