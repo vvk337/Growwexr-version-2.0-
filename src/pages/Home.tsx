@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { lazy, Suspense } from 'react';
 import { AtmosphericHero } from '../components/sections/AtmosphericHero';
 import { AboutIntro } from '../components/sections/AboutIntro';
 import { ServicesRail } from '../components/sections/ServicesRail';
-import { ValuesSection } from '../components/sections/ValuesSection';
-import { ClientFocusSelector } from '../components/sections/ClientFocusSelector';
-import { ApproachSection } from '../components/sections/ApproachSection';
-import { WhyWorkWithUs } from '../components/sections/WhyWorkWithUs';
-import { InsightsPreview } from '../components/sections/InsightsPreview';
-import { FAQSection } from '../components/sections/FAQSection';
-import { FinalCTA } from '../components/sections/FinalCTA';
+
+// Code-split below-the-fold sections to drastically reduce initial bundle execution
+const ValuesSection = lazy(() => import('../components/sections/ValuesSection').then(m => ({ default: m.ValuesSection })));
+const ClientFocusSelector = lazy(() => import('../components/sections/ClientFocusSelector').then(m => ({ default: m.ClientFocusSelector })));
+const WhyWorkWithUs = lazy(() => import('../components/sections/WhyWorkWithUs').then(m => ({ default: m.WhyWorkWithUs })));
+const InsightsPreview = lazy(() => import('../components/sections/InsightsPreview').then(m => ({ default: m.InsightsPreview })));
+const FAQSection = lazy(() => import('../components/sections/FAQSection').then(m => ({ default: m.FAQSection })));
+const FinalCTA = lazy(() => import('../components/sections/FinalCTA').then(m => ({ default: m.FinalCTA })));
 
 export const Home: React.FC = () => {
   return (
@@ -22,26 +23,25 @@ export const Home: React.FC = () => {
       {/* 03. Core capabilities carousel on white */}
       <ServicesRail />
 
-      {/* 04. Five-part Values arrangement on navy */}
-      <ValuesSection />
+      <Suspense fallback={null}>
+        {/* 04. Five-part Values arrangement on navy */}
+        <ValuesSection />
 
-      {/* 05. Client Focus Selector on dark */}
-      <ClientFocusSelector />
+        {/* 05. Client Focus Selector on dark */}
+        <ClientFocusSelector />
 
-      {/* 06. 3-Step Consultation Framework on pale ice */}
-      <ApproachSection />
+        {/* 06. What You Bring / What We Discuss on navy */}
+        <WhyWorkWithUs />
 
-      {/* 07. What You Bring / What We Discuss on navy */}
-      <WhyWorkWithUs />
+        {/* 07. Educational Insights on pale ice */}
+        <InsightsPreview />
 
-      {/* 08. Educational Insights on pale ice */}
-      <InsightsPreview />
+        {/* 08. Accessible FAQ accordion on white */}
+        <FAQSection />
 
-      {/* 09. Accessible FAQ accordion on white */}
-      <FAQSection />
-
-      {/* 10. Final Call to Action */}
-      <FinalCTA />
+        {/* 09. Final Call to Action */}
+        <FinalCTA />
+      </Suspense>
     </main>
   );
 };

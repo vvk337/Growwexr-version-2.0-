@@ -27,7 +27,7 @@ export const ContactPage: React.FC = () => {
     email: '',
     country: 'United Arab Emirates',
     phone: '',
-    serviceInterest: 'Forex Trading Advisory',
+    serviceInterest: 'Forex Signals',
     message: ''
   });
 
@@ -143,7 +143,7 @@ export const ContactPage: React.FC = () => {
               <div className={styles.prepNotice}>
                 <Info size={18} className={styles.prepIcon} />
                 <p>
-                  <strong>Confidentiality Assurance:</strong> We never request trading passwords, API account secrets, or custody deposits. Consultations focus strictly on macroeconomic strategy and risk architecture.
+                  <strong>Custody Assurance:</strong> We never request account withdrawal permissions or custody deposits. Your capital remains 100% in your own regulated broker account at all times.
                 </p>
               </div>
             </div>
@@ -277,10 +277,12 @@ export const ContactPage: React.FC = () => {
                         onChange={(e) => setFormData({ ...formData, serviceInterest: e.target.value })}
                         className={styles.select}
                       >
-                        <option value="Forex Trading Advisory">Forex Trading Advisory</option>
-                        <option value="Financial Asset Management">Financial Asset Management</option>
-                        <option value="NRI Currency Hedging">NRI Cross-Border Currency Hedging</option>
-                        <option value="General Strategic Consultation">General Strategic Consultation</option>
+                        <option value="Forex Signals">Forex Signals</option>
+                        <option value="Comex Signals">Comex Signals (Gold & Silver)</option>
+                        <option value="Combo Signals">Combo Signals (Forex & Metals)</option>
+                        <option value="HNI Signals">HNI Signals & Dedicated Advisory</option>
+                        <option value="Account Management">Account Management (Trade-Only Execution)</option>
+                        <option value="General Consultation">General Consultation</option>
                       </select>
                     </div>
 

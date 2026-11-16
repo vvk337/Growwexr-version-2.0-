@@ -1,44 +1,61 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronLeft, ChevronRight, ArrowUpRight } from 'lucide-react';
-import { servicesData } from '../../content/services';
 import { AnimateIn } from '../ui/AnimateIn';
 import { StaticAsciiHorizon } from '../ui/StaticAsciiHorizon';
 import styles from './ServicesRail.module.css';
 
-// Include the 2 confirmed services + 2 dedicated capability topics under those services
-const serviceCards = [
+interface ServiceCardItem {
+  title: string;
+  category: string;
+  description: string;
+  originalPrice: string;
+  offerPrice: string;
+  image: string;
+  link: string;
+  objectPosition: string;
+}
+
+const serviceCards: ServiceCardItem[] = [
   {
-    title: servicesData[0].title,
-    category: 'Core Advisory',
-    description: servicesData[0].shortDescription,
-    image: servicesData[0].image,
-    link: `/services/${servicesData[0].slug}`
+    title: 'Forex Signals',
+    category: 'CURRENCY MARKETS',
+    description: 'Guidance on potential entries and exits.',
+    originalPrice: '$400',
+    offerPrice: '$300',
+    image: '/assets/services/services-forex-signals.webp',
+    link: '/services',
+    objectPosition: 'center 20%'
   },
   {
-    title: servicesData[1].title,
-    category: 'Wealth Strategy',
-    description: servicesData[1].shortDescription,
-    image: servicesData[1].image,
-    link: `/services/${servicesData[1].slug}`
+    title: 'Comex Signals',
+    category: 'GOLD & SILVER',
+    description: 'Focused trading signals for gold and silver.',
+    originalPrice: '$499',
+    offerPrice: '$350',
+    image: '/assets/services/services-comex-signals.webp',
+    link: '/services',
+    objectPosition: 'center 15%'
   },
   {
-    title: 'Cross-Border Capital Architecture',
-    category: 'NRI Specialization',
-    description:
-      'Structuring remittance timing, purchasing power preservation, and dual-currency exposures for UAE & GCC expatriates.',
-    image:
-      'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=700&q=75',
-    link: '/services/financial-asset-management'
+    title: 'Combo Signals',
+    category: 'FOREX & PRECIOUS METALS',
+    description: 'Forex, gold, and silver signals in one plan.',
+    originalPrice: '$699',
+    offerPrice: '$489',
+    image: '/assets/services/services-combo-signals.webp',
+    link: '/services',
+    objectPosition: 'center 35%'
   },
   {
-    title: 'Systematic Macro & Volatility Modeling',
-    category: 'Quantitative Research',
-    description:
-      'Rigorous monitoring of sovereign debt spreads, inflation differentials, and central bank terminal rates to guide FX allocations.',
-    image:
-      'https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=700&q=75',
-    link: '/services/forex-advisory'
+    title: 'HNI Signals',
+    category: 'DEDICATED SUPPORT',
+    description: '24/7 relationship manager support. Additional features discussed in consultation.',
+    originalPrice: '$999',
+    offerPrice: '$699',
+    image: '/assets/services/services-hni-signals.webp',
+    link: '/services',
+    objectPosition: 'center 22%'
   }
 ];
 
@@ -129,37 +146,47 @@ export const ServicesRail: React.FC = () => {
       <StaticAsciiHorizon cellSize={18} density={0.8} />
 
       <div className={`container ${styles.contentContainer}`}>
-        {/* Header with Title & Controls */}
+        {/* Asymmetrical Top Layout matching About Intro */}
         <AnimateIn animation="default">
-          <div className={styles.sectionHeader}>
-            <div>
-              <span className="section-overline">Core Capabilities</span>
-              <h2 id="services-heading" className="section-title">
-                What We Advise On
-              </h2>
+          <div className={styles.introHeader}>
+            <div className={styles.badgeCol}>
+              <div className={styles.labelRow}>
+                <span className={styles.smallLabel}>OUR</span>
+                <span className={styles.cyanDash} aria-hidden="true" />
+              </div>
+              <div className={`${styles.servicesWord} brand-gradient-text`}>SERVICES</div>
             </div>
-            <div className={styles.headerActions}>
-              <Link to="/services" className={`${styles.viewAllLink} arrow-link`}>
-                <span>View all services</span>
-                <ArrowUpRight size={16} />
-              </Link>
-              <div className={styles.navControls} aria-label="Services carousel controls">
-                <button
-                  type="button"
-                  className={styles.controlBtn}
-                  onClick={() => scroll('left')}
-                  aria-label="Previous service"
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  type="button"
-                  className={styles.controlBtn}
-                  onClick={() => scroll('right')}
-                  aria-label="Next service"
-                >
-                  <ChevronRight size={20} />
-                </button>
+
+            <div className={styles.headerDivider} aria-hidden="true" />
+
+            <div className={styles.statementCol}>
+              <h2 id="services-heading" className={styles.statementHeading}>
+                Research. Signals. Support.
+              </h2>
+              <p className={styles.pricingNote}>Monthly plans · Prices in USD</p>
+              <div className={styles.linkWrap}>
+                <Link to="/services" className={`${styles.pricingLink} arrow-link`}>
+                  <span>View All Plans & Pricing</span>
+                  <ArrowUpRight size={16} />
+                </Link>
+                <div className={styles.navControls} aria-label="Services carousel controls">
+                  <button
+                    type="button"
+                    className={styles.controlBtn}
+                    onClick={() => scroll('left')}
+                    aria-label="Previous service"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.controlBtn}
+                    onClick={() => scroll('right')}
+                    aria-label="Next service"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>
@@ -170,7 +197,12 @@ export const ServicesRail: React.FC = () => {
       <div className={styles.railWrapper}>
         <div ref={railRef} className={styles.railTrack} tabIndex={0} role="region" aria-label="Services cards rail">
           {serviceCards.map((service, idx) => (
-            <Link key={idx} to={service.link} className={styles.serviceCard}>
+            <Link
+              key={idx}
+              to={service.link}
+              className={styles.serviceCard}
+              aria-label={`${service.title} - ${service.category}: ${service.offerPrice} per month (regular ${service.originalPrice} USD)`}
+            >
               <img
                 ref={(el) => {
                   imageRefs.current[idx] = el;
@@ -178,20 +210,32 @@ export const ServicesRail: React.FC = () => {
                 src={service.image}
                 alt={service.title}
                 className={styles.cardBgImage}
+                style={{ objectPosition: service.objectPosition }}
                 width="340"
-                height="480"
+                height="500"
                 loading="lazy"
                 decoding="async"
               />
-              <div className={styles.cardGradient} />
+              <div className={styles.cardGradient} aria-hidden="true" />
               <div className={styles.cardContent}>
                 <span className={styles.cardCategory}>{service.category}</span>
                 <h3 className={styles.cardTitle}>{service.title}</h3>
                 <p className={styles.cardDesc}>{service.description}</p>
+                <div className={styles.cardDivider} aria-hidden="true" />
                 <div className={styles.cardFooter}>
-                  <span className={styles.exploreText}>View Advisory Details</span>
-                  <div className={styles.cardArrow}>
-                    <ArrowUpRight size={16} />
+                  <div className={styles.priceColumn}>
+                    <div className={styles.originalPriceRow}>
+                      <span className={styles.originalPrice}>{service.originalPrice}</span>
+                      <span className={styles.currency}>USD</span>
+                    </div>
+                    <div className={styles.offerPriceRow}>
+                      <span className={styles.offerPrice}>{service.offerPrice}</span>
+                      <span className={styles.billingPeriod}>/ month</span>
+                    </div>
+                  </div>
+                  <div className={styles.planAction} aria-hidden="true">
+                    <span className={styles.viewPlanText}>View plan</span>
+                    <ArrowUpRight size={15} className={styles.actionArrow} />
                   </div>
                 </div>
               </div>

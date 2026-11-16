@@ -21,7 +21,7 @@ export const generalFAQs: FAQItem[] = [
     id: 'middle-east-nris',
     question: 'Why do you specifically focus on clients in the Middle East?',
     answer:
-      'Since our establishment in India in 2020, we have identified a significant need among Non-Resident Indians and expatriates across the UAE and GCC for objective currency hedging, repatriation timing, and cross-border financial asset alignment.'
+      'Since our establishment in India in 2019, we have identified a significant need among Non-Resident Indians and expatriates across the UAE and GCC for objective currency hedging, repatriation timing, and cross-border financial asset alignment.'
   },
   {
     id: 'consultation-format',

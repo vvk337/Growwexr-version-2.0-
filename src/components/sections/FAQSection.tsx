@@ -16,18 +16,30 @@ export const FAQSection: React.FC = () => {
   return (
     <section className={`section section-white ${styles.faqSection}`} aria-labelledby="faq-heading">
       <div className="container">
+        {/* Accessible screen reader heading */}
+        <h2 id="faq-heading" className={styles.visuallyHidden}>
+          Frequently Asked Questions
+        </h2>
+
         <div className={styles.faqGrid}>
           {/* Left Title & Support Block */}
           <AnimateIn animation="slide-left" className={styles.supportCol}>
-            <span className="section-overline">Frequently Asked</span>
-            <h2 id="faq-heading" className="section-title">
-              Common Questions About Our Advisory
-            </h2>
+            <div className={styles.badgeBlock}>
+              <div className={styles.labelRow}>
+                <span className={styles.smallLabel}>COMMON</span>
+                <span className={styles.accentDash} aria-hidden="true" />
+              </div>
+              <div className={`${styles.faqWord} brand-gradient-text`}>QUESTIONS</div>
+            </div>
+
+            <p className={styles.statementHeading}>
+              Clear answers about our advisory model and signals.
+            </p>
             <p className={styles.supportDesc}>
-              Clear answers regarding our service scope, custody independence, and Middle East consultation model.
+              Everything you need to know about our market coverage, trading plans, and secure broker account execution.
             </p>
             <div className={styles.supportCta}>
-              <span className={styles.ctaPrompt}>Have a specific scenario?</span>
+              <span className={styles.ctaPrompt}>Have a specific question?</span>
               <Button to="/contact" variant="primary" size="md">
                 Speak With an Advisor
               </Button>

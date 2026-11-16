@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button } from '../ui/Button';
 import { FlowButton } from '../ui/flow-button';
-import { siteConfig } from '../../config/site';
+import { MarketTicker } from '../ui/MarketTicker';
 import styles from './AtmosphericHero.module.css';
 
 export const AtmosphericHero: React.FC = () => {
@@ -25,13 +25,14 @@ export const AtmosphericHero: React.FC = () => {
           <div className={styles.primaryColumn}>
             <div className={styles.headlineBlock}>
               <h1 className={styles.mainTitle}>
-                Clear Perspective,<br />
-                Informed Forex Decisions.
+                <span className={styles.titleLine}>A <span className={styles.gradientText}>Guided</span> Approach</span>
+                <span className={styles.titleLine}><span className={styles.nowrap}>to Your</span></span>
+                <span className={styles.titleLine}><span className={styles.nowrap}><span className={styles.gradientText}>Financial Future</span>.</span></span>
               </h1>
             </div>
 
             <p className={styles.subheadline}>
-              {siteConfig.description}
+              Growwezy provides financial consultancy to clients across the UAE and the wider Middle East, offering personalised guidance, trading advisory, and account management to help you navigate global forex markets.
             </p>
 
             <div className={styles.ctaGroup}>
@@ -63,32 +64,8 @@ export const AtmosphericHero: React.FC = () => {
         </div>
       </div>
 
-      {/* Bottom Category Ticker */}
-      <div className={styles.categoryTicker} aria-hidden="true">
-        <div className={styles.tickerTrack}>
-            <span>Forex Trading Advisory</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Global Macro Research</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Financial Asset Management</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Middle East & NRI Specialization</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Systematic Risk Mitigation</span>
-            <span className={styles.tickerDot}>•</span>
-            {/* Seamless duplicate */}
-            <span>Forex Trading Advisory</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Global Macro Research</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Financial Asset Management</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Middle East & NRI Specialization</span>
-            <span className={styles.tickerDot}>•</span>
-            <span>Systematic Risk Mitigation</span>
-            <span className={styles.tickerDot}>•</span>
-          </div>
-        </div>
+      {/* Native Financial Market Ticker */}
+      <MarketTicker />
     </section>
   );
 };

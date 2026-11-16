@@ -3,32 +3,65 @@ import { Link } from 'react-router-dom';
 import { ArrowUpRight, Clock } from 'lucide-react';
 import { insightsData } from '../../content/insights';
 import { AnimateIn } from '../ui/AnimateIn';
+import { StaticAsciiHorizon } from '../ui/StaticAsciiHorizon';
 import styles from './InsightsPreview.module.css';
 
 export const InsightsPreview: React.FC = () => {
   return (
     <section className={`section section-ice ${styles.insightsSection}`} aria-labelledby="insights-preview-heading">
-      <div className="container">
-        {/* Section Header */}
+      {/* Mirrored ASCII currency horizon background layer bookmatched with Why Growwezy above */}
+      <StaticAsciiHorizon
+        theme="light"
+        cellSize={18}
+        density={0.8}
+        className={styles.bgArtwork}
+      />
+
+      <div className={`container ${styles.contentContainer}`}>
+        {/* Accessible screen reader heading */}
+        <h2 id="insights-preview-heading" className={styles.visuallyHidden}>
+          Market Intelligence & Insights
+        </h2>
+
+        {/* Section Header with Brand Split Layout */}
         <AnimateIn animation="default">
-          <div className={styles.sectionHeader}>
-            <div>
-              <span className="section-overline">Educational Research</span>
-              <h2 id="insights-preview-heading" className="section-title">
-                Market Intelligence & Perspectives
-              </h2>
+          <div className={styles.introHeader}>
+            <div className={styles.badgeCol}>
+              <div className={styles.labelRow}>
+                <span className={styles.smallLabel}>OUR</span>
+                <span className={styles.accentDash} aria-hidden="true" />
+              </div>
+              <div className={`${styles.insightsHeading} brand-gradient-text`}>INSIGHTS</div>
             </div>
-            <Link to="/insights" className={`${styles.viewAllLink} arrow-link`}>
-              <span>View all articles</span>
-              <ArrowUpRight size={16} />
-            </Link>
+
+            <div className={styles.headerDivider} aria-hidden="true" />
+
+            <div className={styles.statementCol}>
+              <p className={styles.statementHeading}>
+                Market intelligence and practical trading perspectives.
+              </p>
+              <p className={styles.supportingText}>
+                Educational analysis on currency dynamics, precious metals, and risk management strategies.
+              </p>
+              <div>
+                <Link to="/insights" className={`${styles.viewAllLink} arrow-link`}>
+                  <span>View all articles</span>
+                  <ArrowUpRight size={16} />
+                </Link>
+              </div>
+            </div>
           </div>
         </AnimateIn>
 
-        {/* 3 Editorial Cards Grid */}
+        {/* 3 Editorial Cards Grid / Mobile Carousel */}
         <div className={styles.cardsGrid}>
           {insightsData.map((article, idx) => (
-            <AnimateIn key={article.slug} delay={(100 * (idx + 1)) as 100 | 200 | 300} animation="default">
+            <AnimateIn
+              key={article.slug}
+              delay={(100 * (idx + 1)) as 100 | 200 | 300}
+              animation="default"
+              className={styles.cardItem}
+            >
               <Link to={`/insights/${article.slug}`} className={styles.articleCard}>
                 <div className={styles.imageContainer}>
                   <img

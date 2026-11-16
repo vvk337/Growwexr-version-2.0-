@@ -1,5 +1,20 @@
 .faqSection {
   background-color: var(--color-white);
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .faqGrid {
@@ -10,6 +25,7 @@
 
 @media (min-width: 960px) {
   .faqGrid {
+    display: grid;
     grid-template-columns: 1fr 1.35fr;
     gap: 60px;
     align-items: flex-start;
@@ -18,6 +34,66 @@
 
 .supportCol {
   max-width: 480px;
+}
+
+.badgeBlock {
+  margin-bottom: 20px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.smallLabel {
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--color-near-black);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.accentDash {
+  display: inline-block;
+  width: 38px;
+  height: 3px;
+  background-color: var(--color-electric-blue);
+  border-radius: 2px;
+}
+
+.faqWord {
+  font-size: clamp(2.3rem, 3.8vw, 3.4rem);
+  font-weight: 900;
+  line-height: 0.9;
+  letter-spacing: -0.04em;
+  color: var(--color-near-black);
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  user-select: none;
+  white-space: nowrap;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .faqWord {
+    background: var(--gradient-brand-future, linear-gradient(135deg, #493bd9 0%, #075af7 35%, #19cbd0 70%, #68ce8a 100%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.statementHeading {
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+  font-weight: 600;
+  line-height: 1.25;
+  color: var(--color-near-black);
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
 }
 
 .supportDesc {

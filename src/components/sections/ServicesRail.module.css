@@ -23,50 +23,137 @@
   z-index: 1;
 }
 
-.sectionHeader {
+/* Asymmetrical Header matching About Intro */
+.introHeader {
   display: flex;
   flex-direction: column;
   gap: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 56px;
 }
 
-.sectionHeader :global(.section-overline) {
-  color: var(--color-teal);
-  font-weight: 700;
-  letter-spacing: 0.12em;
-}
-
-.sectionHeader :global(.section-title) {
-  color: var(--color-white);
-  font-weight: 400;
-}
-
-@media (min-width: 768px) {
-  .sectionHeader {
+@media (min-width: 860px) {
+  .introHeader {
     flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
+    align-items: stretch;
+    gap: 0;
   }
 }
 
-.headerActions {
+.badgeCol {
   display: flex;
-  align-items: center;
-  gap: 24px;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  padding-top: 2px;
 }
 
-.viewAllLink {
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.smallLabel {
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--color-white);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.cyanDash {
+  display: inline-block;
+  width: 38px;
+  height: 3px;
+  background-color: var(--color-teal);
+  border-radius: 2px;
+}
+
+.servicesWord {
+  font-size: clamp(2.2rem, 3.8vw, 3.5rem);
+  font-weight: 900;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  color: var(--color-white);
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  user-select: none;
+  white-space: nowrap;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .servicesWord {
+    background: var(--gradient-brand-future, linear-gradient(135deg, #493bd9 0%, #075af7 35%, #19cbd0 70%, #68ce8a 100%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.headerDivider {
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .headerDivider {
+    display: block;
+    width: 1px;
+    background: rgba(255, 255, 255, 0.22);
+    margin: 4px 36px 6px 36px;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+}
+
+.statementCol {
+  flex: 1;
+  max-width: 920px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.statementHeading {
+  font-size: clamp(1.75rem, 2.5vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--color-white);
+  letter-spacing: -0.025em;
+  margin: 0 0 8px 0;
+}
+
+.pricingNote {
+  font-size: 14.5px;
+  color: var(--text-light-muted);
+  letter-spacing: 0.01em;
+  margin: 0 0 16px 0;
+}
+
+.linkWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.pricingLink {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
   font-size: 14.5px;
   font-weight: 500;
   color: var(--color-teal);
-  transition: color var(--transition-fast);
+  transition: gap var(--transition-fast), color var(--transition-fast);
+  text-decoration: none;
 }
 
-.viewAllLink:hover {
+.pricingLink:hover {
   color: var(--color-white);
+  gap: 12px;
 }
 
 .navControls {
@@ -161,7 +248,7 @@
   position: relative;
   flex: 0 0 84vw;
   max-width: 380px;
-  height: 480px;
+  height: 500px;
   border-radius: var(--radius-card);
   overflow: hidden;
   scroll-snap-align: start;
@@ -180,7 +267,7 @@
 @media (min-width: 640px) {
   .serviceCard {
     flex: 0 0 340px;
-    height: 460px;
+    height: 500px;
   }
 }
 
@@ -189,7 +276,7 @@
     flex: none;
     width: 100%;
     max-width: none;
-    height: 480px;
+    height: 500px;
   }
 }
 
@@ -197,6 +284,11 @@
   transform: translateY(-10px) scale(1.012);
   box-shadow: 0 32px 64px rgba(11, 24, 54, 0.36), 0 0 0 1px rgba(7, 90, 247, 0.3);
   border-color: rgba(7, 90, 247, 0.35);
+}
+
+.serviceCard:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 4px;
 }
 
 .cardBgImage {
@@ -219,87 +311,154 @@
 .cardGradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(2, 7, 19, 0.1) 0%, rgba(8, 20, 48, 0.5) 45%, #08142f 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(2, 7, 19, 0) 0%,
+    rgba(2, 7, 19, 0) 22%,
+    rgba(8, 20, 48, 0.45) 48%,
+    rgba(8, 20, 48, 0.88) 70%,
+    rgba(8, 20, 48, 0.98) 100%
+  );
   z-index: 1;
   transition: opacity 0.4s ease;
 }
 
 .serviceCard:hover .cardGradient {
-  opacity: 0.9;
+  opacity: 0.95;
 }
 
 .cardContent {
   position: relative;
   z-index: 2;
-  padding: 28px;
+  padding: 24px 22px;
   color: var(--color-white);
   display: flex;
   flex-direction: column;
 }
 
-@media (min-width: 1024px) {
-  .cardContent {
-    padding: 24px 20px;
-  }
-}
-
 .cardCategory {
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--color-teal);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .cardTitle {
-  font-size: 21px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 600;
   line-height: 1.25;
   color: var(--color-white);
-  margin-bottom: 10px;
   letter-spacing: -0.015em;
+  margin: 0 0 6px 0;
 }
 
 .cardDesc {
-  font-size: 14px;
-  line-height: 1.5;
+  font-size: 13.5px;
+  line-height: 1.45;
   color: var(--text-light-muted);
-  margin-bottom: 20px;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  margin: 0 0 16px 0;
+  min-height: 38px;
+}
+
+.cardDivider {
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.14);
+  width: 100%;
+  margin-bottom: 14px;
 }
 
 .cardFooter {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   justify-content: space-between;
-  padding-top: 14px;
-  border-top: 1px solid rgba(255, 255, 255, 0.12);
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.exploreText {
+.priceColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.originalPriceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  line-height: 1;
+}
+
+.originalPrice {
+  font-size: 13.5px;
+  text-decoration: line-through;
+  color: #8fa0ba;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.currency {
+  font-size: 11.5px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #8fa0ba;
+  font-weight: 400;
+  line-height: 1;
+}
+
+.offerPriceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  line-height: 1;
+}
+
+.offerPrice {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+@media (min-width: 1280px) {
+  .offerPrice {
+    font-size: 34px;
+  }
+}
+
+.billingPeriod {
+  font-size: 13px;
+  color: #8fa0ba;
+  font-weight: 400;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.planAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--color-teal);
   font-size: 13.5px;
   font-weight: 500;
-  color: var(--color-white);
+  white-space: nowrap;
+  margin-bottom: 4px;
+  transition: transform var(--transition-fast), color var(--transition-fast);
 }
 
-.cardArrow {
-  width: 30px;
-  height: 30px;
-  border-radius: 6px;
-  background-color: rgba(255, 255, 255, 0.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-white);
-  transition: transform var(--transition-fast), background-color var(--transition-fast);
+.actionArrow {
+  transition: transform var(--transition-fast);
 }
 
-.serviceCard:hover .cardArrow {
+.serviceCard:hover .planAction {
+  color: #ffffff;
+}
+
+.serviceCard:hover .actionArrow {
   transform: translate(2px, -2px);
-  background-color: var(--color-electric-blue);
+  color: var(--color-teal);
 }
 

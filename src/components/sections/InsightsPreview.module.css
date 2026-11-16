@@ -1,20 +1,213 @@
 .insightsSection {
-  background-color: var(--color-pale-ice);
+  background: linear-gradient(
+    to bottom,
+    #52769E 0px,
+    #ABC8E2 55px,
+    var(--color-pale-ice) 105px,
+    var(--color-pale-ice) 100%
+  );
+  position: relative;
+  overflow: hidden;
 }
 
-.sectionHeader {
+@media (max-width: 767px) {
+  .insightsSection {
+    background: linear-gradient(
+      to bottom,
+      #52769E 0px,
+      #ABC8E2 25px,
+      var(--color-pale-ice) 50px,
+      var(--color-pale-ice) 100%
+    );
+  }
+}
+
+/* Background artwork flipped vertically (scaleY(-1)) to bookmatch Why Growwezy above */
+.bgArtwork {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+  background-color: transparent !important;
+  transform: scaleY(-1);
+  transform-origin: 50% 50%;
+  opacity: 0.85;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.2) 40px,
+    rgba(0, 0, 0, 0.22) 105px,
+    rgba(0, 0, 0, 0.25) 240px,
+    rgba(0, 0, 0, 0.7) 320px,
+    rgba(0, 0, 0, 0.7) calc(100% - 80px),
+    rgba(0, 0, 0, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.12) 0px,
+    rgba(0, 0, 0, 0.2) 40px,
+    rgba(0, 0, 0, 0.22) 105px,
+    rgba(0, 0, 0, 0.25) 240px,
+    rgba(0, 0, 0, 0.7) 320px,
+    rgba(0, 0, 0, 0.7) calc(100% - 80px),
+    rgba(0, 0, 0, 0) 100%
+  );
+}
+
+@media (max-width: 767px) {
+  .bgArtwork {
+    -webkit-mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.12) 0px,
+      rgba(0, 0, 0, 0.18) 30px,
+      rgba(0, 0, 0, 0.22) 60px,
+      rgba(0, 0, 0, 0.25) 200px,
+      rgba(0, 0, 0, 0.65) 280px,
+      rgba(0, 0, 0, 0.65) calc(100% - 50px),
+      rgba(0, 0, 0, 0) 100%
+    );
+    mask-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.12) 0px,
+      rgba(0, 0, 0, 0.18) 30px,
+      rgba(0, 0, 0, 0.22) 60px,
+      rgba(0, 0, 0, 0.25) 200px,
+      rgba(0, 0, 0, 0.65) 280px,
+      rgba(0, 0, 0, 0.65) calc(100% - 50px),
+      rgba(0, 0, 0, 0) 100%
+    );
+  }
+}
+
+.contentContainer {
+  position: relative;
+  z-index: 1;
+}
+
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Split Section Header matching Design System */
+.introHeader {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  align-items: flex-start;
   margin-bottom: 48px;
+  gap: 20px;
 }
 
-@media (min-width: 768px) {
-  .sectionHeader {
+@media (min-width: 860px) {
+  .introHeader {
     flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
+    align-items: stretch;
+    gap: 0;
   }
+}
+
+.badgeCol {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.labelRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.smallLabel {
+  font-size: 13.5px;
+  font-weight: 800;
+  letter-spacing: 0.22em;
+  color: var(--color-near-black);
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.accentDash {
+  display: inline-block;
+  width: 38px;
+  height: 3px;
+  background-color: var(--color-electric-blue);
+  border-radius: 2px;
+}
+
+.insightsHeading {
+  font-size: clamp(2.3rem, 3.8vw, 3.4rem);
+  font-weight: 900;
+  line-height: 0.88;
+  letter-spacing: -0.04em;
+  color: var(--color-near-black);
+  margin: 0;
+  padding: 0;
+  text-transform: uppercase;
+  user-select: none;
+  white-space: nowrap;
+}
+
+@supports ((-webkit-background-clip: text) or (background-clip: text)) {
+  .insightsHeading {
+    background: var(--gradient-brand-future, linear-gradient(135deg, #493bd9 0%, #075af7 35%, #19cbd0 70%, #68ce8a 100%));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    color: transparent;
+  }
+}
+
+.headerDivider {
+  display: none;
+}
+
+@media (min-width: 860px) {
+  .headerDivider {
+    display: block;
+    width: 1px;
+    background: rgba(2, 7, 19, 0.14);
+    margin: 4px 36px 6px 36px;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+}
+
+.statementCol {
+  flex: 1;
+  max-width: 860px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.statementHeading {
+  font-size: clamp(1.75rem, 2.5vw, 2.65rem);
+  font-weight: 600;
+  line-height: 1.22;
+  color: var(--color-near-black);
+  letter-spacing: -0.025em;
+  margin-bottom: 12px;
+}
+
+.supportingText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  max-width: 760px;
+  margin: 0 0 12px 0;
 }
 
 .viewAllLink {
@@ -31,15 +224,89 @@
   color: var(--color-electric-blue-hover);
 }
 
+/* Mobile-first: single horizontal swipeable carousel with CSS scroll snap */
 .cardsGrid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+  /* Bleed to viewport edges while maintaining content margin via padding */
+  width: calc(100% + (2 * var(--gutter-mobile)));
+  max-width: calc(100% + (2 * var(--gutter-mobile)));
+  margin-left: calc(-1 * var(--gutter-mobile));
+  margin-right: calc(-1 * var(--gutter-mobile));
+  padding-left: var(--gutter-mobile);
+  padding-right: var(--gutter-mobile);
+  scroll-padding-left: var(--gutter-mobile);
+  gap: 16px;
+  /* Vertical padding to preserve hover & elevation shadows without clipping */
+  padding-top: 6px;
+  padding-bottom: 24px;
+}
+
+.cardsGrid::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Guard spacer guaranteeing the final card retains right padding on mobile */
+.cardsGrid::after {
+  content: '';
+  flex: 0 0 var(--gutter-mobile);
+  width: var(--gutter-mobile);
+  pointer-events: none;
+}
+
+.cardItem {
+  flex: 0 0 calc(84vw - 20px);
+  max-width: 340px;
+  min-width: 270px;
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+  display: flex;
+}
+
+@media (max-width: 767px) {
+  /* Prevent horizontal carousel cards from staying hidden before intersection fires offscreen */
+  .cardItem[data-animate] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
 }
 
 @media (min-width: 768px) {
   .cardsGrid {
+    display: grid;
     grid-template-columns: repeat(2, 1fr);
+    overflow-x: visible;
+    overflow-y: visible;
+    scroll-snap-type: none;
+    width: 100%;
+    max-width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    gap: 28px;
+  }
+
+  .cardsGrid::after {
+    display: none;
+  }
+
+  .cardItem {
+    flex: none;
+    max-width: none;
+    min-width: 0;
+    scroll-snap-align: none;
+    display: block;
+    height: 100%;
   }
 }
 
@@ -50,6 +317,8 @@
 }
 
 .articleCard {
+  width: 100%;
+  height: 100%;
   background-color: var(--color-white);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-card);

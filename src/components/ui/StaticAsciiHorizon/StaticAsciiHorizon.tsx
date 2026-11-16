@@ -6,6 +6,7 @@ export interface StaticAsciiHorizonProps {
   cellSize?: number;
   density?: number;
   currencies?: string[];
+  theme?: 'dark' | 'light';
 }
 
 // Pseudo-random 2D hash to create deterministic organic variation (identical to shader noise)
@@ -24,7 +25,8 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
   className = '',
   cellSize = 18,
   density = 0.8,
-  currencies
+  currencies,
+  theme = 'dark'
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -133,25 +135,47 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
           const fontWeight = tone > 0.65 ? '700' : '600';
           ctx.font = `${fontWeight} ${fontSize}px "Geist Mono", SFMono-Regular, Menlo, Monaco, Consolas, "Segoe UI Symbol", monospace`;
 
-          // Color palette based on intensity — alphas reduced to feel more recessed/atmospheric
+          // Color palette based on intensity & theme
           let fill: string;
           let alpha: number;
 
-          if (tone > 0.82) {
-            fill = '#f6f8ff';
-            alpha = 0.52;
-          } else if (tone > 0.62) {
-            fill = '#a5d8ff';
-            alpha = 0.42;
-          } else if (tone > 0.40) {
-            fill = '#38bdf8';
-            alpha = 0.34;
-          } else if (tone > 0.22) {
-            fill = '#1e3fd8';
-            alpha = 0.26;
+          if (theme === 'light') {
+            // Light pale-ice palette for Insights:
+            // Direct soft blue tints, faint enough for dark headings and links to remain easy to read
+            if (tone > 0.82) {
+              fill = '#1d4ed8';
+              alpha = 0.28;
+            } else if (tone > 0.62) {
+              fill = '#2563eb';
+              alpha = 0.22;
+            } else if (tone > 0.40) {
+              fill = '#0284c7';
+              alpha = 0.18;
+            } else if (tone > 0.22) {
+              fill = '#0ea5e9';
+              alpha = 0.14;
+            } else {
+              fill = '#38bdf8';
+              alpha = 0.10;
+            }
           } else {
-            fill = '#1c3b7a';
-            alpha = 0.18;
+            // Dark navy palette (default)
+            if (tone > 0.82) {
+              fill = '#f6f8ff';
+              alpha = 0.52;
+            } else if (tone > 0.62) {
+              fill = '#a5d8ff';
+              alpha = 0.42;
+            } else if (tone > 0.40) {
+              fill = '#38bdf8';
+              alpha = 0.34;
+            } else if (tone > 0.22) {
+              fill = '#1e3fd8';
+              alpha = 0.26;
+            } else {
+              fill = '#1c3b7a';
+              alpha = 0.18;
+            }
           }
 
           ctx.fillStyle = fill;
@@ -163,27 +187,75 @@ export const StaticAsciiHorizon: React.FC<StaticAsciiHorizonProps> = ({
       ctx.restore();
     };
 
-    // Initial render
-    render();
+    let isIntersecting = false;
+    let hasRendered = false;
 
-    // Debounced resize handler - only redraws on actual window resize
+    // Debounced resize handler - redraws on window or container resize if currently visible
     const handleResize = () => {
       clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(render, 120);
+      resizeTimer = window.setTimeout(() => {
+        if (isIntersecting || hasRendered) {
+          render();
+        }
+      }, 120);
     };
 
     window.addEventListener('resize', handleResize, { passive: true });
 
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== 'undefined' && container) {
+      resizeObserver = new ResizeObserver(() => handleResize());
+      resizeObserver.observe(container);
+    }
+
+    // Performance: Only render the math-intensive canvas grid when near the viewport
+    let intersectionObserver: IntersectionObserver | null = null;
+    if (typeof IntersectionObserver !== 'undefined' && container) {
+      intersectionObserver = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry && entry.isIntersecting) {
+            isIntersecting = true;
+            if (!hasRendered) {
+              render();
+              hasRendered = true;
+            }
+          } else {
+            isIntersecting = false;
+          }
+        },
+        { rootMargin: '250px 0px' }
+      );
+      intersectionObserver.observe(container);
+    } else {
+      render();
+      hasRendered = true;
+    }
+
     return () => {
       clearTimeout(resizeTimer);
       window.removeEventListener('resize', handleResize);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
+      if (intersectionObserver) {
+        intersectionObserver.disconnect();
+      }
     };
-  }, [cellSize, density, currencies]);
+  }, [cellSize, density, currencies, theme]);
 
   return (
-    <div ref={containerRef} className={`${styles.staticAsciiContainer} ${className}`} aria-hidden="true">
+    <div
+      ref={containerRef}
+      className={`${styles.staticAsciiContainer} ${theme === 'light' ? styles.lightContainer : ''} ${className}`}
+      aria-hidden="true"
+    >
       <canvas ref={canvasRef} className={styles.staticCanvas} />
-      <div className={styles.ambientGlow} />
+      {theme === 'light' ? (
+        <div className={styles.ambientGlowLight} />
+      ) : (
+        <div className={styles.ambientGlow} />
+      )}
     </div>
   );
 };

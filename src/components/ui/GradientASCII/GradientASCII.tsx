@@ -946,3 +946,4 @@ export const GradientASCII: React.FC<GradientASCIIProps> = ({
 };
 
 export default GradientASCII;
+

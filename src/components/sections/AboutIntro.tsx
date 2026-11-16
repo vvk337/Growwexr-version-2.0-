@@ -1,8 +1,43 @@
 import React, { useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
-import { Compass, Eye, MessageSquare, ArrowRight } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { AnimateIn } from '../ui/AnimateIn';
 import styles from './AboutIntro.module.css';
+
+// Card 3 image: Replace null with actual Growwezy expo photo (e.g. '/assets/about-growwezy-expo.jpg') once supplied
+const EXPO_IMAGE_SRC: string | null = null;
+
+interface AboutCardItem {
+  id: string;
+  title: string;
+  body: string;
+  image: string | null;
+  imagePosition: string;
+}
+
+const aboutCards: AboutCardItem[] = [
+  {
+    id: 'objectives-first',
+    title: 'Your Objectives First',
+    body: 'We take the time to understand your trading experience, financial objectives, and preferred level of involvement, shaping our guidance around what matters to you.',
+    image: '/assets/about-consultation-advisory.webp',
+    imagePosition: 'center 20%',
+  },
+  {
+    id: 'specialist-expertise',
+    title: 'Specialist Expertise',
+    body: 'Our team brings together experience in forex markets and portfolio management, combining market research with practical trading knowledge.',
+    image: '/assets/about-specialist-research.webp',
+    imagePosition: 'center 30%',
+  },
+  {
+    id: 'global-presence',
+    title: 'Our Global Presence',
+    body: 'Through our participation in financial expos around the world, we connect with traders, industry professionals, and partners beyond the screen.',
+    image: EXPO_IMAGE_SRC,
+    imagePosition: 'center center',
+  },
+];
 
 export const AboutIntro: React.FC = () => {
   const gridRef = useRef<HTMLDivElement | null>(null);
@@ -17,12 +52,13 @@ export const AboutIntro: React.FC = () => {
     if (cards.length === 0) return;
 
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
+    const isMobile = window.innerWidth < 768;
+    if (prefersReducedMotion || isMobile) {
       cards.forEach((card) => {
         card.style.transform = 'none';
         card.style.opacity = '1';
       });
-      return;
+      if (isMobile) return;
     }
 
     let rafId: number | null = null;
@@ -108,7 +144,7 @@ export const AboutIntro: React.FC = () => {
                 <span className={styles.aboutLabel}>ABOUT</span>
                 <span className={styles.aboutDash} aria-hidden="true" />
               </div>
-              <div className={styles.usHeading}>US</div>
+              <div className={`${styles.usHeading} brand-gradient-text`}>US</div>
             </div>
 
             <div className={styles.headerDivider} aria-hidden="true" />
@@ -128,76 +164,43 @@ export const AboutIntro: React.FC = () => {
           </div>
         </AnimateIn>
 
-        {/* Three Card Row: 2 text cards + 1 image card with scroll-tied upward motion */}
+        {/* Three Card Row: Unified Image-Backed Cards linking to /about */}
         <div className={styles.cardsGrid} ref={gridRef}>
-          {/* Card 1: Clear Perspective */}
-          <div
-            ref={(el) => {
-              cardRefs.current[0] = el;
-            }}
-            className={styles.scrollCardWrapper}
-          >
-            <div className={styles.textCard}>
-              <div className={styles.cardIconBox}>
-                <Compass size={22} className={styles.cardIcon} />
-              </div>
-              <div className={styles.cardContent}>
-                <h3 className={styles.cardTitle}>Clear Perspective</h3>
-                <p className={styles.cardText}>
-                  Cutting through market noise with objective macroeconomic fundamentals and quantitative currency correlation models.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Research-Led Thinking */}
-          <div
-            ref={(el) => {
-              cardRefs.current[1] = el;
-            }}
-            className={styles.scrollCardWrapper}
-          >
-            <div className={styles.textCard}>
-              <div className={styles.cardIconBox}>
-                <Eye size={22} className={styles.cardIcon} />
-              </div>
-              <div className={styles.cardContent}>
-                <h3 className={styles.cardTitle}>Research-Led Thinking</h3>
-                <p className={styles.cardText}>
-                  Every strategy is rooted in sovereign debt yields, trade flows, and central bank monetary paths, eliminating speculative bias.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 3: Editorial Image Card */}
-          <div
-            ref={(el) => {
-              cardRefs.current[2] = el;
-            }}
-            className={styles.scrollCardWrapper}
-          >
-            <div className={styles.imageCard}>
-              <img
-                src="https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=700&q=75"
-                alt="Ongoing Dialogue and Collaboration"
-                className={styles.imageCardImg}
-                width="700"
-                height="450"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className={styles.imageCardOverlay}>
-                <div className={styles.imageCardIconBox}>
-                  <MessageSquare size={20} />
+          {aboutCards.map((card, idx) => (
+            <div
+              key={card.id}
+              ref={(el) => {
+                cardRefs.current[idx] = el;
+              }}
+              className={styles.scrollCardWrapper}
+            >
+              <Link
+                to="/about"
+                className={styles.aboutCard}
+                aria-label={`${card.title} - Learn more about our advisory philosophy`}
+              >
+                {card.image ? (
+                  <img
+                    src={card.image}
+                    alt=""
+                    className={styles.cardImg}
+                    style={{ objectPosition: card.imagePosition }}
+                    width="700"
+                    height="450"
+                    loading="lazy"
+                    decoding="async"
+                    aria-hidden="true"
+                  />
+                ) : (
+                  <div className={styles.navyFallback} aria-hidden="true" />
+                )}
+                <div className={styles.cardOverlay}>
+                  <h3 className={styles.cardTitle}>{card.title}</h3>
+                  <p className={styles.cardText}>{card.body}</p>
                 </div>
-                <h3 className={styles.imageCardTitle}>Ongoing Dialogue</h3>
-                <p className={styles.imageCardText}>
-                  Direct, transparent consultation keeping your portfolio aligned with evolving global conditions.
-                </p>
-              </div>
+              </Link>
             </div>
-          </div>
+          ))}
         </div>
       </div>
 

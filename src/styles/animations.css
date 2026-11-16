@@ -37,6 +37,18 @@
   transform: translateX(0);
 }
 
+/* On mobile viewports, translate vertically to prevent offscreen horizontal overflow */
+@media (max-width: 767px) {
+  [data-animate="slide-left"],
+  [data-animate="slide-right"] {
+    transform: translateY(24px);
+  }
+  [data-animate="slide-left"].animate-in,
+  [data-animate="slide-right"].animate-in {
+    transform: translateY(0);
+  }
+}
+
 /* Scale up */
 [data-animate="scale-up"] {
   opacity: 0;

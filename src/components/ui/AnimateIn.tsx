@@ -9,6 +9,28 @@ interface AnimateInProps {
   as?: 'div' | 'section' | 'article' | 'span';
 }
 
+// Singleton observer pool to drastically minimize memory & thread overhead
+let sharedObserver: IntersectionObserver | null = null;
+const observedElements = new Set<Element>();
+
+function getSharedObserver() {
+  if (!sharedObserver && typeof window !== 'undefined' && 'IntersectionObserver' in window) {
+    sharedObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+            sharedObserver?.unobserve(entry.target);
+            observedElements.delete(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+  }
+  return sharedObserver;
+}
+
 export const AnimateIn: React.FC<AnimateInProps> = ({
   children,
   className = '',
@@ -30,18 +52,20 @@ export const AnimateIn: React.FC<AnimateInProps> = ({
       return;
     }
 
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add('animate-in');
-          observer.disconnect();
-        }
-      },
-      { threshold, rootMargin: '0px 0px -40px 0px' }
-    );
+    const observer = getSharedObserver();
+    if (observer) {
+      observer.observe(el);
+      observedElements.add(el);
+    } else {
+      el.classList.add('animate-in');
+    }
 
-    observer.observe(el);
-    return () => observer.disconnect();
+    return () => {
+      if (observer) {
+        observer.unobserve(el);
+        observedElements.delete(el);
+      }
+    };
   }, [threshold]);
 
   const dataAnimate = animation === 'default' ? '' : animation;

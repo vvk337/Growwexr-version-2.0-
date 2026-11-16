@@ -1,6 +1,9 @@
 .ctaSection {
   background-color: var(--color-white);
   padding-bottom: clamp(60px, 8vw, 110px);
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
 }
 
 .ctaCard {

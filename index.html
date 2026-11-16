@@ -18,8 +18,12 @@
     <!-- Preload brand logo to avoid flash of missing logo -->
     <link rel="preload" href="/assets/Growwezy-Global-Tech-HD.svg" as="image" type="image/svg+xml">
 
-    <!-- Modern typography -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Non-render-blocking modern typography -->
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" media="print" onload="this.media='all'">
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    </noscript>
   </head>
   <body>
     <div id="root"></div>

@@ -32,11 +32,14 @@ Open [http://localhost:4173](http://localhost:4173) in your browser.
 * **Mobile-First Responsive Verification**: Verified breakpoints at 360px, 440px, 768px, 1024px, and 1440px with touch-friendly 44px+ targets and zero horizontal overflow.
 * **Clean Route Structure**:
   * `/`: Full homepage featuring hero, category ticker, 3-card about intro with marquee, services swipe rail, values 5-part arrangement, client focus selector, 3-step consultation framework, comparison section, insights preview, FAQ accordion, and final CTA.
-  * `/services`: Advisory overview and confirmed service mandates.
-  * `/services/forex-advisory`: In-depth Forex advisory overview, discussion topics, deliverables, and FAQs.
-  * `/services/financial-asset-management`: Comprehensive wealth management and NRI asset allocation.
+  * `/services`: Advisory overview and 5 service tiers (Forex Signals, Comex Signals, Combo Signals, HNI Signals, Account Management).
+  * `/services/forex-signals`: In-depth Forex currency signals overview, entry/exit coordinates, risk controls, and FAQs.
+  * `/services/comex-signals`: Gold (XAU/USD) & Silver (XAG/USD) signals and intraday/swing setups.
+  * `/services/combo-signals`: Comprehensive Forex and Comex precious metals package.
+  * `/services/hni-signals`: Premium dedicated tier with 24/7 relationship manager and bespoke strategy consultations.
+  * `/services/account-management`: Trade-only execution service with funds remaining 100% in client custody.
   * `/approach`: 3-step consultation framework and client preparation guidance.
-  * `/about`: Firm origin (established in India in 2020), Middle East focus, and core principles.
+  * `/about`: Firm origin (established in India in 2019), Middle East focus, and core principles.
   * `/insights` & `/insights/:slug`: Educational research articles on currency risk, liquidity, and central bank policy.
   * `/contact`: Consultation booking form with visible labels, validation, and honest preview mode.
   * `*`: Custom 404 screen.

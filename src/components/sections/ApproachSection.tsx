@@ -40,16 +40,32 @@ export const ApproachSection: React.FC = () => {
   return (
     <section className={`section section-ice ${styles.approachSection}`} aria-labelledby="approach-heading">
       <div className="container">
-        {/* Section Heading */}
+        {/* Accessible screen reader heading */}
+        <h2 id="approach-heading" className={styles.visuallyHidden}>
+          Our Approach
+        </h2>
+
+        {/* Section Heading with Brand Split Layout */}
         <AnimateIn animation="default">
-          <div className={styles.sectionHeader}>
-            <span className="section-overline">Consultation Framework</span>
-            <h2 id="approach-heading" className="section-title">
-              Our 3-Step Engagement Approach
-            </h2>
-            <p className={styles.subtitle}>
-              A structured, objective pathway from initial risk assessment to bespoke foreign exchange allocation strategy.
-            </p>
+          <div className={styles.introHeader}>
+            <div className={styles.badgeCol}>
+              <div className={styles.labelRow}>
+                <span className={styles.smallLabel}>OUR</span>
+                <span className={styles.accentDash} aria-hidden="true" />
+              </div>
+              <div className={`${styles.approachHeading} brand-gradient-text`}>APPROACH</div>
+            </div>
+
+            <div className={styles.headerDivider} aria-hidden="true" />
+
+            <div className={styles.statementCol}>
+              <p className={styles.statementHeading}>
+                A structured, disciplined pathway from assessment to execution.
+              </p>
+              <p className={styles.supportingText}>
+                We take the time to understand your trading experience, risk parameters, and objectives before recommending any strategy or plan.
+              </p>
+            </div>
           </div>
         </AnimateIn>
 

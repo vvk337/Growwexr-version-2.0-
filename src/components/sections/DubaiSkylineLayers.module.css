@@ -1,0 +1,144 @@
+.layersContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background-color: #0b1528;
+  border-radius: inherit;
+}
+
+/* Aspect-ratio pinned canvas so layers stay perfectly aligned on any aspect ratio */
+.canvasStage {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1024 / 819;
+  pointer-events: none;
+  user-select: none;
+}
+
+@media (max-aspect-ratio: 1024/819) {
+  .canvasStage {
+    width: auto;
+    height: 100%;
+    aspect-ratio: 1024 / 819;
+  }
+}
+
+@media (min-aspect-ratio: 1024/819) {
+  .canvasStage {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1024 / 819;
+  }
+}
+
+.layerImage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Back-to-front stack order */
+.backgroundLayer {
+  z-index: 1;
+}
+
+.clipWrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Ground clipping per building so downwards translation never extends below foreground */
+.khalifaWrapper {
+  z-index: 2;
+  clip-path: inset(0 0 9.28% 0);
+}
+
+.alArabWrapper {
+  z-index: 3;
+  clip-path: inset(0 0 10.26% 0);
+}
+
+.frameWrapper {
+  z-index: 3;
+  clip-path: inset(0 0 8.30% 0);
+}
+
+.museumWrapper {
+  z-index: 4;
+  clip-path: inset(0 0 6.35% 0);
+}
+
+.movingBuilding {
+  will-change: transform;
+}
+
+/* Final composite frame: resting frame crossfade and fallback */
+.finalLayer {
+  z-index: 5;
+  transition: opacity 140ms ease-out;
+  will-change: opacity;
+}
+
+/* Overlay and caption: always top-most and still */
+.imageOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  background: linear-gradient(180deg, transparent 40%, rgba(2, 7, 19, 0.92) 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 32px;
+  pointer-events: none;
+}
+
+.imageTag {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--color-teal);
+  margin-bottom: 6px;
+}
+
+.imageHeadline {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-white);
+  line-height: 1.3;
+}
+
+@media (max-width: 767px) {
+  .imageOverlay {
+    padding: 24px;
+  }
+
+  .imageHeadline {
+    font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .movingBuilding {
+    transform: none !important;
+    will-change: auto !important;
+  }
+  .finalLayer {
+    opacity: 1 !important;
+    transition: none !important;
+  }
+}
+

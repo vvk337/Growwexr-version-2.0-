@@ -38,9 +38,9 @@ export const siteConfig: SiteConfig = {
   legalName: 'Growwezy Global Tech Private Limited',
   shortName: 'Growwezy',
   tagline: 'Clearer Perspective. Informed Forex Decisions.',
-  establishedYear: 2020,
+  establishedYear: 2019,
   description:
-    'Forex trading advisory and financial asset management services for NRIs and international clients in the Middle East. Established in India in 2020.',
+    'Forex trading advisory and financial asset management services for NRIs and international clients in the Middle East. Established in India in 2019.',
   logo: {
     full: '/assets/Growwezy-Global-Tech-HD.svg',
     symbol: '/assets/Growwezy-G-Square.svg',

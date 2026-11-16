@@ -1,75 +1,92 @@
 import React from 'react';
-import { Target, HelpCircle, Layers, ShieldCheck, ArrowRight, Activity } from 'lucide-react';
+import { Target, Layers, HelpCircle, ShieldCheck, Activity, ArrowRight } from 'lucide-react';
 import { AnimateIn } from '../ui/AnimateIn';
+import { StaticAsciiHorizon } from '../ui/StaticAsciiHorizon';
 import styles from './WhyWorkWithUs.module.css';
 
 export const WhyWorkWithUs: React.FC = () => {
-  const whatYouBring = [
+  const tradingOptions = [
     {
       icon: Target,
-      title: 'Your Capital & Liquidity Objectives',
-      desc: 'Clear articulation of your current cross-border wealth, timeline, and return targets.'
-    },
-    {
-      icon: HelpCircle,
-      title: 'Current Currency Exposures',
-      desc: 'The specific currency pairs (USD, AED, EUR, INR) and volatility challenges you face.'
+      title: 'Trade for yourself.',
+      desc: 'Choose forex signals, gold and silver signals, or a plan that covers both. You decide which trades to place.'
     },
     {
       icon: Layers,
-      title: 'Existing Broker & Custody Context',
-      desc: 'Your preferred execution platforms and regulatory residency boundaries.'
+      title: 'Have our team place trades.',
+      desc: 'With account management, Growwezy handles trade execution in your broker account.'
+    },
+    {
+      icon: HelpCircle,
+      title: 'Speak to a dedicated relationship manager.',
+      desc: 'The HNI Signals plan includes 24/7 relationship manager support.'
     }
   ];
 
-  const whatWeDiscuss = [
+  const accountAccess = [
     {
       icon: ShieldCheck,
-      title: 'Objective Market Research',
-      desc: 'Independent macroeconomic analysis without broker incentives or hidden commission models.'
+      title: 'You fund your own account.',
+      desc: 'Trading funds stay in the broker account held in your name.'
     },
     {
       icon: Activity,
-      title: 'Disciplined Risk Frameworks',
-      desc: 'Systematic drawdown modeling, hedging structures, and volatility stress-tests.'
+      title: 'Our access is limited to trading.',
+      desc: 'For account management, Growwezy can place trades but cannot withdraw funds.'
     },
     {
       icon: ArrowRight,
-      title: 'Transparent Next Steps',
-      desc: 'Clear, actionable roadmap recommendations with regular advisory review checkpoints.'
+      title: 'Service fees are paid separately.',
+      desc: 'You pay Growwezy directly for the service, separate from the funds you deposit with your broker.'
     }
   ];
 
   return (
     <section className={`section section-navy ${styles.whySection}`} aria-labelledby="why-heading">
-      <div className="container">
-        {/* Centered Heading */}
+      {/* Background artwork shared directly with Our Services section */}
+      <StaticAsciiHorizon cellSize={18} density={0.8} className={styles.bgArtwork} />
+
+      <div className={`container ${styles.contentContainer}`}>
+        {/* Accessible screen reader heading */}
+        <h2 id="why-heading" className={styles.visuallyHidden}>
+          Why Growwezy
+        </h2>
+
+        {/* Section Heading with Brand Split Layout */}
         <AnimateIn animation="default">
-          <div className={styles.sectionHeader}>
-            <span className="section-overline">Mutual Collaboration</span>
-            <h2 id="why-heading" className="section-title">
-              What Sets Our Engagements Apart
-            </h2>
-            <p className={styles.subtitle}>
-              A balanced partnership built on clarity, shared context, and rigorous financial analysis.
-            </p>
+          <div className={styles.introHeader}>
+            <div className={styles.badgeCol}>
+              <div className={styles.labelRow}>
+                <span className={styles.smallLabel}>WHY</span>
+                <span className={styles.tealDash} aria-hidden="true" />
+              </div>
+              <div className={`${styles.whyHeading} brand-gradient-text`}>GROWWEZY</div>
+            </div>
+
+            <div className={styles.headerDivider} aria-hidden="true" />
+
+            <div className={styles.statementCol}>
+              <p className={styles.statementHeading}>
+                Trade your way, with a team you can speak to.
+              </p>
+              <p className={styles.supportingText}>
+                Choose how involved you want to be in trading, and know exactly what access our team has.
+              </p>
+            </div>
           </div>
         </AnimateIn>
 
-        {/* Two-Column Comparison Rhythm */}
+        {/* Two-Column Comparison Rhythm (Mobile Carousel / Desktop 2-Col Grid) */}
         <div className={styles.comparisonGrid}>
-          {/* Column 1: What You Bring */}
-          <AnimateIn animation="slide-left" delay={150}>
+          {/* Column 1: Trading Options */}
+          <AnimateIn animation="slide-left" delay={150} className={styles.cardWrapper}>
             <div className={styles.columnCard}>
               <div className={styles.cardHeader}>
-                <span className={styles.colTag}>Your Contribution</span>
-                <h3 className={styles.colHeading}>What You Bring</h3>
-                <p className={styles.colSummary}>
-                  The context and clarity regarding your international commitments.
-                </p>
+                <span className={styles.colTag}>TRADING OPTIONS</span>
+                <h3 className={styles.colHeading}>Choose how you trade</h3>
               </div>
               <div className={styles.rowsList}>
-                {whatYouBring.map((item, idx) => {
+                {tradingOptions.map((item, idx) => {
                   const Icon = item.icon;
                   return (
                     <div key={idx} className={styles.comparisonRow}>
@@ -87,18 +104,15 @@ export const WhyWorkWithUs: React.FC = () => {
             </div>
           </AnimateIn>
 
-          {/* Column 2: What We Discuss */}
-          <AnimateIn animation="slide-right" delay={250}>
+          {/* Column 2: Account Access */}
+          <AnimateIn animation="slide-right" delay={250} className={styles.cardWrapper}>
             <div className={`${styles.columnCard} ${styles.columnHighlight}`}>
               <div className={styles.cardHeader}>
-                <span className={styles.colTagHighlight}>Our Advisory Delivery</span>
-                <h3 className={styles.colHeading}>What We Discuss</h3>
-                <p className={styles.colSummary}>
-                  The quantitative perspective and risk architecture we provide.
-                </p>
+                <span className={styles.colTagHighlight}>ACCOUNT ACCESS</span>
+                <h3 className={styles.colHeading}>Your funds stay in your broker account</h3>
               </div>
               <div className={styles.rowsList}>
-                {whatWeDiscuss.map((item, idx) => {
+                {accountAccess.map((item, idx) => {
                   const Icon = item.icon;
                   return (
                     <div key={idx} className={styles.comparisonRow}>
@@ -120,4 +134,3 @@ export const WhyWorkWithUs: React.FC = () => {
     </section>
   );
 };
-

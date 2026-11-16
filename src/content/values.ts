@@ -1,41 +1,50 @@
 export interface ValueItem {
   id: string;
+  stepNumber: string;
   title: string;
   description: string;
   iconName: 'Compass' | 'Shield' | 'Eye' | 'BookOpen';
+  order: number;
 }
 
 export const valuesData: ValueItem[] = [
   {
-    id: 'client-context',
-    title: 'Client Context',
+    id: 'step-01',
+    stepNumber: '01',
+    title: 'Let’s Talk',
     description:
-      'We tailor advisory frameworks around the distinct tax, currency, and regulatory environments of Middle East expatriates and cross-border families.',
-    iconName: 'Compass'
+      'Book a consultation to discuss your experience, goals, and questions. You don’t need to have everything figured out before speaking with us.',
+    iconName: 'Compass',
+    order: 1
   },
   {
-    id: 'clear-communication',
-    title: 'Clear Communication',
+    id: 'step-02',
+    stepNumber: '02',
+    title: 'Find Your Fit',
     description:
-      'No complex financial jargon or opaque strategies. Every market observation and recommendation is articulated with clarity and practical relevance.',
-    iconName: 'Eye'
+      'Explore trading signals or account management with our team. Understand how your chosen service works, including its fees and trading risks.',
+    iconName: 'Eye',
+    order: 2
   },
   {
-    id: 'long-term-perspective',
-    title: 'Long-Term Perspective',
+    id: 'step-03',
+    stepNumber: '03',
+    title: 'Get Set Up',
     description:
-      'We prioritize balance-sheet durability and structural risk control over speculative short-term chasing, protecting principal value.',
-    iconName: 'Shield'
+      'We’ll walk you through the setup for your chosen service, explain any account access needed, and make sure you know how to get support.',
+    iconName: 'Shield',
+    order: 3
   },
   {
-    id: 'research-discipline',
-    title: 'Research Discipline',
+    id: 'step-04',
+    stepNumber: '04',
+    title: 'Begin with Guidance',
     description:
-      'All insights originate from quantitative liquidity tracking, sovereign macroeconomic fundamentals, and data-backed empirical models.',
-    iconName: 'BookOpen'
+      'Start receiving signals or begin the agreed account management service. Stay in touch with our team as you get familiar with the process.',
+    iconName: 'BookOpen',
+    order: 4
   }
 ];
 
-export const valuesCenterImage =
-  'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=700&q=75';
+export const valuesCenterImage = '/assets/growwezy-onboarding.webp';
 

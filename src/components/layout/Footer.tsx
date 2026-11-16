@@ -1,10 +1,23 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { ChevronDown } from 'lucide-react';
 import { siteConfig } from '../../config/site';
 import { FlowButton } from '../ui/flow-button';
 import styles from './Footer.module.css';
 
 export const Footer: React.FC = () => {
+  const [isDesktop, setIsDesktop] = useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 768 : true
+  );
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   return (
     <footer className={styles.footer} role="contentinfo">
       {/* Top Pre-Footer Consultation Invite */}
@@ -40,7 +53,7 @@ export const Footer: React.FC = () => {
               />
             </Link>
             <p className={styles.brandBio}>
-              Forex trading advisory and financial asset management services for NRIs and international clients across the Middle East. Established in India in 2020.
+              Forex trading advisory and financial asset management services for NRIs and international clients across the Middle East. Established in India in 2019.
             </p>
             <div className={styles.contactBrief}>
               <p>Email: <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></p>
@@ -50,53 +63,80 @@ export const Footer: React.FC = () => {
 
           {/* Navigation Column 1: Services */}
           <div className={styles.navCol}>
-            <h3 className={styles.colTitle}>Services</h3>
-            <ul className={styles.linkList}>
-              <li>
-                <Link to="/services/forex-advisory">Forex Trading Advisory</Link>
-              </li>
-              <li>
-                <Link to="/services/financial-asset-management">Financial Asset Management</Link>
-              </li>
-              <li>
-                <Link to="/services">All Advisory Capabilities</Link>
-              </li>
-              <li>
-                <Link to="/approach">Our 3-Step Approach</Link>
-              </li>
-            </ul>
+            <details
+              key={isDesktop ? 'desktop-services' : 'mobile-services'}
+              open={isDesktop ? true : undefined}
+              className={styles.detailsGroup}
+            >
+              <summary className={styles.summaryHeading}>
+                <h3 className={styles.colTitle}>Services</h3>
+                <ChevronDown size={15} className={styles.chevron} aria-hidden="true" />
+              </summary>
+              <ul className={styles.linkList}>
+                <li>
+                  <Link to="/services/forex-advisory">Forex Trading Advisory</Link>
+                </li>
+                <li>
+                  <Link to="/services/financial-asset-management">Financial Asset Management</Link>
+                </li>
+                <li>
+                  <Link to="/services">All Advisory Capabilities</Link>
+                </li>
+                <li>
+                  <Link to="/approach">Our 3-Step Approach</Link>
+                </li>
+              </ul>
+            </details>
           </div>
 
           {/* Navigation Column 2: Firm */}
           <div className={styles.navCol}>
-            <h3 className={styles.colTitle}>Firm</h3>
-            <ul className={styles.linkList}>
-              <li>
-                <Link to="/about">About Growwezy</Link>
-              </li>
-              <li>
-                <Link to="/insights">Research & Insights</Link>
-              </li>
-              <li>
-                <Link to="/contact">Contact & Consultations</Link>
-              </li>
-            </ul>
+            <details
+              key={isDesktop ? 'desktop-firm' : 'mobile-firm'}
+              open={isDesktop ? true : undefined}
+              className={styles.detailsGroup}
+            >
+              <summary className={styles.summaryHeading}>
+                <h3 className={styles.colTitle}>Firm</h3>
+                <ChevronDown size={15} className={styles.chevron} aria-hidden="true" />
+              </summary>
+              <ul className={styles.linkList}>
+                <li>
+                  <Link to="/about">About Growwezy</Link>
+                </li>
+                <li>
+                  <Link to="/insights">Research & Insights</Link>
+                </li>
+                <li>
+                  <Link to="/contact">Contact & Consultations</Link>
+                </li>
+              </ul>
+            </details>
           </div>
 
           {/* Navigation Column 3: Audiences */}
           <div className={styles.navCol}>
-            <h3 className={styles.colTitle}>Client Focus</h3>
-            <ul className={styles.linkList}>
-              <li>
-                <span className={styles.mutedFocus}>Middle East NRIs</span>
-              </li>
-              <li>
-                <span className={styles.mutedFocus}>International Private Clients</span>
-              </li>
-              <li>
-                <span className={styles.mutedFocus}>Cross-Border Family Portfolios</span>
-              </li>
-            </ul>
+            <details
+              key={isDesktop ? 'desktop-audiences' : 'mobile-audiences'}
+              open={isDesktop ? true : undefined}
+              className={styles.detailsGroup}
+            >
+              <summary className={styles.summaryHeading}>
+                <h3 className={styles.colTitle}>Client Focus</h3>
+                <ChevronDown size={15} className={styles.chevron} aria-hidden="true" />
+              </summary>
+              <ul className={styles.linkList}>
+                <li>
+                  <span className={styles.mutedFocus}>Middle East NRIs</span>
+                </li>
+                <li>
+                  <span className={styles.mutedFocus}>International Private Clients</span>
+                </li>
+                <li>
+                  <span className={styles.mutedFocus}>Cross-Border Family Portfolios</span>
+                </li>
+              </ul>
+            </details>
           </div>
         </div>
 

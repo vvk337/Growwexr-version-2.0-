@@ -1,67 +1,164 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowUpRight, CheckCircle2 } from 'lucide-react';
+import { ArrowUpRight, CheckCircle2, ChevronDown } from 'lucide-react';
 import { PageBanner } from '../components/layout/PageBanner';
-import { servicesData } from '../content/services';
+import { servicesData, ServiceItem } from '../content/services';
+import { FlowButton } from '../components/ui/flow-button';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './ServicesIndex.module.css';
 
+const imagePositions: Record<string, string> = {
+  'forex-signals': 'center 30%',
+  'comex-signals': 'center 35%',
+  'combo-signals': 'center 40%',
+  'hni-signals': 'center 25%',
+  'account-management': 'center 25%',
+};
+
 export const ServicesIndex: React.FC = () => {
+  const [isDesktop, setIsDesktop] = React.useState(() =>
+    typeof window !== 'undefined' ? window.innerWidth >= 860 : true
+  );
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setIsDesktop(window.innerWidth >= 860);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  const signalsServices = servicesData.filter((s) => s.id !== 'account-management');
+  const accountManagement = servicesData.find((s) => s.id === 'account-management');
+
+  const renderServiceCard = (service: ServiceItem, isFullWidth = false) => {
+    const focalPoint = imagePositions[service.id] || 'center center';
+
+    return (
+      <article
+        key={service.id}
+        className={isFullWidth ? styles.fullWidthCard : styles.serviceCard}
+        aria-labelledby={`service-title-${service.id}`}
+      >
+        <div className={isFullWidth ? styles.fullWidthMedia : styles.cardMedia}>
+          <img
+            src={service.image}
+            alt={service.title}
+            className={styles.serviceImg}
+            style={{ objectPosition: focalPoint }}
+            width="600"
+            height="380"
+            loading="lazy"
+            decoding="async"
+          />
+        </div>
+
+        <div className={isFullWidth ? styles.fullWidthContent : styles.cardContent}>
+          <div className={styles.metaRow}>
+            <span className={styles.serviceTag}>{service.category}</span>
+            {service.offerPrice ? (
+              <div className={styles.priceWrapper}>
+                {service.originalPrice && (
+                  <span className={styles.originalPrice}>{service.originalPrice}</span>
+                )}
+                <span className={styles.offerPrice}>{service.offerPrice}</span>
+              </div>
+            ) : (
+              <span className={styles.consultationTag}>Custom Terms</span>
+            )}
+          </div>
+
+          <h3 id={`service-title-${service.id}`} className={isFullWidth ? styles.fullWidthTitle : styles.serviceTitle}>
+            {service.title}
+          </h3>
+          <p className={styles.serviceDesc}>{service.shortDescription}</p>
+
+          {/* Features: Collapsible toggle on mobile, direct list on desktop */}
+          <details
+            key={isDesktop ? `desktop-${service.id}` : `mobile-${service.id}`}
+            open={isDesktop ? true : undefined}
+            className={styles.featuresToggle}
+          >
+            <summary className={styles.featuresSummary}>
+              <span>What's included</span>
+              <ChevronDown size={15} className={styles.featuresChevron} aria-hidden="true" />
+            </summary>
+            <div className={styles.featuresList}>
+              {service.features.map((feature, fIdx) => (
+                <div key={fIdx} className={styles.featureItem}>
+                  <CheckCircle2 size={16} className={styles.featureIcon} />
+                  <span>{feature}</span>
+                </div>
+              ))}
+            </div>
+          </details>
+
+          <div className={styles.ctaRow}>
+            <FlowButton
+              to="/contact"
+              text="Book Consultation"
+              variant="primary"
+              size="sm"
+              className={styles.consultationBtn}
+            />
+            <Link to={`/services/${service.slug}`} className={styles.detailLink}>
+              <span>Explore {service.title}</span>
+              <ArrowUpRight size={16} aria-hidden="true" />
+            </Link>
+          </div>
+        </div>
+      </article>
+    );
+  };
+
   return (
     <main id="main-content">
       <PageBanner
-        overline="Advisory Scope"
-        title="Our Capabilities"
-        description="Structured foreign exchange risk advisory and financial asset management for NRIs and international participants in the Middle East."
+        overline="Advisory Scope & Plans"
+        title="Trading Signals & Account Management"
+        description="Structured foreign exchange signals, precious metals coverage, and trade-only account management for NRIs and international participants."
       />
 
-      <section className={`section section-white ${styles.servicesSection}`}>
+      <section className={`section ${styles.servicesSection}`} aria-labelledby="services-overview-heading">
         <div className="container">
-          <div className={styles.introBlock}>
-            <span className="section-overline">Focused Mandates</span>
-            <h2 className="section-title">Independent, Fee-Only Advisory</h2>
-            <p className={styles.introText}>
-              We do not distribute high-commission retail products or hold client funds. Our role is strictly analytical and advisory: empowering you to make informed decisions with clarity.
-            </p>
+          {/* Screen reader accessible heading */}
+          <h2 id="services-overview-heading" className={styles.visuallyHidden}>
+            Our Services & Plans
+          </h2>
+
+          {/* Split Section Header */}
+          <div className={styles.introHeader}>
+            <div className={styles.badgeCol}>
+              <div className={styles.labelRow}>
+                <span className={styles.smallLabel}>OUR</span>
+                <span className={styles.accentDash} aria-hidden="true" />
+              </div>
+              <div className={`${styles.servicesHeading} brand-gradient-text`}>SERVICES</div>
+            </div>
+
+            <div className={styles.headerDivider} aria-hidden="true" />
+
+            <div className={styles.statementCol}>
+              <p className={styles.statementHeading}>
+                Research. Signals. Disciplined Execution.
+              </p>
+              <p className={styles.supportingText}>
+                Choose trading signals you can act on yourself, or speak with us about having our team execute trades on your behalf. With account management, your funds stay securely in your own broker account.
+              </p>
+            </div>
           </div>
 
-          <div className={styles.servicesGrid}>
-            {servicesData.map((service) => (
-              <div key={service.id} className={styles.serviceBlock}>
-                <div className={styles.imageCol}>
-                  <img
-                    src={service.image}
-                    alt={service.title}
-                    className={styles.serviceImg}
-                    width="540"
-                    height="380"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </div>
-                <div className={styles.contentCol}>
-                  <span className={styles.serviceTag}>Confirmed Service</span>
-                  <h3 className={styles.serviceTitle}>{service.title}</h3>
-                  <p className={styles.serviceDesc}>{service.fullDescription}</p>
+          {/* Responsive Services Cards: Desktop 2×2 grid + full-width card; Mobile swipeable signals carousel + standalone card */}
+          <div className={styles.servicesContainer}>
+            <div className={styles.signalsGrid}>
+              {signalsServices.map((service) => renderServiceCard(service, false))}
+            </div>
 
-                  <div className={styles.featuresList}>
-                    {service.features.map((feature, fIdx) => (
-                      <div key={fIdx} className={styles.featureItem}>
-                        <CheckCircle2 size={16} className={styles.featureIcon} />
-                        <span>{feature}</span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div className={styles.ctaRow}>
-                    <Link to={`/services/${service.slug}`} className={styles.detailLink}>
-                      <span>Explore {service.title}</span>
-                      <ArrowUpRight size={16} />
-                    </Link>
-                  </div>
-                </div>
+            {accountManagement && (
+              <div className={styles.accountWrapper}>
+                {renderServiceCard(accountManagement, true)}
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
@@ -70,4 +167,3 @@ export const ServicesIndex: React.FC = () => {
     </main>
   );
 };
-

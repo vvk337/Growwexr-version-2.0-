@@ -1,0 +1,295 @@
+/* ==========================================================================
+   MarketTicker.module.css
+   Compact, seamless financial ticker with circular badges & 3-line layout
+   ========================================================================== */
+
+.tickerWrapper {
+  width: 100%;
+  background: transparent;
+  border: none;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  z-index: 5;
+  box-sizing: border-box;
+  font-family: var(--font-family);
+  user-select: none;
+}
+
+/* Marquee Viewport with Soft Edge Fade Masks */
+.tickerViewport {
+  width: 100%;
+  height: clamp(74px, 8.5vh, 82px);
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  align-items: center;
+  mask-image: linear-gradient(
+    to right,
+    transparent 0px,
+    black 36px,
+    black calc(100% - 36px),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0px,
+    black 36px,
+    black calc(100% - 36px),
+    transparent 100%
+  );
+}
+
+.tickerViewport:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: -2px;
+}
+
+/* Continuous Horizontal Scrolling Track */
+.tickerTrack {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  animation: tickerSlide 42s linear infinite;
+  will-change: transform;
+}
+
+.tickerGroup {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  flex-shrink: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* Pause on hover and keyboard focus */
+.tickerWrapper:hover .tickerTrack,
+.tickerWrapper:focus-within .tickerTrack {
+  animation-play-state: paused;
+}
+
+@keyframes tickerSlide {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Individual Instrument Item (Stable Width & Spacing) */
+.instrumentItem {
+  min-width: 220px;
+  width: 220px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  padding: 0 24px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  transition: background-color var(--transition-fast);
+}
+
+.instrumentItem:hover {
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+.instrumentItem:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: -3px;
+  border-radius: 4px;
+}
+
+/* 28–32px Consistent Instrument Asset Container (Preserves proportions; no forced circle crop) */
+.iconContainer {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.instrumentIcon {
+  width: 100%;
+  height: 100%;
+  max-width: 30px;
+  max-height: 30px;
+  object-fit: contain;
+  display: block;
+  user-select: none;
+  pointer-events: none;
+}
+
+.badgeFallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--color-white);
+  font-size: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Three-Line Text Layout Beside Badge */
+.itemContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+  gap: 1px;
+}
+
+/* Line 1: Small muted instrument name */
+.itemName {
+  font-size: 11px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* Line 2: White semibold price */
+.itemPrice {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-white);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+/* Line 3: Smaller green/red change figure */
+.itemChange {
+  font-size: 11.5px;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  white-space: nowrap;
+}
+
+.changeIcon {
+  display: inline-block;
+  font-size: 8.5px;
+  line-height: 1;
+}
+
+/* Movement Colors */
+.movementUp {
+  color: #4ade80; /* Muted vibrant green */
+}
+
+.movementDown {
+  color: #f87171; /* Muted coral red */
+}
+
+.movementUnchanged {
+  color: #94a3b8; /* Neutral slate grey */
+}
+
+/* Discreet Attribution & Delay Disclosure Outside Scrolling Row */
+.disclosureRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 16px 8px;
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.02em;
+  text-align: center;
+  box-sizing: border-box;
+  flex-wrap: wrap;
+}
+
+.indicativeLabel {
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.separatorDot {
+  color: rgba(255, 255, 255, 0.25);
+  user-select: none;
+}
+
+.attributionLink {
+  color: rgba(255, 255, 255, 0.6);
+  text-decoration: none;
+  transition: color var(--transition-fast), text-decoration var(--transition-fast);
+}
+
+.attributionLink:hover,
+.attributionLink:focus-visible {
+  color: #38bdf8;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.staleNotice {
+  color: #fbbf24;
+  font-weight: 500;
+}
+
+/* Unconfigured / Loading / Error Banner */
+.unconfiguredBanner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 24px;
+  color: rgba(255, 255, 255, 0.65);
+  font-size: 12px;
+  letter-spacing: 0.02em;
+}
+
+.unconfiguredTitle {
+  font-weight: 500;
+  color: var(--color-white);
+}
+
+.unconfiguredSub {
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 11px;
+}
+
+/* Reduced Motion Mode: Manual Horizontal Scroll */
+@media (prefers-reduced-motion: reduce) {
+  .tickerTrack {
+    animation: none;
+    transform: none !important;
+  }
+
+  .tickerViewport {
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    mask-image: none;
+    -webkit-mask-image: none;
+  }
+
+  .tickerViewport::-webkit-scrollbar {
+    height: 4px;
+  }
+
+  .tickerViewport::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+  }
+}

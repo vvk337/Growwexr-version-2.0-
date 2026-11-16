@@ -10,7 +10,7 @@ export const FinalCTA: React.FC = () => {
         <AnimateIn animation="scale-up">
           <div className={styles.ctaCard}>
             <img
-              src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1000&q=75"
+              src="/assets/about-consultation-advisory.webp"
               alt="Growwezy Strategic Financial Advisory"
               className={styles.bgImage}
               width="1000"

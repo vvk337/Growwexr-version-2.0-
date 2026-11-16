@@ -33,3 +33,23 @@
   mix-blend-mode: screen;
   opacity: 0.85;
 }
+
+.lightContainer {
+  background-color: transparent !important;
+}
+
+/* Atmospheric glow layer for light pale-ice background */
+.ambientGlowLight {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(
+    ellipse 90% 60% at 50% 100%,
+    rgba(147, 197, 253, 0.25) 0%,
+    rgba(186, 230, 253, 0.18) 35%,
+    rgba(240, 247, 252, 0) 70%,
+    transparent 100%
+  );
+  opacity: 0.9;
+}
+

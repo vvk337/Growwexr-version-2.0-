@@ -10,6 +10,9 @@
   --color-electric-blue-hover: #0047d4;
   --color-teal: #19cbd0;
 
+  /* Brand Gradients */
+  --gradient-brand-future: linear-gradient(135deg, #493bd9 0%, #075af7 35%, #19cbd0 70%, #68ce8a 100%);
+
   /* Text Colors */
   --text-main: #020713;
   --text-muted: #56657a;

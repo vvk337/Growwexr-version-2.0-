@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 30" width="32" height="30" fill="none">
+  <defs>
+    <clipPath id="ukClip">
+      <circle cx="10.5" cy="11.5" r="9.5"/>
+    </clipPath>
+    <clipPath id="usClipGbp">
+      <circle cx="21.5" cy="18.5" r="9.5"/>
+    </clipPath>
+  </defs>
+
+  <!-- United Kingdom Flag Disc -->
+  <g clip-path="url(#ukClip)">
+    <rect x="1" y="2" width="19" height="19" fill="#012169"/>
+    <!-- White Saltire Diagonals (St Andrew) -->
+    <path d="M1 2L20 21M20 2L1 21" stroke="#FFFFFF" stroke-width="3.8"/>
+    <!-- Red Saltire Diagonals (St Patrick) -->
+    <path d="M1 2L20 21M20 2L1 21" stroke="#C8102E" stroke-width="1.8"/>
+    <!-- White St George Cross Border -->
+    <path d="M10.5 2V21M1 11.5H20" stroke="#FFFFFF" stroke-width="5.4"/>
+    <!-- Red St George Cross (England) -->
+    <path d="M10.5 2V21M1 11.5H20" stroke="#C8102E" stroke-width="3.2"/>
+  </g>
+  <circle cx="10.5" cy="11.5" r="9.5" stroke="rgba(255, 255, 255, 0.2)" stroke-width="0.8"/>
+
+  <!-- United States Flag Disc (Overlapping with Navy Halo) -->
+  <circle cx="21.5" cy="18.5" r="10.5" fill="#070C16"/>
+  <g clip-path="url(#usClipGbp)">
+    <rect x="12" y="9" width="19" height="19" fill="#FFFFFF"/>
+    <!-- 7 Red Stripes -->
+    <rect x="12" y="9" width="19" height="1.46" fill="#B22234"/>
+    <rect x="12" y="11.92" width="19" height="1.46" fill="#B22234"/>
+    <rect x="12" y="14.84" width="19" height="1.46" fill="#B22234"/>
+    <rect x="12" y="17.76" width="19" height="1.46" fill="#B22234"/>
+    <rect x="12" y="20.68" width="19" height="1.46" fill="#B22234"/>
+    <rect x="12" y="23.6" width="19" height="1.46" fill="#B22234"/>
+    <rect x="12" y="26.52" width="19" height="1.46" fill="#B22234"/>
+    <!-- Blue Canton -->
+    <rect x="12" y="9" width="8.5" height="10.2" fill="#3C3B6E"/>
+    <!-- Canton Stars Grid -->
+    <g fill="#FFFFFF">
+      <circle cx="13.8" cy="11" r="0.55"/>
+      <circle cx="15.8" cy="11" r="0.55"/>
+      <circle cx="17.8" cy="11" r="0.55"/>
+      <circle cx="19.5" cy="11" r="0.55"/>
+      <circle cx="14.8" cy="12.7" r="0.55"/>
+      <circle cx="16.8" cy="12.7" r="0.55"/>
+      <circle cx="18.8" cy="12.7" r="0.55"/>
+      <circle cx="13.8" cy="14.4" r="0.55"/>
+      <circle cx="15.8" cy="14.4" r="0.55"/>
+      <circle cx="17.8" cy="14.4" r="0.55"/>
+      <circle cx="19.5" cy="14.4" r="0.55"/>
+      <circle cx="14.8" cy="16.1" r="0.55"/>
+      <circle cx="16.8" cy="16.1" r="0.55"/>
+      <circle cx="18.8" cy="16.1" r="0.55"/>
+      <circle cx="13.8" cy="17.8" r="0.55"/>
+      <circle cx="15.8" cy="17.8" r="0.55"/>
+      <circle cx="17.8" cy="17.8" r="0.55"/>
+      <circle cx="19.5" cy="17.8" r="0.55"/>
+    </g>
+  </g>
+  <circle cx="21.5" cy="18.5" r="9.5" stroke="rgba(255, 255, 255, 0.2)" stroke-width="0.8"/>
+</svg>
+

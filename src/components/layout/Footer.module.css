@@ -2,6 +2,9 @@
   background-color: var(--color-navy);
   color: var(--text-light);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
+  overflow-x: clip;
+  width: 100%;
+  max-width: 100%;
 }
 
 /* Pre-Footer */
@@ -66,13 +69,14 @@
 .grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 0;
   margin-bottom: 50px;
 }
 
-@media (min-width: 640px) {
+@media (min-width: 768px) {
   .grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1.4fr 1fr 1fr 1fr;
+    gap: 36px;
   }
 }
 
@@ -85,6 +89,13 @@
 
 .brandCol {
   max-width: 380px;
+  margin-bottom: 28px;
+}
+
+@media (min-width: 768px) {
+  .brandCol {
+    margin-bottom: 0;
+  }
 }
 
 .footerLogoLink {
@@ -118,13 +129,55 @@
   text-decoration: underline;
 }
 
+/* Collapsible Navigation Group (<details> and <summary>) */
+.detailsGroup {
+  width: 100%;
+}
+
+.summaryHeading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  list-style: none;
+  user-select: none;
+  padding: 14px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  outline: none;
+  transition: opacity var(--transition-fast, 180ms ease);
+}
+
+.summaryHeading::-webkit-details-marker,
+.summaryHeading::marker {
+  display: none;
+}
+
+.summaryHeading:focus-visible {
+  outline: 2px solid var(--color-teal);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.chevron {
+  color: var(--text-light-muted);
+  transition:
+    transform var(--transition-base, 250ms cubic-bezier(0.16, 1, 0.3, 1)),
+    color var(--transition-fast, 180ms ease);
+  flex-shrink: 0;
+}
+
+.detailsGroup[open] .chevron {
+  transform: rotate(180deg);
+  color: var(--color-teal);
+}
+
 .colTitle {
   font-size: 14px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--color-white);
-  margin-bottom: 20px;
+  margin: 0;
 }
 
 .linkList {
@@ -132,6 +185,49 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
+}
+
+@media (max-width: 767px) {
+  .detailsGroup[open] .linkList {
+    padding-top: 14px;
+    padding-bottom: 18px;
+  }
+
+  .linkList a {
+    padding: 2px 0;
+  }
+}
+
+@media (min-width: 768px) {
+  .detailsGroup {
+    display: block;
+  }
+
+  .summaryHeading {
+    display: block;
+    cursor: default;
+    pointer-events: none;
+    padding: 0;
+    border-bottom: none;
+  }
+
+  .summaryHeading:focus-visible {
+    outline: none;
+  }
+
+  .chevron {
+    display: none;
+  }
+
+  .colTitle {
+    margin-bottom: 20px;
+  }
+
+  /* Always expand columns on desktop regardless of details [open] attribute */
+  .detailsGroup > .linkList,
+  .detailsGroup:not([open]) > .linkList {
+    display: flex !important;
+  }
 }
 
 .linkList a {
