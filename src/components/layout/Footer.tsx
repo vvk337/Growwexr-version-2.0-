@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ChevronDown } from 'lucide-react';
 import { siteConfig } from '../../config/site';
 import { FlowButton } from '../ui/flow-button';
+import { SocialBar } from '../ui/SocialButtons';
 import styles from './Footer.module.css';
 
 export const Footer: React.FC = () => {
@@ -58,6 +59,9 @@ export const Footer: React.FC = () => {
             <div className={styles.contactBrief}>
               <p>Email: <a href={`mailto:${siteConfig.contact.email}`}>{siteConfig.contact.email}</a></p>
               <p>Presence: {siteConfig.contact.address}</p>
+            </div>
+            <div className={styles.socialBarWrap}>
+              <SocialBar variant="icon" align="left" iconSize={18} />
             </div>
           </div>
 

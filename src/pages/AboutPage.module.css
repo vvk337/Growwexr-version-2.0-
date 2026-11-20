@@ -53,19 +53,20 @@
   margin-bottom: 32px;
 }
 
-/* Statistics: Exactly 24px below divider */
+/* Statistics: Classic countdown/counter numbers with shared baseline */
 .keyFacts {
   display: grid;
   grid-template-columns: repeat(2, 1fr); /* 2x2 on mobile */
-  gap: 24px 20px;
-  padding-top: 24px;
+  gap: 28px 24px;
+  padding-top: 32px;
+  margin-top: 8px;
   border-top: 1px solid var(--border-light);
 }
 
 @media (min-width: 640px) {
   .keyFacts {
     grid-template-columns: repeat(4, 1fr); /* 4 equal-width columns */
-    column-gap: 20px;
+    column-gap: clamp(18px, 2.5vw, 32px);
     row-gap: 24px;
   }
 }
@@ -73,24 +74,44 @@
 .factItem {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
 }
 
-/* Numbers on identical single baseline */
+.numberWrapper {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+/* Big, authoritative countdown style numerals */
 .factNumber {
-  font-size: clamp(1.2rem, 1.6vw, 1.45rem);
+  font-size: clamp(2.3rem, 3.5vw, 3.4rem);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-feature-settings: "tnum" 1;
+  font-feature-settings: "tnum" 1;
+  color: var(--color-electric-blue);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  white-space: nowrap;
+}
+
+.factUnit {
+  font-size: clamp(1.15rem, 1.7vw, 1.55rem);
   font-weight: 600;
   color: var(--color-electric-blue);
-  line-height: 1.25;
-  margin: 0 0 8px 0;
-  white-space: nowrap;
+  line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 /* Descriptions starting at exact same height */
 .factLabel {
-  font-size: 13px;
+  font-size: 13.5px;
+  font-weight: 500;
   color: var(--text-subtle);
-  line-height: 1.4;
+  line-height: 1.45;
   margin: 0;
   word-wrap: break-word;
   overflow-wrap: break-word;

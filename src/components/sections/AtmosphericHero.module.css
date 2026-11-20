@@ -7,13 +7,14 @@
   background-color: var(--color-near-black);
   color: var(--color-white);
   overflow: hidden;
-  padding-top: clamp(100px, 14vh, 140px);
+  padding-top: clamp(80px, 9.5vh, 94px);
   padding-bottom: 0;
 }
 
 @media (min-width: 1024px) {
   .hero {
-    min-height: clamp(740px, 92svh, 960px);
+    min-height: clamp(720px, 90svh, 920px);
+    padding-top: clamp(84px, 10vh, 100px);
   }
 }
 
@@ -241,16 +242,16 @@
   flex-direction: column;
   justify-content: center;
   flex-grow: 1;
-  padding-top: clamp(20px, 4vh, 40px);
-  padding-bottom: clamp(20px, 4vh, 40px);
+  padding-top: clamp(6px, 1.5vh, 16px);
+  padding-bottom: clamp(16px, 3vh, 32px);
 }
 
 @media (min-width: 1024px) {
   .heroContainer {
-    width: calc(100% - 18%);
+    width: calc(100% - 14%);
     max-width: none;
-    margin-left: 9%;
-    margin-right: 9%;
+    margin-left: 7%;
+    margin-right: 7%;
     padding-left: 0;
     padding-right: 0;
   }
@@ -259,15 +260,15 @@
 .heroLayout {
   display: flex;
   flex-direction: column;
-  gap: 36px;
+  gap: 28px;
 }
 
 @media (min-width: 1024px) {
   .heroLayout {
     flex-direction: row;
-    align-items: flex-end;
+    align-items: stretch;
     justify-content: space-between;
-    gap: 60px;
+    gap: clamp(28px, 3.5vw, 56px);
   }
 }
 
@@ -275,12 +276,14 @@
   display: flex;
   flex-direction: column;
   max-width: 780px;
+  order: 2;
 }
 
 @media (min-width: 1024px) {
   .primaryColumn {
     flex: 1 1 auto;
     max-width: 740px;
+    order: 1;
   }
 }
 
@@ -361,6 +364,12 @@
   animation: heroTitleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.34s both;
 }
 
+@media (max-width: 768px) {
+  .exploreButton {
+    display: none !important;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .mainTitle,
   .subheadline,
@@ -369,16 +378,32 @@
   }
 }
 
-/* Media Tile on Desktop */
+/* Media Tile on Desktop & Mobile */
 .desktopMediaTile {
-  display: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 690px;
+  margin: 0 auto;
+  order: 1;
+}
+
+@media (max-width: 768px) {
+  .desktopMediaTile {
+    width: 100%;
+    margin: 0 auto;
+  }
 }
 
 @media (min-width: 1024px) {
   .desktopMediaTile {
-    display: block;
-    flex-shrink: 0;
-    margin-bottom: 6px;
+    flex: 0 0 clamp(420px, 46vw, 690px);
+    max-width: 690px;
+    margin: 0;
+    align-self: center;
+    order: 2;
     animation: heroTitleIn 0.85s cubic-bezier(0.16, 1, 0.3, 1) 0.45s both;
   }
 }

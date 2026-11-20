@@ -31,7 +31,7 @@ export interface MarketSnapshotPayload {
   serverFetchedAt: string;  // ISO timestamp of server fetch
   cacheAgeSeconds: number;
   delayNotice: string;      // e.g. "Indicative • 15-min delay / Market Close"
-  attribution: string;      // e.g. "Provider Data • Twelve Data API"
+  attribution: string;      // e.g. "Rates by Crystal Ball Markets" or "Indicative Market Benchmarks"
   instruments: MarketInstrument[];
   message?: string;
 }

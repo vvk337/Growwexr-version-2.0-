@@ -1,0 +1,139 @@
+/* Social Button Component Styles */
+
+.socialBar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.center {
+  justify-content: center;
+}
+
+.left {
+  justify-content: flex-start;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+/* Base Link Reset */
+.socialLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  font-family: var(--font-family);
+  font-weight: 500;
+  transition: all var(--transition-fast);
+  cursor: pointer;
+  outline: none;
+}
+
+.socialLink:focus-visible {
+  outline: 2px solid var(--color-electric-blue);
+  outline-offset: 3px;
+}
+
+/* Variant 1: Compact Circular Icon */
+.iconVariant {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--color-white);
+  border: 1px solid var(--border-light);
+  color: var(--color-navy);
+  box-shadow: var(--shadow-subtle);
+  transition: transform var(--transition-fast), background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.iconVariant:hover {
+  transform: translateY(-2px);
+}
+
+/* Variant 2: Modern Pill with Label */
+.pillVariant {
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  background-color: var(--color-white);
+  border: 1px solid var(--border-light);
+  color: var(--color-navy);
+  font-size: 14px;
+  gap: 8px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.pillVariant:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(2, 7, 19, 0.08);
+}
+
+/* Variant 3: Solid Full Button */
+.buttonVariant {
+  padding: 12px 22px;
+  border-radius: var(--radius-button);
+  font-size: 14.5px;
+  gap: 10px;
+  color: var(--color-white);
+}
+
+.buttonVariant:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.08);
+}
+
+/* Platform-Specific Brand Themes on Hover / Active */
+
+/* WhatsApp (#25D366) */
+.whatsapp.iconVariant:hover,
+.whatsapp.pillVariant:hover {
+  color: #128c7e;
+  border-color: #25d366;
+  background-color: #f0fdf4;
+}
+
+.whatsapp.buttonVariant {
+  background-color: #25d366;
+  border: 1px solid #20ba5a;
+}
+
+/* Telegram (#229ED9) */
+.telegram.iconVariant:hover,
+.telegram.pillVariant:hover {
+  color: #0088cc;
+  border-color: #229ed9;
+  background-color: #f0f9ff;
+}
+
+.telegram.buttonVariant {
+  background-color: #229ed9;
+  border: 1px solid #1c88bd;
+}
+
+/* Instagram (#E1306C / Gradient) */
+.instagram.iconVariant:hover,
+.instagram.pillVariant:hover {
+  color: #e1306c;
+  border-color: #e1306c;
+  background-color: #fdf2f8;
+}
+
+.instagram.buttonVariant {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+  border: none;
+}
+
+/* Facebook (#1877F2) */
+.facebook.iconVariant:hover,
+.facebook.pillVariant:hover {
+  color: #1877f2;
+  border-color: #1877f2;
+  background-color: #eff6ff;
+}
+
+.facebook.buttonVariant {
+  background-color: #1877f2;
+  border: 1px solid #1464cc;
+}

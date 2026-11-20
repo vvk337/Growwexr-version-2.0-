@@ -2,6 +2,7 @@ import React, { useEffect, lazy, Suspense } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
+import { ConsultationSlideIn } from './components/ui/ConsultationSlideIn/ConsultationSlideIn';
 
 // Code-split routes so initial bundle only contains what the homepage needs
 const Home = lazy(() => import('./pages/Home').then(m => ({ default: m.Home })));
@@ -49,9 +50,6 @@ const PageLoader: React.FC = () => (
 export const App: React.FC = () => {
   return (
     <>
-      <a href="#main-content" className="skip-link">
-        Skip to main content
-      </a>
       <ScrollToTop />
       <Header />
       <Suspense fallback={<PageLoader />}>
@@ -72,6 +70,7 @@ export const App: React.FC = () => {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </Suspense>
+      <ConsultationSlideIn />
       <Footer />
     </>
   );

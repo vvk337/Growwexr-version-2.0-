@@ -30,8 +30,9 @@
 }
 
 .flowButton:focus-visible {
-  outline: 2px solid var(--accent-gold);
+  outline: 2px solid var(--color-electric-blue);
   outline-offset: 3px;
+  box-shadow: 0 0 0 4px rgba(7, 90, 247, 0.25);
 }
 
 /* Sizes */

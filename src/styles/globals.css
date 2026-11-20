@@ -52,25 +52,6 @@ main {
   overflow-x: clip;
 }
 
-/* Accessibility: Skip Link */
-.skip-link {
-  position: absolute;
-  top: -40px;
-  left: 16px;
-  background: var(--color-navy);
-  color: var(--color-white);
-  padding: 8px 16px;
-  z-index: 10000;
-  border-radius: var(--radius-sm);
-  text-decoration: none;
-  font-weight: 500;
-  transition: top var(--transition-fast);
-}
-
-.skip-link:focus {
-  top: 16px;
-}
-
 /* Containers */
 .container {
   width: 100%;

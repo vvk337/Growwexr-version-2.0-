@@ -86,19 +86,39 @@ function formatIndicativePrice(bid: number, digits: number, category: Instrument
   return formattedNumber;
 }
 
+const DEFAULT_MARKET_FEED_ENDPOINT =
+  'https://crystalballmarkets.com/markets/api/v1/quotes.json?site=https://growwezy.com';
+
+function getMarketFeedEndpoint(): string {
+  return (typeof process !== 'undefined' && process.env?.MARKET_FEED_ENDPOINT) || DEFAULT_MARKET_FEED_ENDPOINT;
+}
+
+function getMarketSiteKey(): string {
+  return (
+    (typeof process !== 'undefined' && (process.env?.MARKET_SITE_KEY || process.env?.MARKET_DATA_API_KEY)) ||
+    'growwezy_live_rates_token_verified'
+  );
+}
+
 /**
- * Fetches quotes directly from the Crystal Ball Markets free feed.
+ * Fetches quotes directly from the upstream market feed provider.
  */
 async function fetchCrystalBallMarketsFeed(): Promise<MarketSnapshotPayload> {
-  const endpoint = 'https://crystalballmarkets.com/markets/api/v1/quotes.json?site=https://growwezy.com';
+  const endpoint = getMarketFeedEndpoint();
+  const siteKey = getMarketSiteKey();
+
+  const headers: Record<string, string> = {
+    Accept: 'application/json',
+    'User-Agent': 'GrowwezyMarketTicker/1.0',
+  };
+
+  if (siteKey) {
+    headers['X-Site-Key'] = siteKey;
+  }
 
   const response = await fetch(endpoint, {
     method: 'GET',
-    headers: {
-      'Accept': 'application/json',
-      'User-Agent': 'GrowwezyMarketTicker/1.0',
-      'X-Site-Key': 'growwezy_live_rates_token_verified',
-    },
+    headers,
   });
 
   // Handle rate limiting (429) or temporary server unavailability (503)
@@ -153,9 +173,16 @@ async function fetchCrystalBallMarketsFeed(): Promise<MarketSnapshotPayload> {
       throw new Error(`Required instrument ${target.ticker} not found in provider response.`);
     }
 
-    const bid = typeof raw.bid === 'number' ? raw.bid : parseFloat(raw.bid || '0');
-    const digits = typeof raw.digits === 'number' ? raw.digits : 2;
-    const changePct = typeof raw.changePct === 'number' ? raw.changePct : parseFloat(raw.changePct || '0');
+    const bid = typeof raw.bid === 'number' ? raw.bid : parseFloat(String(raw.bid ?? ''));
+    if (!Number.isFinite(bid) || bid <= 0) {
+      throw new Error(`Invalid price value received for instrument ${target.ticker}: "${raw.bid}".`);
+    }
+
+    const digits = typeof raw.digits === 'number' && Number.isFinite(raw.digits) ? raw.digits : 2;
+    const changePct = typeof raw.changePct === 'number' ? raw.changePct : parseFloat(String(raw.changePct ?? ''));
+    if (!Number.isFinite(changePct)) {
+      throw new Error(`Invalid changePct value received for instrument ${target.ticker}: "${raw.changePct}".`);
+    }
 
     let direction: MovementDirection = 'unchanged';
     let sign = '';
@@ -171,21 +198,24 @@ async function fetchCrystalBallMarketsFeed(): Promise<MarketSnapshotPayload> {
     const formattedPrice = formatIndicativePrice(bid, digits, target.category);
     const sourceQuoteTime = raw.time || feedUpdatedTime;
 
-    // Detect stale instrument timestamp even when provider returns HTTP 200
-    const quoteTimestampMs = new Date(sourceQuoteTime).getTime();
-    const ageSeconds = !isNaN(quoteTimestampMs)
+    // Validate timestamp: never treat unparseable or absent timestamps as age 0
+    const quoteTimestampMs = sourceQuoteTime ? new Date(sourceQuoteTime).getTime() : NaN;
+    const isTimestampValid = Number.isFinite(quoteTimestampMs) && quoteTimestampMs > 0;
+    const ageSeconds = isTimestampValid
       ? Math.max(0, Math.round((now.getTime() - quoteTimestampMs) / 1000))
-      : 0;
+      : 86400; // treat missing or corrupted timestamp as stale (24h old)
     const ageMinutes = ageSeconds / 60;
 
     // Crypto trades 24/7; if quote timestamp is older than 10 minutes, flag as stale
-    const isCryptoStale = target.category === 'crypto' && ageMinutes > 10;
+    const isCryptoStale = target.category === 'crypto' && (!isTimestampValid || ageMinutes > 10);
     // Session markets (FX, Metals, Indices) outside active trading hours (e.g. weekends)
-    const isSessionClosed = target.category !== 'crypto' && ageMinutes > 45;
+    const isSessionClosed = target.category !== 'crypto' && (!isTimestampValid || ageMinutes > 45);
 
-    const isStale = isCryptoStale;
+    const isStale = !isTimestampValid || isCryptoStale;
     const marketStatus: MarketStatus = isSessionClosed ? 'closed' : 'open';
-    const marketStatusLabel = isCryptoStale
+    const marketStatusLabel = !isTimestampValid
+      ? 'Feed Stale'
+      : isCryptoStale
       ? 'Feed Stale'
       : isSessionClosed
       ? 'Market Closed'
@@ -250,9 +280,9 @@ const FALLBACK_INSTRUMENTS: MarketInstrument[] = [
     changeBasis: 'session',
     changeBasisLabel: 'vs Prev Close',
     marketStatus: 'open',
-    marketStatusLabel: 'Indicative Quote',
+    marketStatusLabel: 'Benchmark Estimate',
     sourceQuoteTime: new Date().toISOString(),
-    isStale: false,
+    isStale: true,
     quoteAgeSeconds: 0,
   },
   {
@@ -269,9 +299,9 @@ const FALLBACK_INSTRUMENTS: MarketInstrument[] = [
     changeBasis: 'session',
     changeBasisLabel: 'vs Prev Close',
     marketStatus: 'open',
-    marketStatusLabel: 'Indicative Quote',
+    marketStatusLabel: 'Benchmark Estimate',
     sourceQuoteTime: new Date().toISOString(),
-    isStale: false,
+    isStale: true,
     quoteAgeSeconds: 0,
   },
   {
@@ -288,9 +318,9 @@ const FALLBACK_INSTRUMENTS: MarketInstrument[] = [
     changeBasis: 'session',
     changeBasisLabel: 'vs Prev Close',
     marketStatus: 'open',
-    marketStatusLabel: 'Indicative Quote',
+    marketStatusLabel: 'Benchmark Estimate',
     sourceQuoteTime: new Date().toISOString(),
-    isStale: false,
+    isStale: true,
     quoteAgeSeconds: 0,
   },
   {
@@ -307,9 +337,9 @@ const FALLBACK_INSTRUMENTS: MarketInstrument[] = [
     changeBasis: 'session',
     changeBasisLabel: 'vs Prev Close',
     marketStatus: 'open',
-    marketStatusLabel: 'Indicative Quote',
+    marketStatusLabel: 'Benchmark Estimate',
     sourceQuoteTime: new Date().toISOString(),
-    isStale: false,
+    isStale: true,
     quoteAgeSeconds: 0,
   },
   {
@@ -326,9 +356,9 @@ const FALLBACK_INSTRUMENTS: MarketInstrument[] = [
     changeBasis: 'session',
     changeBasisLabel: 'vs Prev Close',
     marketStatus: 'open',
-    marketStatusLabel: 'Indicative Quote',
+    marketStatusLabel: 'Benchmark Estimate',
     sourceQuoteTime: new Date().toISOString(),
-    isStale: false,
+    isStale: true,
     quoteAgeSeconds: 0,
   },
   {
@@ -345,9 +375,9 @@ const FALLBACK_INSTRUMENTS: MarketInstrument[] = [
     changeBasis: '24h',
     changeBasisLabel: '24h rolling',
     marketStatus: 'open',
-    marketStatusLabel: 'Indicative Quote',
+    marketStatusLabel: 'Benchmark Estimate',
     sourceQuoteTime: new Date().toISOString(),
-    isStale: false,
+    isStale: true,
     quoteAgeSeconds: 0,
   },
 ];
@@ -381,18 +411,18 @@ export async function getMarketSnapshot(): Promise<MarketSnapshotPayload> {
     }
 
     return {
-      status: 'ok',
+      status: 'stale',
       mode: 'development_preview',
       serverFetchedAt: new Date().toISOString(),
       cacheAgeSeconds: 0,
-      delayNotice: 'Indicative benchmark rates',
-      attribution: 'Rates by Crystal Ball Markets',
+      delayNotice: 'Indicative benchmark rates (Rate Limit Cooldown)',
+      attribution: 'Indicative Market Benchmarks',
       instruments: FALLBACK_INSTRUMENTS,
       message: 'Upstream feed rate limit cooldown active. Displaying indicative benchmark rates.',
     };
   }
 
-  // 3. Fetch from Crystal Ball Markets
+  // 3. Fetch from upstream feed provider
   try {
     const freshSnapshot = await fetchCrystalBallMarketsFeed();
     cache = {
@@ -412,14 +442,14 @@ export async function getMarketSnapshot(): Promise<MarketSnapshotPayload> {
       };
     }
 
-    // Serve indicative benchmark rates so ticker tape remains active and informative
+    // Serve indicative benchmark rates clearly identified as offline development preview
     return {
-      status: 'ok',
+      status: 'stale',
       mode: 'development_preview',
       serverFetchedAt: new Date().toISOString(),
       cacheAgeSeconds: 0,
-      delayNotice: 'Indicative benchmark rates',
-      attribution: 'Rates by Crystal Ball Markets',
+      delayNotice: 'Indicative benchmark rates (Offline fallback)',
+      attribution: 'Indicative Market Benchmarks',
       instruments: FALLBACK_INSTRUMENTS,
       message: `Live feed temporarily unavailable (${err.message || 'Connecting'}). Displaying indicative benchmark rates.`,
     };

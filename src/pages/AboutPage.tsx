@@ -1,10 +1,82 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { PageBanner } from '../components/layout/PageBanner';
 import { AboutIntro } from '../components/sections/AboutIntro';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './AboutPage.module.css';
 
+interface CounterStatProps {
+  value: number;
+  suffix?: string;
+  duration?: number;
+  startAnimation: boolean;
+}
+
+const CounterStat: React.FC<CounterStatProps> = ({
+  value,
+  suffix = '',
+  duration = 1600,
+  startAnimation,
+}) => {
+  const [displayValue, setDisplayValue] = useState(0);
+
+  useEffect(() => {
+    if (!startAnimation) return;
+
+    let startTime: number | null = null;
+    let animationFrameId: number;
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const elapsed = timestamp - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      // Classic countdown/countup easeOutExpo curve
+      const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+      const current = Math.round(ease * value);
+      setDisplayValue(current);
+
+      if (progress < 1) {
+        animationFrameId = requestAnimationFrame(animate);
+      } else {
+        setDisplayValue(value);
+      }
+    };
+
+    animationFrameId = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(animationFrameId);
+  }, [value, duration, startAnimation]);
+
+  return (
+    <div className={styles.numberWrapper}>
+      <span className={styles.factNumber}>
+        {startAnimation ? displayValue.toLocaleString() : '0'}
+      </span>
+      {suffix && <span className={styles.factUnit}>{suffix}</span>}
+    </div>
+  );
+};
+
 export const AboutPage: React.FC = () => {
+  const [hasAnimated, setHasAnimated] = useState(false);
+  const keyFactsRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = keyFactsRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setHasAnimated(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <main id="main-content">
       <PageBanner
@@ -32,21 +104,40 @@ export const AboutPage: React.FC = () => {
                 Our team brings together specialists in forex markets and portfolio management, supporting both individual and business objectives. From personalised trading guidance to managing investments for companies, our approach begins with understanding each client’s priorities and the support they need.
               </p>
 
-              <div className={styles.keyFacts}>
+              <div className={styles.keyFacts} ref={keyFactsRef}>
                 <div className={styles.factItem}>
-                  <span className={styles.factNumber}>9 Years</span>
+                  <CounterStat
+                    value={9}
+                    suffix="Years"
+                    duration={1400}
+                    startAnimation={hasAnimated}
+                  />
                   <span className={styles.factLabel}>Since Our Establishment</span>
                 </div>
                 <div className={styles.factItem}>
-                  <span className={styles.factNumber}>2,800+</span>
+                  <CounterStat
+                    value={2800}
+                    suffix="+"
+                    duration={1800}
+                    startAnimation={hasAnimated}
+                  />
                   <span className={styles.factLabel}>Retail Clients</span>
                 </div>
                 <div className={styles.factItem}>
-                  <span className={styles.factNumber}>5+</span>
+                  <CounterStat
+                    value={5}
+                    suffix="+"
+                    duration={1200}
+                    startAnimation={hasAnimated}
+                  />
                   <span className={styles.factLabel}>Corporate Investors</span>
                 </div>
                 <div className={styles.factItem}>
-                  <span className={styles.factNumber}>2</span>
+                  <CounterStat
+                    value={2}
+                    duration={1000}
+                    startAnimation={hasAnimated}
+                  />
                   <span className={styles.factLabel}>
                     Companies Under
                     <br className={styles.desktopBr} />

@@ -1,0 +1,345 @@
+.formWrapper {
+  width: 100%;
+}
+
+.formContainer {
+  background-color: var(--color-pale-ice);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: clamp(28px, 5vw, 48px);
+  box-shadow: var(--shadow-card);
+}
+
+.popupContainer {
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.previewNotice {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #fff9e6;
+  border: 1px solid #ffe58f;
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 24px;
+  font-size: 13px;
+  color: #7a5800;
+  line-height: 1.5;
+}
+
+.previewNotice strong {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 2px;
+}
+
+.previewIcon {
+  color: #d48806;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.formTitle {
+  font-size: clamp(22px, 3vw, 26px);
+  font-weight: 600;
+  color: var(--color-navy);
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.popupTitle {
+  font-size: 18px;
+  margin-bottom: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.popupForm {
+  gap: 14px;
+}
+
+.twoColRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 640px) {
+  .twoColRow {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.phoneInputGroup {
+  display: grid;
+  grid-template-columns: 118px 1fr;
+  gap: 12px;
+  align-items: stretch;
+}
+
+@media (max-width: 500px) {
+  .phoneInputGroup {
+    grid-template-columns: 110px 1fr;
+    gap: 8px;
+  }
+}
+
+.dialCodeSelect {
+  width: 100%;
+  cursor: pointer;
+  padding: 11px 22px 11px 10px;
+  font-size: 13.5px;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+.phoneInput {
+  width: 100%;
+  min-width: 0;
+}
+
+.optionalTag {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-subtle);
+  margin-left: 6px;
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.label {
+  font-size: 13.5px;
+  font-weight: 500;
+  color: var(--color-navy);
+}
+
+.required {
+  color: #e02424;
+}
+
+.input,
+.select,
+.textarea {
+  font-family: var(--font-family);
+  font-size: 14.5px;
+  color: var(--text-main);
+  background-color: var(--color-white);
+  border: 1px solid rgba(19, 40, 86, 0.15);
+  border-radius: var(--radius-button);
+  padding: 11px 14px;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input:focus,
+.select:focus,
+.textarea:focus {
+  border-color: var(--color-electric-blue);
+  box-shadow: 0 0 0 3px rgba(7, 90, 247, 0.12);
+  outline: none;
+}
+
+.inputError {
+  border-color: #e02424 !important;
+}
+
+.errorText {
+  font-size: 12px;
+  color: #e02424;
+  margin-top: 2px;
+}
+
+.submitBtn {
+  background-color: var(--color-electric-blue);
+  color: var(--color-white);
+  font-size: 15.5px;
+  font-weight: 600;
+  padding: 13px 24px;
+  border-radius: var(--radius-button);
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+  margin-top: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: none;
+  width: 100%;
+}
+
+.submitBtn:hover {
+  background-color: var(--color-electric-blue-hover);
+  transform: translateY(-1px);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* Success State */
+.successState {
+  text-align: center;
+  padding: 24px 8px;
+}
+
+.successIcon {
+  color: #10b981;
+  margin: 0 auto 16px auto;
+}
+
+.successHeading {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--color-navy);
+  margin-bottom: 10px;
+}
+
+.successDesc {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-muted);
+  margin-bottom: 24px;
+}
+
+.submittedSummary {
+  background-color: var(--color-white);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-card);
+  padding: 16px 20px;
+  text-align: left;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text-main);
+  margin-bottom: 24px;
+  box-shadow: var(--shadow-subtle);
+}
+
+.resetBtn {
+  background-color: var(--color-navy);
+  color: var(--color-white);
+  padding: 11px 22px;
+  border-radius: var(--radius-button);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+  transition: background-color var(--transition-fast);
+}
+
+.resetBtn:hover {
+  background-color: #0b1836;
+}
+
+/* ========================================================
+   Dark Luxury Theme for Popup Modal Form
+   ======================================================== */
+.popupWrapper .label {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.popupWrapper .optionalTag {
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.popupWrapper .phoneInputGroup {
+  grid-template-columns: 118px 1fr;
+  gap: 10px;
+}
+
+.popupWrapper .dialCodeSelect {
+  padding: 10px 22px 10px 10px;
+  font-size: 13.5px;
+}
+
+.popupWrapper .input,
+.popupWrapper .select,
+.popupWrapper .dialCodeSelect,
+.popupWrapper .textarea {
+  background-color: rgba(6, 12, 30, 0.72);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 9px;
+  padding: 10px 13px;
+  font-size: 14px;
+}
+
+.popupWrapper .input::placeholder,
+.popupWrapper .textarea::placeholder {
+  color: rgba(255, 255, 255, 0.35);
+}
+
+.popupWrapper .input:focus,
+.popupWrapper .select:focus,
+.popupWrapper .dialCodeSelect:focus,
+.popupWrapper .textarea:focus {
+  border-color: #075af7;
+  background-color: rgba(7, 15, 38, 0.98);
+  box-shadow: 0 0 0 3px rgba(7, 90, 247, 0.22);
+}
+
+.popupWrapper .select option,
+.popupWrapper .dialCodeSelect option {
+  background-color: #0b152d;
+  color: #ffffff;
+}
+
+.popupWrapper .submitBtn {
+  background: var(--gradient-brand-future, linear-gradient(135deg, #493bd9 0%, #075af7 50%, #19cbd0 100%));
+  color: #ffffff;
+  font-weight: 600;
+  border-radius: 9999px;
+  padding: 12px 22px;
+  box-shadow: 0 8px 24px rgba(7, 90, 247, 0.35);
+  transition: transform 200ms ease, box-shadow 200ms ease, filter 200ms ease;
+}
+
+.popupWrapper .submitBtn:hover:not(:disabled) {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 12px 30px rgba(7, 90, 247, 0.5);
+}
+
+.popupWrapper .successState {
+  background-color: rgba(7, 15, 38, 0.75);
+  border: 1px solid rgba(25, 203, 208, 0.35);
+  color: #ffffff;
+  border-radius: 12px;
+}
+
+.popupWrapper .successHeading {
+  color: #ffffff;
+}
+
+.popupWrapper .successDesc {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.popupWrapper .submittedSummary {
+  background-color: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  border-radius: 10px;
+}
+
+.popupWrapper .submittedSummary strong {
+  color: #ffffff;
+}

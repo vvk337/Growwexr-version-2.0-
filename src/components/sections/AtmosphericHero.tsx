@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from '../ui/Button';
 import { FlowButton } from '../ui/flow-button';
 import { MarketTicker } from '../ui/MarketTicker';
+import { HeroCarousel } from './HeroCarousel';
 import styles from './AtmosphericHero.module.css';
 
 export const AtmosphericHero: React.FC = () => {
@@ -37,29 +38,15 @@ export const AtmosphericHero: React.FC = () => {
 
             <div className={styles.ctaGroup}>
               <FlowButton to="/contact" text="Book Consultation" variant="primary" size="lg" />
-              <Button to="/services" variant="outline" size="lg">
+              <Button to="/services" variant="outline" size="lg" className={styles.exploreButton}>
                 Explore Services
               </Button>
             </div>
           </div>
 
-          {/* Right Column: Media Tile */}
+          {/* Right Column: Infinite Looping Hero Carousel */}
           <div className={styles.desktopMediaTile}>
-            <div className={styles.mediaCard}>
-              <img
-                src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=560&q=75"
-                alt="Growwezy Advisory Session"
-                className={styles.mediaImage}
-                width="280"
-                height="190"
-                loading="eager"
-                decoding="async"
-              />
-              <div className={styles.mediaOverlay}>
-                <span className={styles.mediaTag}>Advisory Brief</span>
-                <span className={styles.mediaTitle}>Middle East NRI Portfolio Strategy</span>
-              </div>
-            </div>
+            <HeroCarousel />
           </div>
         </div>
       </div>

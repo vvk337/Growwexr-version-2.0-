@@ -172,6 +172,8 @@ export const MarketTicker: React.FC<MarketTickerProps> = ({ className }) => {
 
   const instruments = snapshot?.instruments || [];
   const isUnconfigured = snapshot?.status === 'unconfigured';
+  const isDevelopmentPreview = snapshot?.mode === 'development_preview';
+
   // Detect stale data from status OR directly from instrument-level timestamps
   const isStale =
     snapshot?.status === 'stale' ||
@@ -219,20 +221,35 @@ export const MarketTicker: React.FC<MarketTickerProps> = ({ className }) => {
 
       {/* Discreet Attribution / Delay Disclosure Outside the Scrolling Row */}
       <div className={styles.disclosureRow}>
-        <span className={styles.indicativeLabel}>Indicative broker quotes</span>
+        <span className={styles.indicativeLabel}>
+          {isDevelopmentPreview ? 'Indicative benchmark rates' : 'Indicative broker quotes'}
+        </span>
         <span className={styles.separatorDot} aria-hidden="true">•</span>
-        <a
-          href="https://crystalballmarkets.com/markets"
-          className={styles.attributionLink}
-        >
-          Rates by Crystal Ball Markets
-        </a>
-        {isStale && (
+        {isDevelopmentPreview ? (
+          <span className={styles.indicativeLabel}>
+            {snapshot?.attribution || 'Indicative Market Benchmarks'}
+          </span>
+        ) : (
+          <a
+            href="https://crystalballmarkets.com/markets"
+            className={styles.attributionLink}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            {snapshot?.attribution || 'Rates by Crystal Ball Markets'}
+          </a>
+        )}
+        {isDevelopmentPreview ? (
+          <>
+            <span className={styles.separatorDot} aria-hidden="true">•</span>
+            <span className={styles.staleNotice}>Offline Preview Benchmarks</span>
+          </>
+        ) : isStale ? (
           <>
             <span className={styles.separatorDot} aria-hidden="true">•</span>
             <span className={styles.staleNotice}>Data Stale</span>
           </>
-        )}
+        ) : null}
       </div>
     </section>
   );

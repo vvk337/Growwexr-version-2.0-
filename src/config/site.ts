@@ -68,7 +68,7 @@ export const siteConfig: SiteConfig = {
     showClientStories: false, // Per specification: hidden until real case studies are supplied
     showPricing: false,       // Per specification: hidden until approved fee structure is verified
     showTestimonials: false,  // Per specification: no fabricated ratings or quotes
-    enableFormSubmission: false // Honest preview mode until form endpoint is linked
+    enableFormSubmission: true // Live lead transmission active (proxied to Google Sheets)
   }
 };
 
