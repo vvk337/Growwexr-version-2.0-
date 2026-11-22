@@ -63,7 +63,7 @@ export const AboutPage: React.FC = () => {
   const keyFactsRef = useRef<HTMLDivElement>(null);
 
   useSEO({
-    title: 'About Growwezy – Disciplined Forex Advisory Since 2019',
+    title: 'About Growwezy – Forex Advisory Since 2019',
     description:
       'Established in India in 2019, Growwezy Global Tech serves 2,800+ retail clients with specialized forex trading advisory and financial asset management across the UAE and Middle East.',
     canonical: '/about',
@@ -133,7 +133,7 @@ export const AboutPage: React.FC = () => {
               <div className={styles.keyFacts} ref={keyFactsRef}>
                 <div className={styles.factItem}>
                   <CounterStat
-                    value={9}
+                    value={7}
                     suffix="Years"
                     duration={1400}
                     startAnimation={hasAnimated}

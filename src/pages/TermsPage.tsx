@@ -39,7 +39,7 @@ export const TermsPage: React.FC = () => {
           {/* Important Notice Callout */}
           <div className={styles.calloutBox}>
             <p>
-              <strong>PLEASE READ CAREFULLY</strong> — These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of Growwezy services (&ldquo;Services&rdquo;) provided by Growwezy Technologies Private Limited (&ldquo;Growwezy&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;). By creating an account, starting a free trial, or using our platform, you agree to these Terms.
+              <strong>PLEASE READ CAREFULLY</strong> — These Terms of Service (&ldquo;Terms&rdquo;) govern your access to and use of Growwezy services (&ldquo;Services&rdquo;) provided by Growwezy Global Tech Private Limited (&ldquo;Growwezy&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;, &ldquo;our&rdquo;). By creating an account, starting a free trial, or using our platform, you agree to these Terms.
             </p>
           </div>
 
@@ -144,9 +144,9 @@ export const TermsPage: React.FC = () => {
 
             <h2>12. Contact Us</h2>
             <div className={styles.contactBlock}>
-              <h3>Growwezy Technologies Private Limited</h3>
+              <h3>Growwezy Global Tech Private Limited</h3>
               <p>Growwezy Pvt. Ltd.</p>
-              <p>Email: <a href="mailto:support@growwezy.com">support@growwezy.com</a></p>
+              <p>Email: <a href="mailto:contact@growwezy.com">contact@growwezy.com</a></p>
               <p>Jurisdiction: Bhopal, Madhya Pradesh, India</p>
             </div>
 

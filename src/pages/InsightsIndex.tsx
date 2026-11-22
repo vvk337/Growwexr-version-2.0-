@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Clock, AlertCircle } from 'lucide-react';
 import { PageBanner } from '../components/layout/PageBanner';
-import { insightsData } from '../content/insights';
+import { getPublishedArticles } from '../content/insights';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './InsightsIndex.module.css';
 import { useSEO } from '../hooks/useSEO';
@@ -10,6 +10,16 @@ import { useJsonLd } from '../hooks/useJsonLd';
 import { breadcrumbSchema, webPageSchema } from '../seo/schemas';
 
 export const InsightsIndex: React.FC = () => {
+  const [activeCategory, setActiveCategory] = React.useState('All');
+  const allArticles = getPublishedArticles();
+
+  const categories = ['All', ...Array.from(new Set(allArticles.map((a) => a.category)))];
+
+  const filteredArticles =
+    activeCategory === 'All'
+      ? allArticles
+      : allArticles.filter((article) => article.category === activeCategory);
+
   useSEO({
     title: 'Forex Market Insights & Research – Growwezy',
     description:
@@ -51,9 +61,25 @@ export const InsightsIndex: React.FC = () => {
             </p>
           </div>
 
+          {/* Category Filter Pills */}
+          <div className={styles.filterBar} role="tablist" aria-label="Filter articles by category">
+            {categories.map((cat) => (
+              <button
+                key={cat}
+                type="button"
+                role="tab"
+                aria-selected={activeCategory === cat}
+                className={`${styles.filterBtn} ${activeCategory === cat ? styles.filterBtnActive : ''}`}
+                onClick={() => setActiveCategory(cat)}
+              >
+                {cat} {cat === 'All' ? `(${allArticles.length})` : ''}
+              </button>
+            ))}
+          </div>
+
           {/* Articles Grid */}
           <div className={styles.articlesGrid}>
-            {insightsData.map((article) => (
+            {filteredArticles.map((article) => (
               <Link key={article.slug} to={`/insights/${article.slug}`} className={styles.articleCard}>
                 <div className={styles.imageWrap}>
                   <img

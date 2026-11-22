@@ -29,6 +29,43 @@
   color: var(--color-navy);
 }
 
+/* Category Filter Tabs */
+.filterBar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 36px;
+  align-items: center;
+}
+
+.filterBtn {
+  background: var(--color-white);
+  border: 1px solid var(--border-light, #e2e8f0);
+  color: var(--color-navy, #132856);
+  padding: 8px 18px;
+  border-radius: var(--radius-pill, 9999px);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast, 150ms ease);
+}
+
+.filterBtn:hover {
+  border-color: var(--color-electric-blue, #075af7);
+  color: var(--color-electric-blue, #075af7);
+}
+
+.filterBtnActive {
+  background: var(--color-navy, #132856);
+  color: #ffffff;
+  border-color: var(--color-navy, #132856);
+}
+
+.filterBtnActive:hover {
+  background: var(--color-navy, #132856);
+  color: #ffffff;
+}
+
 .articlesGrid {
   display: grid;
   grid-template-columns: 1fr;

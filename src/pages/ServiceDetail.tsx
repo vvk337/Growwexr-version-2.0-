@@ -115,6 +115,38 @@ export const ServiceDetail: React.FC = () => {
                   </div>
                 </div>
               )}
+
+              {/* Contextual Educational Research Linking */}
+              <div className={styles.relatedResearchBlock} style={{ marginTop: '32px', paddingTop: '24px', borderTop: '1px solid #e2e8f0' }}>
+                <h3 className={styles.subHeading}>Related Market Research</h3>
+                <p style={{ fontSize: '0.9375rem', color: '#475569', lineHeight: 1.6, marginBottom: '12px' }}>
+                  Explore how our analytical desk models risk and macroeconomic drivers related to this service:
+                </p>
+                {service.slug === 'forex-signals' && (
+                  <p style={{ fontSize: '0.9375rem', color: '#132856' }}>
+                    📖 Read our risk analysis:{' '}
+                    <Link to="/insights/principles-of-capital-preservation-in-volatile-fx-markets" style={{ color: '#075af7', fontWeight: 600 }}>
+                      Principles of Capital Preservation in Volatile Global Currency Markets
+                    </Link>
+                  </p>
+                )}
+                {(service.slug === 'comex-signals' || service.slug === 'combo-signals') && (
+                  <p style={{ fontSize: '0.9375rem', color: '#132856' }}>
+                    📖 Read our macro guide:{' '}
+                    <Link to="/insights/macroeconomic-divergence-g10-monetary-policy-impact" style={{ color: '#075af7', fontWeight: 600 }}>
+                      Macroeconomic Divergence: How Central Bank Policies Shape Global Liquidity
+                    </Link>
+                  </p>
+                )}
+                {(service.slug === 'account-management' || service.slug === 'hni-signals') && (
+                  <p style={{ fontSize: '0.9375rem', color: '#132856' }}>
+                    📖 Read our cross-border guide:{' '}
+                    <Link to="/insights/managing-cross-border-currency-risk-nri-guide" style={{ color: '#075af7', fontWeight: 600 }}>
+                      Managing Cross-Border Currency Risk: A Strategic Framework for Middle East NRIs
+                    </Link>
+                  </p>
+                )}
+              </div>
             </div>
 
             {/* Sidebar Sticky CTA Card */}

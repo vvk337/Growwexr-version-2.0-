@@ -133,7 +133,7 @@ export const PrivacyPage: React.FC = () => {
               <li>Withdraw consent at any time</li>
             </ul>
             <p>
-              Requests may be sent to: <a href="mailto:Growwezy3@gmail.com">Growwezy3@gmail.com</a>
+              Requests may be sent to: <a href="mailto:contact@growwezy.com">contact@growwezy.com</a>
             </p>
 
             <h2>8. Your Rights Under CCPA/CPRA (California Residents)</h2>
@@ -146,7 +146,7 @@ export const PrivacyPage: React.FC = () => {
               <li>Not be discriminated against for exercising privacy rights</li>
             </ul>
             <p>
-              You may submit requests by contacting: <a href="mailto:Growwezy3@gmail.com">Growwezy3@gmail.com</a>. We will verify requests and respond within the timeframes required by law.
+              You may submit requests by contacting: <a href="mailto:contact@growwezy.com">contact@growwezy.com</a>. We will verify requests and respond within the timeframes required by law.
             </p>
 
             <h2>9. CalOPPA Compliance</h2>
@@ -178,7 +178,7 @@ export const PrivacyPage: React.FC = () => {
             <div className={styles.contactBlock} style={{ marginTop: '16px' }}>
               <p><strong>Name:</strong> Rohit Verma</p>
               <p><strong>Designation:</strong> Grievance Officer</p>
-              <p><strong>Email:</strong> <a href="mailto:Growwezy3@gmail.com">Growwezy3@gmail.com</a></p>
+              <p><strong>Email:</strong> <a href="mailto:contact@growwezy.com">contact@growwezy.com</a></p>
               <p><strong>Address:</strong> Plot No. 98, Zone No. 1, CBD Belapur, Navi Mumbai, Maharashtra – 400614, India</p>
             </div>
             <p style={{ marginTop: '12px' }}>
@@ -214,7 +214,7 @@ export const PrivacyPage: React.FC = () => {
             <div className={styles.contactBlock}>
               <h3>Growwezy</h3>
               <p>If you have questions, concerns, or requests regarding this Privacy Policy or your personal information, contact us at:</p>
-              <p>Email: <a href="mailto:Growwezy3@gmail.com">Growwezy3@gmail.com</a></p>
+              <p>Email: <a href="mailto:contact@growwezy.com">contact@growwezy.com</a></p>
             </div>
 
             <div className={styles.footerNote}>

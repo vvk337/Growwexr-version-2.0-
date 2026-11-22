@@ -112,15 +112,24 @@ export function serviceSchema(opts: {
 }
 
 // ─── Article helper ──────────────────────────────────────────────────────────
+export interface ArticleAuthorSchema {
+  name: string;
+  designation?: string;
+  socialUrls?: {
+    linkedin?: string;
+  };
+}
+
 export function articleSchema(opts: {
   url: string;
   title: string;
   description: string;
   image: string;
-  datePublished: string;
+  author?: ArticleAuthorSchema;
+  datePublished?: string;
   dateModified?: string;
 }) {
-  return {
+  const schema: Record<string, unknown> = {
     '@context': 'https://schema.org',
     '@type': 'Article',
     '@id': `${opts.url}#article`,
@@ -128,19 +137,33 @@ export function articleSchema(opts: {
     description: opts.description,
     image: opts.image,
     url: opts.url,
-    datePublished: opts.datePublished,
-    dateModified: opts.dateModified || opts.datePublished,
-    author: {
-      '@type': 'Organization',
-      name: SITE_NAME,
-      url: BASE_URL,
-    },
+    author: opts.author && opts.author.name
+      ? {
+          '@type': 'Person',
+          name: opts.author.name,
+          ...(opts.author.designation ? { jobTitle: opts.author.designation } : {}),
+          ...(opts.author.socialUrls?.linkedin ? { url: opts.author.socialUrls.linkedin } : {}),
+        }
+      : {
+          '@type': 'Organization',
+          name: SITE_NAME,
+          url: BASE_URL,
+        },
     publisher: {
       '@id': `${BASE_URL}/#organization`,
     },
     isPartOf: { '@id': `${BASE_URL}/#website` },
     mainEntityOfPage: { '@type': 'WebPage', '@id': opts.url },
   };
+
+  if (opts.datePublished) {
+    schema.datePublished = opts.datePublished;
+  }
+  if (opts.dateModified) {
+    schema.dateModified = opts.dateModified;
+  }
+
+  return schema;
 }
 
 // ─── FAQPage helper ──────────────────────────────────────────────────────────

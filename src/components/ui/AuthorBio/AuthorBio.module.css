@@ -1,0 +1,114 @@
+.authorCard {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: var(--color-ice, #f0f7fc);
+  border: 1px solid rgba(7, 90, 247, 0.12);
+  border-radius: 12px;
+  padding: 24px;
+  margin: 32px 0 24px;
+}
+
+@media (min-width: 640px) {
+  .authorCard {
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+  }
+}
+
+.avatarCol {
+  flex-shrink: 0;
+}
+
+.avatarImg {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 8px rgba(19, 40, 86, 0.1);
+}
+
+.avatarFallback {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-navy, #132856);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 20px;
+}
+
+.infoCol {
+  flex: 1;
+}
+
+.authorHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.authorName {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-navy, #132856);
+  margin: 0;
+}
+
+.authorDesignation {
+  font-size: 0.875rem;
+  color: var(--color-blue, #075af7);
+  font-weight: 600;
+}
+
+.qualificationsList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 6px 0 10px;
+  list-style: none;
+  padding: 0;
+}
+
+.qualBadge {
+  font-size: 0.75rem;
+  background: rgba(7, 90, 247, 0.08);
+  color: var(--color-navy, #132856);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+.authorBioText {
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  color: #334155;
+  margin: 0 0 10px;
+}
+
+.authorSocials {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.socialLink {
+  font-size: 0.8125rem;
+  color: var(--color-blue, #075af7);
+  text-decoration: none;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.socialLink:hover {
+  text-decoration: underline;
+}

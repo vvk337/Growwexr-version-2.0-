@@ -2,6 +2,9 @@
 
 A modern, mobile-first, high-performance financial advisory web platform inspired by the Sterling Consult design language. Built cleanly with React, TypeScript, Vite, CSS Modules, and client-side routing.
 
+> 🚀 **DEPLOYMENT HANDOFF READY**:  
+> For complete hosting setup, serverless API configuration, Google Sheets lead capture integration, and staging verification protocols, read the **[Technical Deployment Handover Guide (GROWWEZY-FINAL-DEPLOYMENT-HANDOFF.md)](./GROWWEZY-FINAL-DEPLOYMENT-HANDOFF.md)**.
+
 ---
 
 ## Quick Start (Windows / PowerShell)
@@ -46,8 +49,10 @@ Open [http://localhost:4173](http://localhost:4173) in your browser.
 
 ---
 
-## Documentation & Audits
+## Documentation, Project Tracking & Launch Checklist
 
+* 🚀 **[GROWWEZY-FINAL-DEPLOYMENT-HANDOFF.md](./GROWWEZY-FINAL-DEPLOYMENT-HANDOFF.md)**: **Authoritative Technical Deployment Guide** for the hosting and operations engineer (Node.js runtime, build pipelines, edge redirects, serverless API setup, and Google Sheets integration).
+* 📋 **[PROJECT-INPUTS-AND-LAUNCH-CHECKLIST.md](./PROJECT-INPUTS-AND-LAUNCH-CHECKLIST.md)**: **Central Source of Truth** for business decisions, pending owner inputs, technical dependencies, and external platform deployment actions.
 * `BUILD_STATUS.md`: Full record of implemented stages and verification results.
 * `ASSUMPTIONS.md`: Documented business assumptions and strict exclusion of fabricated proof.
 * `ASSET_SOURCES.md`: Commercial licensing inventory for images, fonts, and vector logos.

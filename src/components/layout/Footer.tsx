@@ -78,16 +78,16 @@ export const Footer: React.FC = () => {
               </summary>
               <ul className={styles.linkList}>
                 <li>
-                  <Link to="/services/forex-advisory">Forex Trading Advisory</Link>
+                  <Link to="/services/forex-signals">Forex Signals &amp; Advisory</Link>
                 </li>
                 <li>
-                  <Link to="/services/financial-asset-management">Financial Asset Management</Link>
+                  <Link to="/services/account-management">Account Management</Link>
                 </li>
                 <li>
                   <Link to="/services">All Advisory Capabilities</Link>
                 </li>
                 <li>
-                  <Link to="/approach">Our 3-Step Approach</Link>
+                  <Link to="/approach">Our 4-Step Approach</Link>
                 </li>
               </ul>
             </details>

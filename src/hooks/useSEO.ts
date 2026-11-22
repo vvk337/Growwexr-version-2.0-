@@ -94,14 +94,18 @@ export function useSEO({
     setLink('canonical', canonicalUrl);
 
     // --- Open Graph ---
-    setMeta('og:site_name',   SITE_NAME,   'property');
-    setMeta('og:type',        ogType,      'property');
-    setMeta('og:title',       fullTitle,   'property');
-    setMeta('og:description', description, 'property');
-    setMeta('og:url',         canonicalUrl,'property');
-    setMeta('og:image',       ogImage,     'property');
-    setMeta('og:image:alt',   title,       'property');
-    setMeta('og:locale',      'en_US',     'property');
+    setMeta('og:site_name',        SITE_NAME,    'property');
+    setMeta('og:type',             ogType,       'property');
+    setMeta('og:title',            fullTitle,    'property');
+    setMeta('og:description',      description,  'property');
+    setMeta('og:url',              canonicalUrl, 'property');
+    setMeta('og:image',            ogImage,      'property');
+    setMeta('og:image:secure_url', ogImage,      'property');
+    setMeta('og:image:type',       'image/jpeg', 'property');
+    setMeta('og:image:width',      '1200',       'property');
+    setMeta('og:image:height',     '630',        'property');
+    setMeta('og:image:alt',        title,        'property');
+    setMeta('og:locale',           'en_US',      'property');
 
     if (ogType === 'article') {
       setMeta('og:article:publisher', 'https://www.facebook.com/profile.php?id=61586211570915', 'property');
@@ -118,6 +122,7 @@ export function useSEO({
     setMeta('twitter:title',       fullTitle);
     setMeta('twitter:description', description);
     setMeta('twitter:image',       ogImage);
+    setMeta('twitter:image:alt',   title);
 
     // cleanup: restore sensible defaults if the component unmounts unexpectedly
     return () => {

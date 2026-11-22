@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight, Clock } from 'lucide-react';
-import { insightsData } from '../../content/insights';
+import { getPublishedArticles } from '../../content/insights';
 import { AnimateIn } from '../ui/AnimateIn';
 import { StaticAsciiHorizon } from '../ui/StaticAsciiHorizon';
 import styles from './InsightsPreview.module.css';
@@ -55,7 +55,7 @@ export const InsightsPreview: React.FC = () => {
 
         {/* 3 Editorial Cards Grid / Mobile Carousel */}
         <div className={styles.cardsGrid}>
-          {insightsData.map((article, idx) => (
+          {getPublishedArticles().slice(0, 3).map((article, idx) => (
             <AnimateIn
               key={article.slug}
               delay={(100 * (idx + 1)) as 100 | 200 | 300}

@@ -2,7 +2,9 @@ import React from 'react';
 import { useParams, Navigate, Link } from 'react-router-dom';
 import { ArrowLeft, Clock, ArrowUpRight } from 'lucide-react';
 import { PageBanner } from '../components/layout/PageBanner';
-import { insightsData } from '../content/insights';
+import { getPublishedArticles, getArticleBySlug } from '../content/insights';
+import { AuthorBio } from '../components/ui/AuthorBio/AuthorBio';
+import { MarkdownContent } from '../components/ui/MarkdownContent/MarkdownContent';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './InsightDetail.module.css';
 import { useSEO } from '../hooks/useSEO';
@@ -12,18 +14,23 @@ import { breadcrumbSchema, articleSchema } from '../seo/schemas';
 export const InsightDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
 
-  const article = insightsData.find((a) => a.slug === slug);
+  const article = slug ? getArticleBySlug(slug) : undefined;
 
-  if (!article) {
+  if (!article || article.status !== 'published') {
     return <Navigate to="/insights" replace />;
   }
 
-  const relatedArticles = insightsData.filter((a) => a.slug !== slug).slice(0, 2);
+  const allPublished = getPublishedArticles();
+  const relatedArticles = article.relatedSlugs
+    ? article.relatedSlugs
+        .map((rSlug) => allPublished.find((a) => a.slug === rSlug))
+        .filter((a): a is typeof article => Boolean(a))
+    : allPublished.filter((a) => a.slug !== slug).slice(0, 2);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useSEO({
-    title: article.title,
-    description: article.summary,
+    title: article.seoTitle || article.title,
+    description: article.metaDescription || article.summary,
     canonical: `/insights/${article.slug}`,
     ogType: 'article',
   });
@@ -35,7 +42,9 @@ export const InsightDetail: React.FC = () => {
       title: article.title,
       description: article.summary,
       image: article.image,
-      datePublished: '2024-01-01',
+      author: article.author,
+      datePublished: article.datePublished,
+      dateModified: article.dateModified,
     }),
     breadcrumbSchema([
       { name: 'Home', item: 'https://growwezy.com/' },
@@ -87,11 +96,33 @@ export const InsightDetail: React.FC = () => {
                 />
               </div>
 
-              <div className={styles.articleProse}>
-                {article.content.map((paragraph, idx) => (
-                  <p key={idx}>{paragraph}</p>
-                ))}
-              </div>
+              <MarkdownContent content={article.content} className={styles.articleProse} />
+
+              {/* Optional Verified Author Profile (Strictly null if omitted) */}
+              <AuthorBio author={article.author} />
+
+              {/* Optional Authoritative References */}
+              {article.references && article.references.length > 0 && (
+                <div className={styles.referencesBlock} style={{ margin: '24px 0 16px', fontSize: '0.875rem', color: '#64748b' }}>
+                  <h4 style={{ fontSize: '0.9375rem', fontWeight: 600, color: '#132856', marginBottom: '8px' }}>
+                    References & Data Sources:
+                  </h4>
+                  <ul style={{ paddingLeft: '20px', margin: 0 }}>
+                    {article.references.map((ref, rIdx) => (
+                      <li key={rIdx} style={{ marginBottom: '4px' }}>
+                        {ref.url ? (
+                          <a href={ref.url} target="_blank" rel="noopener noreferrer" style={{ color: '#075af7' }}>
+                            {ref.title}
+                          </a>
+                        ) : (
+                          <span>{ref.title}</span>
+                        )}
+                        {ref.note && <span> — {ref.note}</span>}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
 
               <div className={styles.disclaimerCallout}>
                 <p>

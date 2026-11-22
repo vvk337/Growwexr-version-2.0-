@@ -11,7 +11,8 @@ export interface SocialBarProps {
   iconSize?: number;
 }
 
-const DEFAULT_PLATFORMS: SocialPlatform[] = ['whatsapp', 'telegram', 'instagram', 'facebook'];
+// Verified active channels. WhatsApp is excluded until genuine business number is supplied by owner.
+const DEFAULT_PLATFORMS: SocialPlatform[] = ['telegram', 'instagram', 'facebook'];
 
 /**
  * Reusable Social Bar component to display a collection of social buttons/icons.

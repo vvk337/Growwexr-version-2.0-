@@ -1,27 +1,35 @@
 # Launch Readiness Checklist for Site Owner
 
+> **Note**: For the full project status, confirmed business decisions, and revised deployment workflow, refer to **[`PROJECT-INPUTS-AND-LAUNCH-CHECKLIST.md`](./PROJECT-INPUTS-AND-LAUNCH-CHECKLIST.md)**.
+
 Before deploying to a public production domain, please verify and supply the following details:
 
-- [ ] **Contact Information**:
-  - [ ] Official inquiry email address (currently set to placeholder `contact@growwezy.com`).
-  - [ ] Official WhatsApp / Phone number for direct client consultation.
-  - [ ] Registered physical office address or operational jurisdiction notes.
+- [x] **Primary Business Email**:
+  - [x] Standardized across the website as `contact@growwezy.com`.
 
-- [ ] **Form Destination**:
-  - [ ] Connect contact form handler (e.g. Formspree, Web3Forms, Supabase, or custom backend API).
-  - [ ] Toggle `enableFormSubmission: true` in `src/config/site.ts`.
+- [ ] **Pending Owner Contact Details**:
+  - [ ] Official WhatsApp / Phone number for direct client consultation (leave as-is until numbers are allocated).
+  - [ ] Registered physical office address or operational jurisdiction notes (deferred by owner).
+  - [ ] Original publication dates for the 3 insight articles (currently omitted from schemas).
+  - [ ] Designated deployment person's contact/coordination details.
 
-- [ ] **Legal & Regulatory Compliance**:
-  - [ ] Provide finalized Terms of Service and Privacy Policy text.
-  - [ ] Provide mandatory financial risk disclosures for Forex & Asset Management advisory.
-  - [ ] Regulatory registration statements (SEBI / DIFC / ADGM / SCA if applicable).
+- [x] **Form Destination**:
+  - [x] Live Google Sheets proxy operational with country auto-detection and fallback protection.
+  - [x] Form submission active (`enableFormSubmission: true` in `src/config/site.ts`).
+
+- [x] **Legal & Regulatory Compliance**:
+  - [x] Terms of Service updated with legal name `Growwezy Global Tech Private Limited`.
+  - [x] Privacy Policy updated with DPDPA/GDPR/CalOPPA compliance and Grievance Officer details.
+  - [x] Financial risk disclosures active across homepage, footer, services, and disclaimer.
 
 - [ ] **Optional Content Additions**:
-  - [ ] Approved client case studies (set `showClientStories: true` in `src/config/site.ts`).
-  - [ ] Verified client testimonials (set `showTestimonials: true`).
-  - [ ] Public fee schedule if desired (set `showPricing: true`).
+  - [ ] Approved client case studies (currently hidden: `showClientStories: false`).
+  - [ ] Verified client testimonials (currently hidden: `showTestimonials: false`).
+  - [ ] Public fee schedule if desired (currently hidden: `showPricing: false`).
 
-- [ ] **Domain & Deployment**:
-  - [ ] Connect production custom domain.
-  - [ ] Verify SSL certificate and sitemap / meta tags.
-
+- [ ] **Hosting & Deployment (Handled by Designated Deployment Person)**:
+  - [ ] Select hosting provider (Vercel, Cloudflare Pages, Netlify, AWS, etc.).
+  - [ ] Deploy build to staging/preview environment and provide URL for QA validation.
+  - [ ] Complete staging validation protocol (17 routes, 301 redirects, true 404, raw HTML SEO).
+  - [ ] Connect production custom domain (`growwezy.com`).
+  - [ ] Verify SSL certificate, XML sitemap, and search engine webmaster properties.

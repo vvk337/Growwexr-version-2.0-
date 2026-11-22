@@ -64,7 +64,7 @@ export const DisclaimerPage: React.FC = () => {
             <div className={styles.contactBlock}>
               <h3>Growwezy Global Tech</h3>
               <p>For inquiries regarding this disclaimer or our advisory capabilities:</p>
-              <p>Email: <a href="mailto:Growwezy3@gmail.com">Growwezy3@gmail.com</a></p>
+              <p>Email: <a href="mailto:contact@growwezy.com">contact@growwezy.com</a></p>
             </div>
 
             <div className={styles.footerNote}>
