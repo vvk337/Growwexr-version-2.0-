@@ -5,8 +5,9 @@ import { COUNTRIES, DEFAULT_COUNTRY, findCountryByCode, findCountryByName } from
 import styles from './ConsultationForm.module.css';
 
 export interface FormData {
-  firstName: string;
-  lastName: string;
+  fullName: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
   countryCode: string;
   phone: string;
@@ -18,6 +19,7 @@ export interface FormData {
 }
 
 export interface FormErrors {
+  fullName?: string;
   firstName?: string;
   lastName?: string;
   email?: string;
@@ -33,19 +35,47 @@ export interface ConsultationFormProps {
   onSuccess?: (inquiryId?: string) => void;
 }
 
+// Persistent storage for detected/chosen geo preferences so it never reverts
+function getSavedGeo() {
+  try {
+    const country = localStorage.getItem('gw_user_country') || sessionStorage.getItem('gw_user_country');
+    const dialCode = localStorage.getItem('gw_user_dial_code') || sessionStorage.getItem('gw_user_dial_code');
+    if (country && dialCode) {
+      return { country, dialCode };
+    }
+  } catch {}
+  return null;
+}
+
+function saveGeo(country: string, dialCode: string) {
+  try {
+    if (country) {
+      localStorage.setItem('gw_user_country', country);
+      sessionStorage.setItem('gw_user_country', country);
+    }
+    if (dialCode) {
+      localStorage.setItem('gw_user_dial_code', dialCode);
+      sessionStorage.setItem('gw_user_dial_code', dialCode);
+    }
+  } catch {}
+}
+
 export const ConsultationForm: React.FC<ConsultationFormProps> = ({
   variant = 'page',
   hideTitle = false,
   leadSource = 'Contact Page',
   onSuccess,
 }) => {
+  const savedGeo = getSavedGeo();
+
   const [formData, setFormData] = useState<FormData>({
+    fullName: '',
     firstName: '',
     lastName: '',
     email: '',
-    countryCode: DEFAULT_COUNTRY.dialCode,
+    countryCode: savedGeo?.dialCode || DEFAULT_COUNTRY.dialCode,
     phone: '',
-    country: DEFAULT_COUNTRY.name,
+    country: savedGeo?.country || '',
     city: '',
     serviceInterest: 'Forex Signals', // Preselected default
     message: '',
@@ -64,6 +94,12 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
 
     async function detectCountryByIP() {
       try {
+        // If already saved in session/local storage, don't overwrite user's preference
+        const currentSaved = getSavedGeo();
+        if (currentSaved) {
+          return;
+        }
+
         // 1. Try serverless edge endpoint first
         const res = await fetch('/api/geo').catch(() => null);
         if (res && res.ok) {
@@ -71,6 +107,7 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
           if (geo?.countryCode && isMounted) {
             const matched = findCountryByCode(geo.countryCode);
             if (matched) {
+              saveGeo(matched.name, matched.dialCode);
               setFormData((prev) => ({
                 ...prev,
                 countryCode: matched.dialCode,
@@ -97,6 +134,7 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
           if (ipData?.country && isMounted) {
             const matched = findCountryByCode(ipData.country);
             if (matched) {
+              saveGeo(matched.name, matched.dialCode);
               setFormData((prev) => ({
                 ...prev,
                 countryCode: matched.dialCode,
@@ -120,6 +158,7 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
 
           const tzMatched = findCountryByCode(fallbackCode);
           if (tzMatched) {
+            saveGeo(tzMatched.name, tzMatched.dialCode);
             setFormData((prev) => ({
               ...prev,
               countryCode: tzMatched.dialCode,
@@ -128,7 +167,7 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
           }
         }
       } catch {
-        // Retain default UAE fallback gracefully
+        // Retain current fallback gracefully
       }
     }
 
@@ -142,24 +181,22 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
   const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedCountryName = e.target.value;
     const matched = findCountryByName(selectedCountryName);
+    const dialCode = matched ? matched.dialCode : formData.countryCode;
+    saveGeo(selectedCountryName, dialCode);
     setFormData((prev) => ({
       ...prev,
       country: selectedCountryName,
-      countryCode: matched ? matched.dialCode : prev.countryCode,
+      countryCode: dialCode,
     }));
   };
 
   const validate = (): boolean => {
     const errs: FormErrors = {};
 
-    if (!formData.firstName.trim()) {
-      errs.firstName = 'First name is required';
-    } else if (formData.firstName.trim().length < 2) {
-      errs.firstName = 'At least 2 characters';
-    }
-
-    if (!formData.lastName.trim()) {
-      errs.lastName = 'Last name is required';
+    if (!formData.fullName.trim()) {
+      errs.fullName = 'Full name is required';
+    } else if (formData.fullName.trim().length < 2) {
+      errs.fullName = 'Please enter at least 2 characters';
     }
 
     if (!formData.email.trim()) {
@@ -186,6 +223,11 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
+    // Guard against rapid duplicate clicks
+    if (isSubmitting) {
+      return;
+    }
+
     if (!validate()) {
       return;
     }
@@ -203,6 +245,14 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
       return;
     }
 
+    // Generate unique inquiry ID at client level
+    const clientInquiryId = `GW-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
+
+    const nameParts = formData.fullName.trim().split(/\s+/);
+    const resolvedFirstName = formData.firstName || nameParts[0] || '';
+    const resolvedLastName = formData.lastName || nameParts.slice(1).join(' ') || '';
+    const resolvedFullName = formData.fullName.trim();
+
     // Live submission mode: Dispatch request to backend endpoint
     try {
       const response = await fetch('/api/contact', {
@@ -213,8 +263,11 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
         },
         body: JSON.stringify({
           ...formData,
+          inquiryId: clientInquiryId,
+          fullName: resolvedFullName,
+          firstName: resolvedFirstName,
+          lastName: resolvedLastName,
           serviceInterest: formData.serviceInterest || 'Forex Signals',
-          fullName: `${formData.firstName.trim()} ${formData.lastName.trim()}`.trim(),
           submittedAt: new Date().toISOString(),
           leadSource,
         }),
@@ -226,7 +279,7 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
         throw new Error(data.message || `Submission failed with status HTTP ${response.status}`);
       }
 
-      const generatedId = data.inquiryId || `GW-${Date.now().toString(36).toUpperCase()}`;
+      const generatedId = data.inquiryId || clientInquiryId;
 
       setIsSubmitting(false);
       setSubmissionReceipt({
@@ -245,13 +298,15 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
   };
 
   const handleReset = () => {
+    const geo = getSavedGeo();
     setFormData({
+      fullName: '',
       firstName: '',
       lastName: '',
       email: '',
-      countryCode: DEFAULT_COUNTRY.dialCode,
+      countryCode: geo?.dialCode || DEFAULT_COUNTRY.dialCode,
       phone: '',
-      country: DEFAULT_COUNTRY.name,
+      country: geo?.country || '',
       city: '',
       serviceInterest: 'Forex Signals',
       message: '',
@@ -274,7 +329,7 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
               Your form inputs successfully passed all validation checks. In production mode, this transmits directly to your consultation desk.
             </p>
             <div className={styles.submittedSummary}>
-              <p><strong>Name:</strong> {formData.firstName} {formData.lastName}</p>
+              <p><strong>Name:</strong> {formData.fullName || `${formData.firstName || ''} ${formData.lastName || ''}`.trim()}</p>
               <p><strong>Email:</strong> {formData.email}</p>
               <p><strong>Phone:</strong> {formData.countryCode} {formData.phone}</p>
               <p><strong>Location:</strong> {formData.city ? `${formData.city}, ` : ''}{formData.country}</p>
@@ -293,11 +348,11 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
             <CheckCircle2 size={40} className={styles.successIcon} />
             <h3 className={styles.successHeading}>Consultation Request Transmitted</h3>
             <p className={styles.successDesc}>
-              Thank you, {formData.firstName}. Your consultation parameters have been securely received. A senior advisor will review your requirements and respond within 1 business day.
+              Thank you, {formData.fullName?.split(' ')[0] || formData.firstName || 'Client'}. Your consultation parameters have been securely received. A senior advisor will review your requirements and respond within 1 business day.
             </p>
             <div className={styles.submittedSummary}>
               <p><strong>Inquiry ID:</strong> {submissionReceipt.inquiryId}</p>
-              <p><strong>Client Name:</strong> {formData.firstName} {formData.lastName}</p>
+              <p><strong>Client Name:</strong> {formData.fullName || `${formData.firstName || ''} ${formData.lastName || ''}`.trim()}</p>
               <p><strong>Email Address:</strong> {formData.email}</p>
               <p><strong>Phone:</strong> {formData.countryCode} {formData.phone}</p>
               <p><strong>Residence / Jurisdiction:</strong> {formData.city ? `${formData.city}, ` : ''}{formData.country}</p>
@@ -351,47 +406,40 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
               />
             </div>
 
-            {/* Row 1: First Name & Last Name (in one line, separate boxes) */}
-            <div className={styles.twoColRow}>
-              <div className={styles.formField}>
-                <label htmlFor={isPopup ? 'firstName-popup' : 'firstName'} className={styles.label}>
-                  First Name <span className={styles.required}>*</span>
-                </label>
-                <input
-                  id={isPopup ? 'firstName-popup' : 'firstName'}
-                  type="text"
-                  name="firstName"
-                  autoComplete="given-name"
-                  value={formData.firstName}
-                  onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-                  className={`${styles.input} ${errors.firstName ? styles.inputError : ''}`}
-                  placeholder="e.g. Alex"
-                />
-                {errors.firstName && <span className={styles.errorText}>{errors.firstName}</span>}
-              </div>
-
-              <div className={styles.formField}>
-                <label htmlFor={isPopup ? 'lastName-popup' : 'lastName'} className={styles.label}>
-                  Last Name <span className={styles.required}>*</span>
-                </label>
-                <input
-                  id={isPopup ? 'lastName-popup' : 'lastName'}
-                  type="text"
-                  name="lastName"
-                  autoComplete="family-name"
-                  value={formData.lastName}
-                  onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-                  className={`${styles.input} ${errors.lastName ? styles.inputError : ''}`}
-                  placeholder="e.g. Sterling"
-                />
-                {errors.lastName && <span className={styles.errorText}>{errors.lastName}</span>}
-              </div>
+            {/* Row 1: Full Name with in-field placeholder (No heading above) */}
+            <div className={styles.formField}>
+              <label htmlFor={isPopup ? 'fullName-popup' : 'fullName'} className={styles.srOnly}>
+                Full Name
+              </label>
+              <input
+                id={isPopup ? 'fullName-popup' : 'fullName'}
+                type="text"
+                name="fullName"
+                autoComplete="name"
+                value={formData.fullName}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  const parts = val.trim().split(/\s+/);
+                  setFormData({
+                    ...formData,
+                    fullName: val,
+                    firstName: parts[0] || '',
+                    lastName: parts.slice(1).join(' ') || '',
+                  });
+                  if (errors.fullName && val.trim().length >= 2) {
+                    setErrors((prev) => ({ ...prev, fullName: undefined }));
+                  }
+                }}
+                className={`${styles.input} ${errors.fullName ? styles.inputError : ''}`}
+                placeholder="Full Name *"
+              />
+              {errors.fullName && <span className={styles.errorText}>{errors.fullName}</span>}
             </div>
 
-            {/* Row 2: Email Address */}
+            {/* Row 2: Email Address with in-field placeholder (No heading above) */}
             <div className={styles.formField}>
-              <label htmlFor={isPopup ? 'email-popup' : 'email'} className={styles.label}>
-                Email Address <span className={styles.required}>*</span>
+              <label htmlFor={isPopup ? 'email-popup' : 'email'} className={styles.srOnly}>
+                Email Address
               </label>
               <input
                 id={isPopup ? 'email-popup' : 'email'}
@@ -399,17 +447,22 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
                 name="email"
                 autoComplete="email"
                 value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                onChange={(e) => {
+                  setFormData({ ...formData, email: e.target.value });
+                  if (errors.email) {
+                    setErrors((prev) => ({ ...prev, email: undefined }));
+                  }
+                }}
                 className={`${styles.input} ${errors.email ? styles.inputError : ''}`}
-                placeholder="alex@example.com"
+                placeholder="Email Address *"
               />
               {errors.email && <span className={styles.errorText}>{errors.email}</span>}
             </div>
 
-            {/* Row 3: Phone Number with Country Code Dropdown */}
+            {/* Row 3: Phone Number with Country Code Dropdown & in-field placeholder (No heading above) */}
             <div className={styles.formField}>
-              <label htmlFor={isPopup ? 'phone-popup' : 'phone'} className={styles.label}>
-                Phone Number <span className={styles.required}>*</span>
+              <label htmlFor={isPopup ? 'phone-popup' : 'phone'} className={styles.srOnly}>
+                Phone Number
               </label>
               <div className={styles.phoneInputGroup}>
                 <select
@@ -452,25 +505,33 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
                     }
                   }}
                   className={`${styles.input} ${styles.phoneInput} ${errors.phone ? styles.inputError : ''}`}
-                  placeholder="50 123 4567"
+                  placeholder="Phone Number *"
                 />
               </div>
               {errors.phone && <span className={styles.errorText}>{errors.phone}</span>}
             </div>
 
-            {/* Row 4: Country & City (beside each other) */}
+            {/* Row 4: Country & City (In-field placeholders, no headings above) */}
             <div className={styles.twoColRow}>
               <div className={styles.formField}>
-                <label htmlFor={isPopup ? 'country-popup' : 'country'} className={styles.label}>
-                  Country <span className={styles.required}>*</span>
+                <label htmlFor={isPopup ? 'country-popup' : 'country'} className={styles.srOnly}>
+                  Country
                 </label>
                 <select
                   id={isPopup ? 'country-popup' : 'country'}
                   name="country"
                   value={formData.country}
-                  onChange={handleCountryChange}
-                  className={`${styles.select} ${errors.country ? styles.inputError : ''}`}
+                  onChange={(e) => {
+                    handleCountryChange(e);
+                    if (errors.country) {
+                      setErrors((prev) => ({ ...prev, country: undefined }));
+                    }
+                  }}
+                  className={`${styles.select} ${errors.country ? styles.inputError : ''} ${!formData.country ? styles.placeholderSelect : ''}`}
                 >
+                  <option value="" disabled hidden>
+                    Country *
+                  </option>
                   <optgroup label="Popular Markets">
                     {COUNTRIES.filter((c) => c.isPriority).map((c) => (
                       <option key={`country-prio-${c.code}`} value={c.name}>
@@ -490,8 +551,8 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
               </div>
 
               <div className={styles.formField}>
-                <label htmlFor={isPopup ? 'city-popup' : 'city'} className={styles.label}>
-                  City / State <span className={styles.optionalTag}>(Optional)</span>
+                <label htmlFor={isPopup ? 'city-popup' : 'city'} className={styles.srOnly}>
+                  City / State
                 </label>
                 <input
                   id={isPopup ? 'city-popup' : 'city'}
@@ -501,7 +562,7 @@ export const ConsultationForm: React.FC<ConsultationFormProps> = ({
                   value={formData.city}
                   onChange={(e) => setFormData({ ...formData, city: e.target.value })}
                   className={styles.input}
-                  placeholder="e.g. Dubai, London, Zurich"
+                  placeholder="City / State (Optional)"
                 />
               </div>
             </div>

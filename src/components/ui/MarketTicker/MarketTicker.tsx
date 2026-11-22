@@ -225,20 +225,14 @@ export const MarketTicker: React.FC<MarketTickerProps> = ({ className }) => {
           {isDevelopmentPreview ? 'Indicative benchmark rates' : 'Indicative broker quotes'}
         </span>
         <span className={styles.separatorDot} aria-hidden="true">•</span>
-        {isDevelopmentPreview ? (
-          <span className={styles.indicativeLabel}>
-            {snapshot?.attribution || 'Indicative Market Benchmarks'}
-          </span>
-        ) : (
-          <a
-            href="https://crystalballmarkets.com/markets"
-            className={styles.attributionLink}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            {snapshot?.attribution || 'Rates by Crystal Ball Markets'}
-          </a>
-        )}
+        <a
+          href="https://crystalballmarkets.com/markets"
+          className={styles.attributionLink}
+          target="_blank"
+          rel="noopener"
+        >
+          {snapshot?.attribution || 'Rates by Crystal Ball Markets'}
+        </a>
         {isDevelopmentPreview ? (
           <>
             <span className={styles.separatorDot} aria-hidden="true">•</span>

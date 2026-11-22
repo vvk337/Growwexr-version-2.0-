@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import { ConsultationForm } from '../../forms/ConsultationForm';
 import styles from './ConsultationSlideIn.module.css';
@@ -6,10 +6,18 @@ import styles from './ConsultationSlideIn.module.css';
 export const ConsultationSlideIn: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const touchStartY = useRef<number | null>(null);
 
-  // Auto slide up drawer after 3 seconds on desktop
+  // Auto slide up drawer after 3 seconds on desktop ONLY
+  // On mobile (< 1024px), it stays closed at the bottom until user interacts
   useEffect(() => {
     if (location.pathname === '/contact') {
+      setIsOpen(false);
+      return;
+    }
+
+    const isMobile = window.innerWidth < 1024;
+    if (isMobile) {
       setIsOpen(false);
       return;
     }
@@ -21,6 +29,18 @@ export const ConsultationSlideIn: React.FC = () => {
     return () => clearTimeout(timer);
   }, [location.pathname]);
 
+  // Listen for global open consultation event (e.g. when mobile user taps "Book Consultation" anywhere)
+  useEffect(() => {
+    const handleOpenEvent = () => {
+      setIsOpen(true);
+    };
+
+    window.addEventListener('growwezy:open-consultation', handleOpenEvent);
+    return () => {
+      window.removeEventListener('growwezy:open-consultation', handleOpenEvent);
+    };
+  }, []);
+
   // Hide completely on the contact page to avoid duplicate forms
   if (location.pathname === '/contact') {
     return null;
@@ -28,6 +48,27 @@ export const ConsultationSlideIn: React.FC = () => {
 
   const toggleDrawer = () => {
     setIsOpen((prev) => !prev);
+  };
+
+  // Touch gesture support: Slide up to open, slide down to close
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartY.current === null) return;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diffY = touchStartY.current - touchEndY;
+
+    // Swipe up (diffY > 35) -> Open
+    if (diffY > 35 && !isOpen) {
+      setIsOpen(true);
+    }
+    // Swipe down (diffY < -35) -> Close
+    else if (diffY < -35 && isOpen) {
+      setIsOpen(false);
+    }
+    touchStartY.current = null;
   };
 
   return (
@@ -39,10 +80,12 @@ export const ConsultationSlideIn: React.FC = () => {
         aria-modal="true"
         aria-label="Get In Touch"
       >
-        {/* Clickable Header Bar (Touching/clicking anywhere on the header slides the form up and down) */}
+        {/* Clickable & Touchable Header Bar */}
         <div
           className={styles.drawerHeader}
           onClick={toggleDrawer}
+          onTouchStart={handleTouchStart}
+          onTouchEnd={handleTouchEnd}
           role="button"
           tabIndex={0}
           aria-expanded={isOpen}
@@ -69,7 +112,7 @@ export const ConsultationSlideIn: React.FC = () => {
           <ConsultationForm
             variant="popup"
             hideTitle={true}
-            leadSource="Desktop Slide Drawer"
+            leadSource="Slide Drawer"
             onSuccess={() => {
               // Keep success message visible inside drawer
             }}

@@ -72,7 +72,9 @@ export default async function handler(req: any, res: any) {
       });
     }
 
-    const inquiryId = `GW-${Date.now().toString(36).toUpperCase()}`;
+    const inquiryId = body.inquiryId && typeof body.inquiryId === 'string' && body.inquiryId.startsWith('GW-')
+      ? body.inquiryId
+      : `GW-${Date.now().toString(36).toUpperCase()}`;
     const receivedAt = new Date().toISOString();
 
     const fullPhone = phone?.trim()

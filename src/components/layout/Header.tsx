@@ -68,9 +68,15 @@ export const Header: React.FC = () => {
       document.body.style.overflow = '';
     }
 
+    const handleOpenConsultation = () => {
+      setMobileMenuOpen(false);
+    };
+    window.addEventListener('growwezy:open-consultation', handleOpenConsultation);
+
     return () => {
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('growwezy:open-consultation', handleOpenConsultation);
     };
   }, [mobileMenuOpen, legalDropdownOpen]);
 

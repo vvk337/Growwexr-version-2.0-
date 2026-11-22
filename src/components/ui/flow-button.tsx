@@ -80,7 +80,18 @@ export function FlowButton({
 
   if (to) {
     return (
-      <Link to={to} className={combinedClass} onClick={onClick}>
+      <Link
+        to={to}
+        className={combinedClass}
+        onClick={(e) => {
+          if (to === '/contact' && window.innerWidth < 1024 && window.location.pathname !== '/contact') {
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent('growwezy:open-consultation'));
+            return;
+          }
+          if (onClick) onClick();
+        }}
+      >
         {innerContent}
       </Link>
     );

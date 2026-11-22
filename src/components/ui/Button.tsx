@@ -43,7 +43,18 @@ export const Button: React.FC<ButtonProps> = ({
 
   if (to) {
     return (
-      <Link to={to} className={buttonClass}>
+      <Link
+        to={to}
+        className={buttonClass}
+        onClick={(e) => {
+          if (to === '/contact' && window.innerWidth < 1024 && window.location.pathname !== '/contact') {
+            e.preventDefault();
+            window.dispatchEvent(new CustomEvent('growwezy:open-consultation'));
+            return;
+          }
+          if (onClick) onClick();
+        }}
+      >
         {content}
       </Link>
     );

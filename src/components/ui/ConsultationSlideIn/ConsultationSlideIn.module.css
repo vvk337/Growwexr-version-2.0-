@@ -1,34 +1,40 @@
-/* Desktop Slide-In Bottom Drawer Widget */
+/* Slide-In Bottom Drawer Widget (Mobile & Desktop) */
 .drawerWrapper {
-  display: none;
+  display: block;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 990;
+  font-family: var(--font-family);
+  pointer-events: none; /* Prevent invisible wrapper area from blocking clicks beneath */
 }
 
 @media (min-width: 1024px) {
   .drawerWrapper {
-    display: block;
-    position: fixed;
-    bottom: 0;
+    left: auto;
     right: 28px;
-    z-index: 990;
-    font-family: var(--font-family);
-    pointer-events: none; /* Prevent invisible wrapper area from blocking clicks on elements beneath */
+    width: auto;
   }
 }
 
 /* Drawer Card */
 .drawerCard {
-  width: 440px;
-  max-width: calc(100vw - 56px);
-  max-height: calc(100vh - 40px);
-  background-color: rgba(8, 15, 36, 0.85);
-  background-image: radial-gradient(circle at 100% 0%, rgba(7, 90, 247, 0.2) 0%, transparent 60%);
-  backdrop-filter: blur(20px) saturate(140%);
-  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  width: 100%;
+  max-width: 100vw;
+  max-height: 88vh;
+  background-color: rgba(8, 15, 36, 0.88);
+  background-image: radial-gradient(circle at 100% 0%, rgba(7, 90, 247, 0.22) 0%, transparent 60%);
+  backdrop-filter: blur(24px) saturate(140%);
+  -webkit-backdrop-filter: blur(24px) saturate(140%);
   border: 1px solid rgba(255, 255, 255, 0.16);
+  border-left: none;
+  border-right: none;
   border-bottom: none;
-  border-top-left-radius: 18px;
-  border-top-right-radius: 18px;
-  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.75), 0 0 40px rgba(7, 90, 247, 0.16);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.75), 0 0 35px rgba(7, 90, 247, 0.18);
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -36,21 +42,61 @@
   will-change: transform;
 }
 
-/* Open: Slide up fully into view */
+@media (min-width: 1024px) {
+  .drawerCard {
+    width: 440px;
+    max-width: calc(100vw - 56px);
+    max-height: calc(100vh - 40px);
+    border-left: 1px solid rgba(255, 255, 255, 0.16);
+    border-right: 1px solid rgba(255, 255, 255, 0.16);
+    border-top-left-radius: 18px;
+    border-top-right-radius: 18px;
+  }
+}
+
+/* Open State: Slid up fully into view */
 .drawerOpen {
   transform: translateY(0);
   pointer-events: auto;
+  animation: none !important;
 }
 
-/* Closed: Slide down like a drawer, leaving only the "Get In Touch" header tab docked at the bottom */
+/* Closed State: Slid down, docked at bottom with attention-grabbing bounce */
 .drawerClosed {
-  transform: translateY(calc(100% - 52px));
+  transform: translateY(calc(100% - 50px));
   box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(7, 90, 247, 0.15);
   pointer-events: none;
+  animation: drawerPeekBounce 3.8s cubic-bezier(0.28, 0.84, 0.42, 1) infinite;
+}
+
+/* Pause animation on hover or when user touches */
+.drawerClosed:hover,
+.drawerClosed:focus-within {
+  animation-play-state: paused;
 }
 
 .drawerClosed .drawerHeader {
-  pointer-events: auto; /* Only the docked header bar accepts clicks when closed */
+  pointer-events: auto; /* Only the docked header bar accepts touch / clicks when closed */
+}
+
+/* Gentle Periodic Bounce Animation for Attention */
+@keyframes drawerPeekBounce {
+  0%, 100% {
+    transform: translateY(calc(100% - 50px));
+  }
+  8% {
+    transform: translateY(calc(100% - 64px)); /* 14px gentle upward bounce */
+  }
+  16% {
+    transform: translateY(calc(100% - 50px));
+  }
+  24% {
+    transform: translateY(calc(100% - 58px)); /* 8px gentle secondary bounce */
+  }
+  32% {
+    transform: translateY(calc(100% - 50px));
+  }
+  /* 32% to 100%: Rest period between bounces */
 }
 
 /* Clickable / Touchable Header */
@@ -59,17 +105,18 @@
   flex-direction: column;
   cursor: pointer;
   user-select: none;
-  background: rgba(7, 15, 38, 0.82);
+  background: rgba(7, 15, 38, 0.84);
   backdrop-filter: blur(20px) saturate(140%);
   -webkit-backdrop-filter: blur(20px) saturate(140%);
   padding: 8px 18px 12px 18px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.09);
   transition: background-color 200ms ease;
   -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
 }
 
 .drawerHeader:hover {
-  background: rgba(11, 24, 58, 0.88);
+  background: rgba(11, 24, 58, 0.92);
 }
 
 /* Top Drawer Handle Bar */
@@ -82,16 +129,19 @@
 }
 
 .handlePill {
-  width: 36px;
+  width: 42px;
   height: 4px;
   border-radius: 9999px;
-  background: rgba(255, 255, 255, 0.25);
-  transition: background-color 200ms ease, width 200ms ease;
+  background: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 8px rgba(25, 203, 208, 0.3);
+  transition: background-color 200ms ease, width 200ms ease, box-shadow 200ms ease;
 }
 
-.drawerHeader:hover .handlePill {
-  background: rgba(25, 203, 208, 0.65);
-  width: 44px;
+.drawerHeader:hover .handlePill,
+.drawerHeader:active .handlePill {
+  background: rgba(25, 203, 208, 0.85);
+  width: 52px;
+  box-shadow: 0 0 12px rgba(25, 203, 208, 0.6);
 }
 
 /* Header Content Row - Center Aligned */
@@ -110,15 +160,26 @@
   letter-spacing: -0.01em;
   margin: 0;
   text-align: center;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 
 /* Scrollable Form Body */
 .drawerBody {
-  padding: 16px 20px 22px 20px;
+  padding: 16px 18px 24px 18px;
   overflow-y: auto;
-  max-height: calc(100vh - 120px);
+  max-height: calc(88vh - 60px);
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  -webkit-overflow-scrolling: touch;
+}
+
+@media (min-width: 1024px) {
+  .drawerBody {
+    padding: 16px 20px 22px 20px;
+    max-height: calc(100vh - 120px);
+  }
 }
 
 .drawerBody::-webkit-scrollbar {
