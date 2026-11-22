@@ -1,8 +1,16 @@
 import React from 'react';
 import { Button } from '../components/ui/Button';
 import styles from './NotFoundPage.module.css';
+import { useSEO } from '../hooks/useSEO';
 
 export const NotFoundPage: React.FC = () => {
+  useSEO({
+    title: '404 – Page Not Found',
+    description: 'The page you are looking for does not exist on Growwezy Global Tech. Return to the homepage or contact our advisory desk.',
+    canonical: '/404',
+    noIndex: true,
+  });
+
   return (
     <main id="main-content" className={styles.notFoundPage}>
       <div className={styles.atmosphere} aria-hidden="true">

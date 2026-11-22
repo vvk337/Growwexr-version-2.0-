@@ -138,6 +138,7 @@ export const HeroCarousel: React.FC<HeroCarouselProps> = ({
                   width="690"
                   height="446"
                   loading={index === 0 ? 'eager' : 'lazy'}
+                  fetchPriority={index === 0 ? 'high' : 'low'}
                   decoding="async"
                 />
               </div>

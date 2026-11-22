@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from 'react';
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Navigate } from 'react-router-dom';
 import { Header } from './components/layout/Header';
 import { Footer } from './components/layout/Footer';
 import { ConsultationSlideIn } from './components/ui/ConsultationSlideIn/ConsultationSlideIn';
@@ -63,9 +63,9 @@ export const App: React.FC = () => {
           <Route path="/insights/:slug" element={<InsightDetail />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="/terms" element={<TermsPage />} />
-          <Route path="/terms-of-service" element={<TermsPage />} />
+          <Route path="/terms-of-service" element={<Navigate to="/terms" replace />} />
           <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="/privacy-policy" element={<PrivacyPage />} />
+          <Route path="/privacy-policy" element={<Navigate to="/privacy" replace />} />
           <Route path="/disclaimer" element={<DisclaimerPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

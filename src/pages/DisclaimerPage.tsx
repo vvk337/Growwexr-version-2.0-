@@ -2,8 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PageBanner } from '../components/layout/PageBanner';
 import styles from './LegalPage.module.css';
+import { useSEO } from '../hooks/useSEO';
 
 export const DisclaimerPage: React.FC = () => {
+  useSEO({
+    title: 'Risk & Investment Disclaimer – Growwezy Global Tech',
+    description: 'Important risk disclosure: Growwezy Global Tech provides research and advisory services only. All trading and investment decisions are made independently by clients.',
+    canonical: '/disclaimer',
+    noIndex: false,
+    robotsExtra: 'noarchive',
+  });
+
   return (
     <main id="main-content">
       <PageBanner

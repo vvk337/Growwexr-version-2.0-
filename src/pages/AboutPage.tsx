@@ -3,6 +3,9 @@ import { PageBanner } from '../components/layout/PageBanner';
 import { AboutIntro } from '../components/sections/AboutIntro';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './AboutPage.module.css';
+import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { breadcrumbSchema, webPageSchema } from '../seo/schemas';
 
 interface CounterStatProps {
   value: number;
@@ -58,6 +61,29 @@ const CounterStat: React.FC<CounterStatProps> = ({
 export const AboutPage: React.FC = () => {
   const [hasAnimated, setHasAnimated] = useState(false);
   const keyFactsRef = useRef<HTMLDivElement>(null);
+
+  useSEO({
+    title: 'About Growwezy – Disciplined Forex Advisory Since 2019',
+    description:
+      'Established in India in 2019, Growwezy Global Tech serves 2,800+ retail clients with specialized forex trading advisory and financial asset management across the UAE and Middle East.',
+    canonical: '/about',
+  });
+
+  useJsonLd([
+    webPageSchema({
+      url: 'https://growwezy.com/about',
+      name: 'About Growwezy Global Tech',
+      description: 'Established in India in 2019, serving 2,800+ clients with forex advisory across the UAE and Middle East.',
+      breadcrumbs: [
+        { name: 'Home', item: 'https://growwezy.com/' },
+        { name: 'About', item: 'https://growwezy.com/about' },
+      ],
+    }),
+    breadcrumbSchema([
+      { name: 'Home', item: 'https://growwezy.com/' },
+      { name: 'About', item: 'https://growwezy.com/about' },
+    ]),
+  ]);
 
   useEffect(() => {
     const el = keyFactsRef.current;

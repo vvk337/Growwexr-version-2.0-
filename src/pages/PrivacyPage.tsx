@@ -2,8 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PageBanner } from '../components/layout/PageBanner';
 import styles from './LegalPage.module.css';
+import { useSEO } from '../hooks/useSEO';
 
 export const PrivacyPage: React.FC = () => {
+  useSEO({
+    title: 'Privacy Policy – Growwezy Global Tech',
+    description: 'Read Growwezy Global Tech\'s Privacy Policy to understand how we collect, use, and protect your personal information.',
+    canonical: '/privacy',
+    noIndex: false,
+    robotsExtra: 'noarchive',
+  });
+
   return (
     <main id="main-content">
       <PageBanner

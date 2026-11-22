@@ -2,8 +2,17 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { PageBanner } from '../components/layout/PageBanner';
 import styles from './LegalPage.module.css';
+import { useSEO } from '../hooks/useSEO';
 
 export const TermsPage: React.FC = () => {
+  useSEO({
+    title: 'Terms of Service – Growwezy Global Tech',
+    description: 'Read the Terms of Service governing access to and use of Growwezy Global Tech advisory services.',
+    canonical: '/terms',
+    noIndex: false,
+    robotsExtra: 'noarchive',
+  });
+
   return (
     <main id="main-content">
       <PageBanner

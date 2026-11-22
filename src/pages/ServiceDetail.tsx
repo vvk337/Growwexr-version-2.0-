@@ -6,6 +6,9 @@ import { servicesData } from '../content/services';
 import { FlowButton } from '../components/ui/flow-button';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './ServiceDetail.module.css';
+import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { breadcrumbSchema, serviceSchema, faqSchema } from '../seo/schemas';
 
 export const ServiceDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -15,6 +18,28 @@ export const ServiceDetail: React.FC = () => {
   if (!service) {
     return <Navigate to="/services" replace />;
   }
+
+  useSEO({
+    title: `${service.title} – Forex Advisory Service`,
+    description: service.shortDescription + ` Tailored for NRIs and international clients in the UAE and Middle East by Growwezy Global Tech.`,
+    canonical: `/services/${service.slug}`,
+  });
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useJsonLd([
+    serviceSchema({
+      name: service.title,
+      description: service.fullDescription,
+      url: `https://growwezy.com/services/${service.slug}`,
+      image: service.image,
+    }),
+    breadcrumbSchema([
+      { name: 'Home', item: 'https://growwezy.com/' },
+      { name: 'Services', item: 'https://growwezy.com/services' },
+      { name: service.title, item: `https://growwezy.com/services/${service.slug}` },
+    ]),
+    ...(service.faqs.length > 0 ? [faqSchema(service.faqs)] : []),
+  ]);
 
   return (
     <main id="main-content">
@@ -97,7 +122,7 @@ export const ServiceDetail: React.FC = () => {
               <div className={styles.stickyCard}>
                 <img
                   src={service.image}
-                  alt={service.title}
+                  alt={`${service.title} – Growwezy forex advisory service overview`}
                   className={styles.sidebarImg}
                   width="400"
                   height="220"

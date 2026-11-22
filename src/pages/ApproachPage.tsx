@@ -3,8 +3,34 @@ import { PageBanner } from '../components/layout/PageBanner';
 import { approachSteps } from '../content/approach';
 import { FlowButton } from '../components/ui/flow-button';
 import styles from './ApproachPage.module.css';
+import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { breadcrumbSchema, webPageSchema } from '../seo/schemas';
 
 export const ApproachPage: React.FC = () => {
+  useSEO({
+    title: 'Our Approach – How Growwezy Works With You',
+    description:
+      'From your first consultation to ongoing market updates, see exactly how Growwezy matches you with an analyst team, delivers trading signals, and manages your account.',
+    canonical: '/approach',
+  });
+
+  useJsonLd([
+    webPageSchema({
+      url: 'https://growwezy.com/approach',
+      name: 'Our Approach – Growwezy Client Journey',
+      description: 'Four-step client journey: consultation, analyst matching, service delivery, and ongoing reporting.',
+      breadcrumbs: [
+        { name: 'Home', item: 'https://growwezy.com/' },
+        { name: 'Our Approach', item: 'https://growwezy.com/approach' },
+      ],
+    }),
+    breadcrumbSchema([
+      { name: 'Home', item: 'https://growwezy.com/' },
+      { name: 'Our Approach', item: 'https://growwezy.com/approach' },
+    ]),
+  ]);
+
   return (
     <main id="main-content">
       {/* Dark navy hero with label, title on left and intro on right */}

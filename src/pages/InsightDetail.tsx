@@ -5,6 +5,9 @@ import { PageBanner } from '../components/layout/PageBanner';
 import { insightsData } from '../content/insights';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './InsightDetail.module.css';
+import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { breadcrumbSchema, articleSchema } from '../seo/schemas';
 
 export const InsightDetail: React.FC = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -16,6 +19,30 @@ export const InsightDetail: React.FC = () => {
   }
 
   const relatedArticles = insightsData.filter((a) => a.slug !== slug).slice(0, 2);
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useSEO({
+    title: article.title,
+    description: article.summary,
+    canonical: `/insights/${article.slug}`,
+    ogType: 'article',
+  });
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useJsonLd([
+    articleSchema({
+      url: `https://growwezy.com/insights/${article.slug}`,
+      title: article.title,
+      description: article.summary,
+      image: article.image,
+      datePublished: '2024-01-01',
+    }),
+    breadcrumbSchema([
+      { name: 'Home', item: 'https://growwezy.com/' },
+      { name: 'Insights', item: 'https://growwezy.com/insights' },
+      { name: article.title, item: `https://growwezy.com/insights/${article.slug}` },
+    ]),
+  ]);
 
   return (
     <main id="main-content">

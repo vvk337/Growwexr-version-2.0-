@@ -6,6 +6,9 @@ import { servicesData, ServiceItem } from '../content/services';
 import { FlowButton } from '../components/ui/flow-button';
 import { FinalCTA } from '../components/sections/FinalCTA';
 import styles from './ServicesIndex.module.css';
+import { useSEO } from '../hooks/useSEO';
+import { useJsonLd } from '../hooks/useJsonLd';
+import { breadcrumbSchema, webPageSchema } from '../seo/schemas';
 
 const imagePositions: Record<string, string> = {
   'forex-signals': 'center 30%',
@@ -19,6 +22,29 @@ export const ServicesIndex: React.FC = () => {
   const [isDesktop, setIsDesktop] = React.useState(() =>
     typeof window !== 'undefined' ? window.innerWidth >= 860 : true
   );
+
+  useSEO({
+    title: 'Trading Signals & Account Management Services',
+    description:
+      'Explore Growwezy\'s forex signals, Comex gold & silver signals, combo plans, and trade-only account management for NRIs and international clients in the UAE and Middle East.',
+    canonical: '/services',
+  });
+
+  useJsonLd([
+    webPageSchema({
+      url: 'https://growwezy.com/services',
+      name: 'Trading Signals & Account Management – Growwezy',
+      description: 'Forex signals, Comex signals, combo plans, and trade-only account management for Middle East NRIs.',
+      breadcrumbs: [
+        { name: 'Home', item: 'https://growwezy.com/' },
+        { name: 'Services', item: 'https://growwezy.com/services' },
+      ],
+    }),
+    breadcrumbSchema([
+      { name: 'Home', item: 'https://growwezy.com/' },
+      { name: 'Services', item: 'https://growwezy.com/services' },
+    ]),
+  ]);
 
   React.useEffect(() => {
     const handleResize = () => {
