@@ -61,8 +61,9 @@ export const siteConfig: SiteConfig = {
     hours: 'Mon – Fri, 9:00 AM – 6:00 PM IST'
   },
   socials: [
-    { name: 'LinkedIn', href: 'https://linkedin.com' },
-    { name: 'X (Twitter)', href: 'https://x.com' }
+    { name: 'Instagram', href: 'https://www.instagram.com/teamgrowwezy/' },
+    { name: 'Facebook', href: 'https://www.facebook.com/profile.php?id=61586211570915' },
+    { name: 'Telegram', href: 'https://t.me/growwezyglobaltech' }
   ],
   featureFlags: {
     showClientStories: false, // Per specification: hidden until real case studies are supplied

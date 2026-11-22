@@ -27,29 +27,29 @@ export interface SocialConfig {
 }
 
 export const socialConfig: SocialConfig = {
-  // Instagram profile URL (placeholder)
+  // Instagram profile URL
   instagram: {
-    url: 'https://instagram.com/your_handle_here',
+    url: 'https://www.instagram.com/teamgrowwezy/',
     label: 'Instagram',
   },
 
-  // Facebook page URL (placeholder)
+  // Facebook page URL
   facebook: {
-    url: 'https://facebook.com/your_page_here',
+    url: 'https://www.facebook.com/profile.php?id=61586211570915',
     label: 'Facebook',
   },
 
-  // WhatsApp configuration (placeholder)
+  // WhatsApp configuration (leave as is per user instruction)
   whatsapp: {
-    phoneNumber: '971500000000', // Replace with your official WhatsApp number
+    phoneNumber: '971500000000', // To be updated later
     defaultMessage: 'Hi, I would like to know more about your services.',
     label: 'WhatsApp',
   },
 
-  // Telegram configuration (placeholder)
+  // Telegram configuration
   telegram: {
-    username: 'your_telegram_username', // Replace with your Telegram username or group
-    defaultMessage: 'Hi, I would like to know more about your services.',
+    username: 'growwezyglobaltech',
+    defaultMessage: '',
     label: 'Telegram',
   },
 };
@@ -67,9 +67,13 @@ export function getWhatsAppUrl(customMessage?: string): string {
  * Generates the Telegram deep-link with prefilled text draft.
  */
 export function getTelegramUrl(customMessage?: string): string {
-  const username = socialConfig.telegram.username.replace('@', '').trim();
-  const text = encodeURIComponent(customMessage || socialConfig.telegram.defaultMessage);
-  return username ? `https://t.me/${username}?text=${text}` : `https://t.me/?text=${text}`;
+  const username = socialConfig.telegram.username.replace('@', '').replace('https://t.me/', '').trim();
+  const message = customMessage || socialConfig.telegram.defaultMessage;
+  if (message) {
+    const text = encodeURIComponent(message);
+    return username ? `https://t.me/${username}?text=${text}` : `https://t.me/?text=${text}`;
+  }
+  return username ? `https://t.me/${username}` : `https://t.me/`;
 }
 
 /**
