@@ -187,6 +187,9 @@ const routes = [
             <a href="/contact">Book Consultation</a>
             <a href="/services">Explore Services</a>
           </div>
+          <div aria-label="Financial Market Overview">
+            <p>Indicative Market Rates • <a href="https://crystalballmarkets.com/markets" rel="noopener">Rates by Crystal Ball Markets</a></p>
+          </div>
         </section>
         <section aria-label="About Summary">
           <h2>Three Pillars of Guidance</h2>
